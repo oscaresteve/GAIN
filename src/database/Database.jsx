@@ -31,7 +31,11 @@ export const createUser = async (id, email, password) => {
 export const getUser = async (id) => {
   const docRef = doc(database, "users", id);
   const docSnap = await getDoc(docRef);
-  return docSnap.data();
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    return null;
+  }
 };
 
 export const readUsers = async () => {
