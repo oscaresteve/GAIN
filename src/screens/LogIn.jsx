@@ -14,7 +14,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { getUser } from "../database/Database";
+import { logInUser } from "../database/Database";
 
 export default function LogIn({ navigation }) {
   const validationSchema = yup
@@ -32,18 +32,9 @@ export default function LogIn({ navigation }) {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const handleLogIn = async (formData) => {
-    console.log(formData);
-    const userSnap = await getUser(formData.email);
-    if (userSnap != null) {
-      if (userSnap.password == formData.password) {
-        console.log(">>> LOGIN SUCCESS");
-        navigation.navigate("TabGroup");
-      } else {
-        console.log(">>> PASSWORD INCORRECT");
-        Alert.alert("Error", "User or Email incorrect");
-      }
+    if ((await logInUser(formData.email, formData.password)) === true) {
+      navigation.navigate("Main");
     } else {
-      console.log(">>> USER NOT FOUND");
       Alert.alert("Error", "User or Email incorrect");
     }
   };
@@ -57,28 +48,32 @@ export default function LogIn({ navigation }) {
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <TextInput
-            style={styles.input}
+            style={styles.TextInput}
+            placeholder="E-mail"
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
           />
         )}
       />
-      {errors.email && <Text>{errors.email.message}</Text>}
+      {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
 
       <Controller
         name="password"
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <TextInput
-            style={styles.input}
+            style={styles.TextInput}
+            placeholder="Password"
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
           />
         )}
       />
-      {errors.password && <Text>{errors.password.message}</Text>}
+      {errors.password && (
+        <Text style={styles.error}>{errors.password.message}</Text>
+      )}
 
       <Button title="Log In" onPress={handleSubmit(handleLogIn)} />
 
@@ -90,11 +85,15 @@ export default function LogIn({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  input: {
+  TextInput: {
     margin: 10,
     borderWidth: 1,
     padding: 10,
     fontSize: 15,
     borderRadius: 10,
+  },
+  error: {
+    color: "#ff0000",
+    fontSize: 12,
   },
 });

@@ -10,6 +10,7 @@ import {
   setDoc,
   getDoc,
 } from "firebase/firestore";
+import { useState } from "react";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,25 +21,35 @@ const firebaseConfig = require("./firebaseConfig.json");
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
-export const createUser = async (id, email, password) => {
-  await setDoc(doc(database, "users", id), {
-    email: email,
-    password: password,
-  });
-  console.log(">>> USER CREATED");
-};
-
-export const getUser = async (id) => {
-  const docRef = doc(database, "users", id);
+export const logInUser = async (email, password) => {
+  const docRef = doc(database, "users", email);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    return docSnap.data();
+    if (docSnap.data().password === password) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
-    return null;
+    return false;
   }
 };
 
-export const readUsers = async () => {
+export const registerUser = async (email, password) => {
+  const docRef = doc(database, "users", email);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return false;
+  } else {
+    await setDoc(doc(database, "users", email), {
+      email: email,
+      password: password,
+    });
+    return true;
+  }
+};
+
+/* export const readUsers = async () => {
   const snapshot = await getDocs(collection(database, "users"));
   const data = snapshot.docs.map((doc) => ({
     id: doc.id,
@@ -46,9 +57,9 @@ export const readUsers = async () => {
   }));
   console.log(">>> DATA READED");
   return data;
-};
+}; */
 
-export const removeUser = async (userId) => {
+/* export const removeUser = async (userId) => {
   await deleteDoc(doc(database, "users", userId));
   console.log(">>> USER DELETED");
-};
+}; */

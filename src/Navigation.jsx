@@ -13,7 +13,7 @@ import Configuration from "./screens/Configuration";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const TabGroup = () => {
+const Main = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -60,8 +60,8 @@ export default function Navigation() {
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
-          name="TabGroup"
-          component={TabGroup}
+          name="Main"
+          component={Main}
           options={{ headerShown: false, gestureEnabled: false }}
         />
       </Stack.Navigator>
