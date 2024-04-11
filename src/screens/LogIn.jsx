@@ -41,6 +41,7 @@ export default function LogIn({ navigation }) {
 
   return (
     <SafeAreaView>
+      <Button title="Back" onPress={() => navigation.goBack()} />
       <Text>LogIn</Text>
 
       <Controller
@@ -75,11 +76,7 @@ export default function LogIn({ navigation }) {
         <Text style={styles.error}>{errors.password.message}</Text>
       )}
 
-      <Button title="Log In" onPress={handleSubmit(handleLogIn)} />
-
-      <Pressable onPress={() => navigation.navigate("Register")}>
-        <Text>¿You dont have an account? Click here and register!</Text>
-      </Pressable>
+      <Button title="Done" onPress={handleSubmit(handleLogIn)} />
     </SafeAreaView>
   );
 }

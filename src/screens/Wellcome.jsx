@@ -5,7 +5,8 @@ export default function Wellcome({ navigation }) {
   return (
     <SafeAreaView>
       <Text>Wellcome</Text>
-      <Button title="Start" onPress={() => navigation.navigate("LogIn")} />
+      <Button title="Log In" onPress={() => navigation.navigate("LogIn")} />
+      <Button title="Register" onPress={() => navigation.navigate("Register")} />
     </SafeAreaView>
   );
 }

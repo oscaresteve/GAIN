@@ -19,8 +19,11 @@ export default function Register({ navigation }) {
     .object()
     .shape({
       email: yup.string().email().required(),
-      password: yup.string().required(),
-      repeatPassword: yup.string().required(),
+      password: yup.string().min(6).max(12).required(),
+      repeatPassword: yup
+        .string()
+        .oneOf([yup.ref("password")])
+        .required(),
     })
     .required();
 
@@ -28,6 +31,7 @@ export default function Register({ navigation }) {
     control,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const handleRegister = async (formData) => {
@@ -40,6 +44,7 @@ export default function Register({ navigation }) {
 
   return (
     <SafeAreaView>
+      <Button title="Back" onPress={() => navigation.goBack()} />
       <Text>Register</Text>
 
       <Controller
