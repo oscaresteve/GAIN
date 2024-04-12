@@ -77,6 +77,7 @@ export default function LogIn({ navigation }) {
       )}
 
       <Button title="Done" onPress={handleSubmit(handleLogIn)} />
+      <Button title="ByPass" onPress={() => navigation.navigate("Main")} />
     </SafeAreaView>
   );
 }

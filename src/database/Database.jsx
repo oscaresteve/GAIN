@@ -49,6 +49,21 @@ export const registerUser = async (email, password) => {
   }
 };
 
+export const getUserTraining = async (email, training) => {
+  const docRef = doc(
+    collection(database, "users", email, "userTrainings"),
+    training
+  );
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log(docSnap.data());
+    return docSnap.data();
+  } else {
+    return false;
+  }
+};
+
 /* export const readUsers = async () => {
   const snapshot = await getDocs(collection(database, "users"));
   const data = snapshot.docs.map((doc) => ({

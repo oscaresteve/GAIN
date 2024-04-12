@@ -6,7 +6,7 @@ import LogIn from "./screens/LogIn";
 import Wellcome from "./screens/Wellcome";
 import Home from "./screens/Home";
 import Register from "./screens/Register";
-import Trainings from "./screens/Trainings";
+import MyTrainings from "./screens/MyTrainings";
 import Profile from "./screens/Profile";
 import Configuration from "./screens/Configuration";
 
@@ -22,8 +22,8 @@ const Main = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Trainings"
-        component={Trainings}
+        name="MyTrainings"
+        component={MyTrainings}
         options={{ headerShown: false }}
       />
       <Tab.Screen
