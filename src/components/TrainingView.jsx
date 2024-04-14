@@ -5,22 +5,22 @@ export default function Training({ day, userTrainingData }) {
   if (userTrainingData) {
     if (userTrainingData[day]) {
       return (
-        <View key={day}>
+        <View key={day} className="">
           {Object.keys(userTrainingData[day]).map((group) => {
             return (
-              <View key={group}>
-                <Text>{group}</Text>
+              <View key={group} className="">
+                <Text className="text-xl font-bold">{group}</Text>
                 {Object.keys(userTrainingData[day][group]).map((exercise) => {
                   return (
-                    <View key={exercise}>
-                      <Text>{exercise}</Text>
+                    <View key={exercise} className="bg-gray-400 p-2 m-1 rounded-lg">
+                      <Text className="text-md font-bold">{exercise}</Text>
                       {Object.keys(userTrainingData[day][group][exercise]).map(
                         (set) => {
                           return (
-                            <View key={set}>
-                              <Text>{set}{" --- "}
-                                {userTrainingData[day][group][exercise][set]["reps"]}{" --- "}
-                                {userTrainingData[day][group][exercise][set]["kg"]}
+                            <View key={set} className="bg-gray-300 p-3 m-1 rounded-lg">
+                              <Text>{set}{" - "}
+                                {userTrainingData[day][group][exercise][set]["reps"]}{" reps "}
+                                {userTrainingData[day][group][exercise][set]["kg"]}{" kg "}
                               </Text>
                             </View>
                           );

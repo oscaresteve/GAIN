@@ -13,28 +13,23 @@ import Configuration from "./screens/Configuration";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const Main = () => {
+const TabGroup = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen
         name="MyTrainings"
         component={MyTrainings}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Configuration"
-        component={Configuration}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animationEnabled: false }}
       />
     </Tab.Navigator>
   );
@@ -47,22 +42,22 @@ export default function Navigation() {
         <Stack.Screen
           name="Wellcome"
           component={Wellcome}
-          options={{ headerShown: false, gestureEnabled: false }}
+          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
         />
         <Stack.Screen
           name="LogIn"
           component={LogIn}
-          options={{ headerShown: false, gestureEnabled: false }}
+          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
         />
         <Stack.Screen
           name="Register"
           component={Register}
-          options={{ headerShown: false, gestureEnabled: false }}
+          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
         />
         <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{ headerShown: false, gestureEnabled: false }}
+          name="TabGroup"
+          component={TabGroup}
+          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

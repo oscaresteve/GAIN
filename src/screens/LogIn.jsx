@@ -1,12 +1,11 @@
 import {
-  View,
   Text,
   TextInput,
   SafeAreaView,
-  Button,
   Alert,
   Pressable,
-  StyleSheet,
+  View,
+  Keyboard,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
@@ -20,8 +19,11 @@ export default function LogIn({ navigation }) {
   const validationSchema = yup
     .object()
     .shape({
-      email: yup.string().required().email(),
-      password: yup.string().required(),
+      email: yup
+        .string()
+        .required("Introduce tu correo electronico")
+        .email("Correo no valido"),
+      password: yup.string().required("Introduce tu contraseña"),
     })
     .required();
 
@@ -33,65 +35,73 @@ export default function LogIn({ navigation }) {
 
   const handleLogIn = async (formData) => {
     if ((await logInUser(formData.email, formData.password)) === true) {
-      navigation.navigate("Main");
+      navigation.navigate("TabGroup");
     } else {
-      Alert.alert("Error", "User or Email incorrect");
+      Alert.alert("Correo o Contraseña incorrectos");
     }
   };
-
   return (
-    <SafeAreaView>
-      <Button title="Back" onPress={() => navigation.goBack()} />
-      <Text>LogIn</Text>
+    <SafeAreaView className="bg-gray-200 h-full justify-center items-center">
+      <View className="bg-gray-300 rounded-lg p-5 w-80">
+        <Text className="text-4xl font-bold text-center">Inicia Sesión</Text>
 
-      <Controller
-        name="email"
-        control={control}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.TextInput}
-            placeholder="E-mail"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-          />
+        <Controller
+          name="email"
+          control={control}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              placeholder="Correo"
+              inputMode="email"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              className="bg-gray-100 p-2 m-1 rounded-lg"
+            />
+          )}
+        />
+        {errors.email && (
+          <Text className="text-red-500 text-xs">{errors.email.message}</Text>
         )}
-      />
-      {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
 
-      <Controller
-        name="password"
-        control={control}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Password"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-          />
+        <Controller
+          name="password"
+          control={control}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              placeholder="Contraseña"
+              inputMode="text"
+              secureTextEntry={true}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              className="bg-gray-100 p-2 m-1 rounded-lg"
+            />
+          )}
+        />
+        {errors.password && (
+          <Text className="text-red-500 text-xs">
+            {errors.password.message}
+          </Text>
         )}
-      />
-      {errors.password && (
-        <Text style={styles.error}>{errors.password.message}</Text>
-      )}
-
-      <Button title="Done" onPress={handleSubmit(handleLogIn)} />
-      <Button title="ByPass" onPress={() => navigation.navigate("Main")} />
+        <Pressable
+          onPress={handleSubmit(handleLogIn)}
+          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
+        >
+          <Text className="text-md font-bold">Hecho</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate("TabGroup")}
+          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
+        >
+          <Text className="text-md font-bold">ByPass</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
+        >
+          <Text className="text-md font-bold">Atrás</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  TextInput: {
-    margin: 10,
-    borderWidth: 1,
-    padding: 10,
-    fontSize: 15,
-    borderRadius: 10,
-  },
-  error: {
-    color: "#ff0000",
-    fontSize: 12,
-  },
-});

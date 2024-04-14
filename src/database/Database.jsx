@@ -49,6 +49,16 @@ export const registerUser = async (email, password) => {
   }
 };
 
+export const setUserInfo = async (email, name, lastName, dateBirth, gender) => {
+  const docRef = doc(collection(database, "users", email,"userInfo"), "personalInfo");
+  await setDoc(docRef, {
+    name: name,
+    lastName: lastName,
+    dateBirth: dateBirth,
+    gender: gender,
+  });
+};
+
 export const getUserTraining = async (email, training) => {
   const docRef = doc(
     collection(database, "users", email, "userTrainings"),
