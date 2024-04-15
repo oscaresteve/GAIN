@@ -67,7 +67,6 @@ export default function Register({ navigation }) {
         formData.gender
       );
       navigation.navigate("TabGroup");
-      console.log(formData);
     } else {
       Alert.alert("Ese correo ya esta en uso");
     }

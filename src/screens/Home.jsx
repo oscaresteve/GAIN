@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import TrainingView from "../components/TrainingView";
 import { getUserTraining } from "../database/Database";
+import AppBar from "../components/AppBar";
 
 export default function Home() {
   const currentDate = new Date();
@@ -17,14 +18,10 @@ export default function Home() {
     };
     fetchData();
   }, []);
-
-  console.log("HOME: ", userTrainingData);
   return (
     <SafeAreaView className="bg-gray-200 h-full items-center">
+      <AppBar />
       <ScrollView className="w-full">
-        <Text className="text-3xl font-bold w-full py-3">
-          {currentDay} {moment(currentDate).format("Do")}
-        </Text>
         <TrainingView day={currentDay} userTrainingData={userTrainingData} />
       </ScrollView>
     </SafeAreaView>

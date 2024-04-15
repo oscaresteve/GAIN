@@ -1,4 +1,4 @@
-import { View, Text, Button } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 
 export default function Training({ day, userTrainingData }) {
@@ -17,11 +17,12 @@ export default function Training({ day, userTrainingData }) {
                       {Object.keys(userTrainingData[day][group][exercise]).map(
                         (set) => {
                           return (
-                            <View key={set} className="bg-gray-300 p-3 m-1 rounded-lg">
+                            <View key={set} className="bg-gray-300 p-3 m-1 rounded-lg flex-row justify-between">
                               <Text>{set}{" - "}
                                 {userTrainingData[day][group][exercise][set]["reps"]}{" reps "}
                                 {userTrainingData[day][group][exercise][set]["kg"]}{" kg "}
                               </Text>
+                              <Pressable><Text>Done</Text></Pressable>
                             </View>
                           );
                         }
