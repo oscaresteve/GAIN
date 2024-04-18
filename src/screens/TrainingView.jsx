@@ -1,28 +1,21 @@
-import { View, Text, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
-import { getUserTraining } from "../database/Database";
-import trainingTest from "../database/trainingTest.json";
+import { View, Text, ScrollView, Button } from "react-native";
+import React from "react";
 
-export default function Training({ email, userTrainingName }) {
-  const [userTrainingData, setUserTrainingData] = useState();
+export default function Training({ navigation, route }) {
+  const { userTrainingData } = route.params;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const userTraininSnap = await getUserTraining(email, userTrainingName);
-      if (userTraininSnap !== false) {
-        setUserTrainingData(userTraininSnap);
-      } else {
-      }
-    };
-    fetchData();
-  }, []);
+  return (
+    <ScrollView>
+      <Button
+        title="Edit"
+        onPress={() => {
+          navigation.navigate("EditTraining");
+        }}
+      />
+      <View key={userTrainingData?.trainingName}>
+        <Text>{userTrainingData?.trainingName}</Text>
 
-  if (userTrainingData) {
-    return (
-      <View key={userTrainingData.trainingName}>
-        <Text>{userTrainingData.trainingName}</Text>
-
-        {userTrainingData.days.map((day, dayIndex) => (
+        {userTrainingData?.days.map((day, dayIndex) => (
           <View key={dayIndex}>
             <Text>{day.dayName}</Text>
 
@@ -49,6 +42,6 @@ export default function Training({ email, userTrainingName }) {
           </View>
         ))}
       </View>
-    );
-  }
+    </ScrollView>
+  );
 }

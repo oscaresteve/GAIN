@@ -5,19 +5,13 @@ import TrainingDayView from "../components/TrainingDayView";
 import AppBar from "../components/AppBar";
 
 export default function Home() {
-  const currentDate = new Date();
-  const currentDay = moment(currentDate).format("dddd");
-
   return (
-    <SafeAreaView className="bg-gray-200 h-full items-center">
+    <SafeAreaView className="h-full">
       <AppBar />
-      <ScrollView className="w-full">
-        <TrainingDayView
-          email="oscar@esteve.com"
-          userTrainingName="TrainingTestNuevo"
-        />
-        
-      </ScrollView>
+      <TrainingDayView
+        email="oscar@esteve.com"
+        userTrainingName="TrainingTestNuevo"
+      />
     </SafeAreaView>
   );
 }

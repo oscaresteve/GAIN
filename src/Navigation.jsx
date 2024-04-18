@@ -9,6 +9,9 @@ import Register from "./screens/Register";
 import MyTrainings from "./screens/MyTrainings";
 import Profile from "./screens/Profile";
 import Configuration from "./screens/Configuration";
+import TrainingView from "./screens/TrainingView";
+import CreateTraining from "./screens/CreateTraining";
+import EditTraining from "./EditTraining";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,22 +45,57 @@ export default function Navigation() {
         <Stack.Screen
           name="Wellcome"
           component={Wellcome}
-          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
         />
         <Stack.Screen
           name="LogIn"
           component={LogIn}
-          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
         />
         <Stack.Screen
           name="Register"
           component={Register}
-          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
         />
         <Stack.Screen
           name="TabGroup"
           component={TabGroup}
-          options={{ headerShown: false, gestureEnabled: false, animationEnabled: false }}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
+        />
+        <Stack.Screen name="TrainingView" component={TrainingView} />
+        <Stack.Screen
+          name="CreateTraining"
+          component={CreateTraining}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditTraining"
+          component={EditTraining}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

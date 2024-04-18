@@ -1,6 +1,10 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getUserTrainingDay, newUserTrainingDay, setUserTrainingDay } from "../database/Database";
+import {
+  getUserTrainingDay,
+  newUserTrainingDay,
+  setUserTrainingDay,
+} from "../database/Database";
 
 export default function TrainingDayView({ email, userTrainingName }) {
   const [userTrainingDayData, setUserTrainingDayData] = useState();
@@ -20,7 +24,7 @@ export default function TrainingDayView({ email, userTrainingName }) {
   };
 
   const saveData = async () => {
-    await setUserTrainingDay( email, userTrainingDayData);
+    await setUserTrainingDay(email, userTrainingDayData);
   };
 
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {
@@ -35,12 +39,12 @@ export default function TrainingDayView({ email, userTrainingName }) {
     saveData();
   };
 
-  if (userTrainingDayData) {
-    return (
-      <View key={userTrainingDayData.dayName}>
-        <Text>{userTrainingDayData.dayName}</Text>
+  return (
+    <ScrollView>
+      <View key={userTrainingDayData?.dayName}>
+        <Text>{userTrainingDayData?.dayName}</Text>
 
-        {userTrainingDayData.groups.map((group, groupIndex) => (
+        {userTrainingDayData?.groups.map((group, groupIndex) => (
           <View key={groupIndex}>
             <Text>{group.groupName}</Text>
 
@@ -78,6 +82,6 @@ export default function TrainingDayView({ email, userTrainingName }) {
           </View>
         ))}
       </View>
-    );
-  }
+    </ScrollView>
+  );
 }
