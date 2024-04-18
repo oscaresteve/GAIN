@@ -11,6 +11,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useState } from "react";
+import moment from "moment";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -62,16 +63,84 @@ export const setUserInfo = async (email, name, lastName, dateBirth, gender) => {
   });
 };
 
-export const getUserTraining = async (email, training) => {
+export const getUserTraining = async (email, userTrainingName) => {
+  try {
+    const docRef = doc(
+      collection(database, "users", email, "userTrainings"),
+      userTrainingName
+    );
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const setUserTraining = async (email, userTrainingData) => {
   const docRef = doc(
     collection(database, "users", email, "userTrainings"),
-    training
+    userTrainingData.trainingName
   );
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
+  await setDoc(docRef, userTrainingData);
+  if ((await getDoc(docRef)).exists()) {
+    return true;
   } else {
     return false;
+  }
+};
+
+export const getUserTrainingDay = async (email) => {
+  try {
+    const docRef = doc(
+      collection(database, "users", email, "userTrainingDay"),
+      moment(new Date()).format("DD-MM-YYYY")
+    );
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const setUserTrainingDay = async (email, userTrainingDayData) => {
+  try {
+    const docRef = doc(
+      collection(database, "users", email, "userTrainingDay"),
+      moment(new Date()).format("DD-MM-YYYY")
+    );
+    await setDoc(docRef, userTrainingDayData);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const newUserTrainingDay = async (email, userTrainingName) => {
+  try {
+    const userTrainingData = await getUserTraining(email, userTrainingName);
+    if (userTrainingData !== false) {
+      const docRef = doc(
+        collection(database, "users", email, "userTrainingDay"),
+        moment(new Date()).format("DD-MM-YYYY")
+      );
+      await setDoc(
+        docRef,
+        userTrainingData.days.find(
+          (day) => day.dayName === moment(new Date()).format("dddd")
+        )
+      );
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 

@@ -1,51 +1,53 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
+import { getUserTraining } from "../database/Database";
+import trainingTest from "../database/trainingTest.json";
 
-export default function Training({ day, userTrainingData }) {
+export default function Training({ email, userTrainingName }) {
+  const [userTrainingData, setUserTrainingData] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userTraininSnap = await getUserTraining(email, userTrainingName);
+      if (userTraininSnap !== false) {
+        setUserTrainingData(userTraininSnap);
+      } else {
+      }
+    };
+    fetchData();
+  }, []);
+
   if (userTrainingData) {
-    if (userTrainingData[day]) {
-      return (
-        <View key={day} className="">
-          {Object.keys(userTrainingData[day]).map((group) => {
-            return (
-              <View key={group} className="">
-                <Text className="text-xl font-bold">{group}</Text>
-                {Object.keys(userTrainingData[day][group]).map((exercise) => {
-                  return (
-                    <View key={exercise} className="bg-gray-400 p-2 m-1 rounded-lg">
-                      <Text className="text-md font-bold">{exercise}</Text>
-                      {Object.keys(userTrainingData[day][group][exercise]).map(
-                        (set) => {
-                          return (
-                            <View key={set} className="bg-gray-300 p-3 m-1 rounded-lg flex-row justify-between">
-                              <Text>{set}{" - "}
-                                {userTrainingData[day][group][exercise][set]["reps"]}{" reps "}
-                                {userTrainingData[day][group][exercise][set]["kg"]}{" kg "}
-                              </Text>
-                              <Pressable><Text>Done</Text></Pressable>
-                            </View>
-                          );
-                        }
-                      )}
-                    </View>
-                  );
-                })}
-              </View>
-            );
-          })}
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <Text>Rest Day!!!</Text>
-        </View>
-      );
-    }
-  } else {
     return (
-      <View>
-        <Text>No Training Found!!!</Text>
+      <View key={userTrainingData.trainingName}>
+        <Text>{userTrainingData.trainingName}</Text>
+
+        {userTrainingData.days.map((day) => (
+          <View key={day.dayName}>
+            <Text>{day.dayName}</Text>
+
+            {day.groups.map((group) => (
+              <View key={group.groupName}>
+                <Text>{group.groupName}</Text>
+
+                {group.exercises.map((exercise) => (
+                  <View key={exercise.exerciseName}>
+                    <Text>{exercise.exerciseName}</Text>
+
+                    {exercise.sets.map((set) => (
+                      <View key={set.setNumber}>
+                        <Text>
+                          Set {set.setNumber}: Reps {set.details.reps}, Weight{" "}
+                          {set.details.weight}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
+        ))}
       </View>
     );
   }
