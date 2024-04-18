@@ -1,22 +1,27 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getUserTrainingDay, newUserTrainingDay } from "../database/Database";
+import { getUserTrainingDay, newUserTrainingDay, setUserTrainingDay } from "../database/Database";
 
 export default function TrainingDayView({ email, userTrainingName }) {
   const [userTrainingDayData, setUserTrainingDayData] = useState();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     const userTrainingDaySnap = await getUserTrainingDay(email);
     if (userTrainingDaySnap !== false) {
       setUserTrainingDayData(userTrainingDaySnap);
     } else {
-      newUserTrainingDay(email, userTrainingName);
+      await newUserTrainingDay(email, userTrainingName);
+      setUserTrainingDayData(await getUserTrainingDay(email));
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const saveData = async () => {
+    await setUserTrainingDay( email, userTrainingDayData);
+  };
 
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {
     setUserTrainingDayData((prevData) => {
@@ -27,7 +32,7 @@ export default function TrainingDayView({ email, userTrainingName }) {
 
       return newUserTrainingDayData;
     });
-    console.log(JSON.stringify(userTrainingDayData, null, 2));
+    saveData();
   };
 
   if (userTrainingDayData) {
