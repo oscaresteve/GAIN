@@ -30,7 +30,7 @@ export default function TrainingDayView({ email, userTrainingName }) {
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {
     setUserTrainingDayData((prevData) => {
       const newUserTrainingDayData = { ...prevData };
-      prevData.groups[groupIndex].exercises[exerciseIndex].sets[
+      newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
         setIndex
       ].details.done = true;
 
@@ -44,15 +44,15 @@ export default function TrainingDayView({ email, userTrainingName }) {
       <View key={userTrainingDayData?.dayName}>
         <Text>{userTrainingDayData?.dayName}</Text>
 
-        {userTrainingDayData?.groups.map((group, groupIndex) => (
+        {userTrainingDayData?.groups?.map((group, groupIndex) => (
           <View key={groupIndex}>
             <Text>{group.groupName}</Text>
 
-            {group.exercises.map((exercise, exerciseIndex) => (
+            {group.exercises?.map((exercise, exerciseIndex) => (
               <View key={exerciseIndex}>
                 <Text>{exercise.exerciseName}</Text>
 
-                {exercise.sets.map((set, setIndex) => (
+                {exercise.sets?.map((set, setIndex) => (
                   <View
                     key={setIndex}
                     className={`flex-row justify-between m-1 p-2 ${

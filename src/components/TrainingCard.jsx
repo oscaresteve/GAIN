@@ -12,10 +12,10 @@ export default function TrainingCard({ navigation, userTrainingData }) {
     >
       <View className="m-5 border p-2">
         <Text>{userTrainingData?.trainingName}</Text>
-        {userTrainingData?.days.map((day, dayIndex) => (
+        {userTrainingData?.days?.map((day, dayIndex) => (
           <View key={dayIndex}>
             <Text>{day.dayName}</Text>
-            {day.groups.map((group, groupIndex) => (
+            {day.groups?.map((group, groupIndex) => (
               <View key={groupIndex}>
                 <Text>{group.groupName}</Text>
               </View>

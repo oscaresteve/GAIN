@@ -1,0 +1,29 @@
+{
+  "trainingName": "CreateTraining",
+  "days": [
+    {
+      "dayName": "Monday",
+      "groups": []
+    },
+    {
+      "dayName": "Tuesday",
+      "groups": []
+    },
+    {
+      "dayName": "Wednesday",
+      "groups": []
+    },
+    {
+      "dayName": "Thursday",
+      "groups": []
+    },
+    {
+      "dayName": "Friday",
+      "groups": []
+    },
+    {
+      "dayName": "Saturday",
+      "groups": []
+    }
+  ]
+}
