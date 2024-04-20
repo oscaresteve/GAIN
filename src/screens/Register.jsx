@@ -14,7 +14,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerUser, setUserInfo } from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
-import { onAuthStateChanged } from "firebase/auth/cordova";
 
 export default function Register({ navigation }) {
   const [dateBirthModalShow, setdateBirthModalShow] = useState(false);

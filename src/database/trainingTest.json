@@ -548,6 +548,14 @@
           ]
         }
       ]
+    },
+    {
+      "dayName": "Saturday",
+      "groups": []
+    },
+    {
+      "dayName": "Sunday",
+      "groups": []
     }
   ]
 }

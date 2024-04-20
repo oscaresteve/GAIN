@@ -5,10 +5,35 @@ import {
   Button,
   ScrollView,
   TextInput,
+  Modal,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function CreateTraining({ navigation }) {
+  const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
+    visible: false,
+    dayIndex: null,
+  });
+
+  const validationSchema = yup
+    .object()
+    .shape({
+      trainingName: yup
+        .string()
+        .required("Introduce el nombre de tu entrenamiento"),
+    })
+    .required();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
+
   const [userTrainingData, setUserTrainingData] = useState({
     trainingName: "",
     days: [
@@ -37,7 +62,7 @@ export default function CreateTraining({ navigation }) {
       if (existingGroup) {
         existingGroup.exercises.push({
           exerciseName: exercise.exerciseName,
-          sets: [{ setNumber: "1", details: { reps: 1, weight: 1 } }],
+          sets: [{ setNumber: 1, details: { reps: 1, weight: 1 } }],
         });
       } else {
         newUserTrainingData.days[dayIndex].groups.push({
@@ -45,7 +70,7 @@ export default function CreateTraining({ navigation }) {
           exercises: [
             {
               exerciseName: exercise.exerciseName,
-              sets: [{ setNumber: "1", details: { reps: 1, weight: 1 } }],
+              sets: [{ setNumber: 1, details: { reps: 1, weight: 1 } }],
             },
           ],
         });
@@ -56,7 +81,24 @@ export default function CreateTraining({ navigation }) {
   };
 
   const handleAddSet = (dayIndex, groupIndex, exerciseIndex) => {
-    
+    setUserTrainingData((prevData) => {
+      const newUserTrainingdata = { ...prevData };
+      const sets =
+        newUserTrainingdata.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets;
+      const lastSet = sets[sets.length - 1];
+
+      if (lastSet.setNumber < 10) {
+        newUserTrainingdata.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets.push({
+          setNumber: lastSet.setNumber + 1,
+          details: { reps: 1, weight: 1 },
+        });
+      }
+      return newUserTrainingdata;
+    });
   };
 
   return (
@@ -69,7 +111,21 @@ export default function CreateTraining({ navigation }) {
           title="Back"
         />
         <View>
-          <TextInput placeholder="New Training" className="text-3xl ml-2" />
+          <Controller
+            name="trainingName"
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <TextInput
+                placeholder="New Training"
+                inputMode="text"
+                maxLength={30}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                className="text-3xl ml-2"
+              />
+            )}
+          />
           <View>
             {userTrainingData?.days?.map((day, dayIndex) => (
               <View key={dayIndex}>
@@ -102,8 +158,53 @@ export default function CreateTraining({ navigation }) {
                 ))}
                 <Button
                   title="Add Exercise"
-                  onPress={() => handleAddExercise(dayIndex)}
+                  onPress={() =>
+                    setSelectExerciseModalShow({
+                      ...selectExerciseModalShow,
+                      visible: true,
+                      dayIndex: dayIndex,
+                    })
+                  }
                 />
+                <Modal
+                  animationType="slide"
+                  transparent={false}
+                  visible={selectExerciseModalShow.visible}
+                  onRequestClose={() =>
+                    setSelectExerciseModalShow({
+                      ...selectExerciseModalShow,
+                      visible: false,
+                    })
+                  }
+                >
+                  <View className="flex-1 justify-end">
+                    <View className="bg-gray-400 m-1 rounded-3xl">
+                      <Button
+                        title="ADD"
+                        onPress={() => {
+                          handleAddExercise(selectExerciseModalShow.dayIndex);
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            visible: false,
+                          });
+                        }}
+                      />
+                    </View>
+                    <Pressable
+                      onPress={() =>
+                        setSelectExerciseModalShow({
+                          ...selectExerciseModalShow,
+                          visible: false,
+                        })
+                      }
+                      className="bg-gray-400 m-1 rounded-3xl items-center"
+                    >
+                      <Text className="text-xl text-center h-14">
+                        Hide Modal
+                      </Text>
+                    </Pressable>
+                  </View>
+                </Modal>
               </View>
             ))}
           </View>
