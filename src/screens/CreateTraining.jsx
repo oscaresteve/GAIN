@@ -8,12 +8,28 @@ import {
   Modal,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { getGainData } from "../database/Database";
 
 export default function CreateTraining({ navigation }) {
+  const [gainData, setGainData] = useState();
+
+  const [userTrainingData, setUserTrainingData] = useState({
+    trainingName: "",
+    days: [
+      { dayName: "Monday", groups: [] },
+      { dayName: "Tuesday", groups: [] },
+      { dayName: "Wednesday", groups: [] },
+      { dayName: "Thursday", groups: [] },
+      { dayName: "Friday", groups: [] },
+      { dayName: "Saturday", groups: [] },
+      { dayName: "Sunday", groups: [] },
+    ],
+  });
+
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
     visible: false,
     dayIndex: null,
@@ -34,28 +50,19 @@ export default function CreateTraining({ navigation }) {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const [userTrainingData, setUserTrainingData] = useState({
-    trainingName: "",
-    days: [
-      { dayName: "Monday", groups: [] },
-      { dayName: "Tuesday", groups: [] },
-      { dayName: "Wednesday", groups: [] },
-      { dayName: "Thursday", groups: [] },
-      { dayName: "Friday", groups: [] },
-      { dayName: "Saturday", groups: [] },
-      { dayName: "Sunday", groups: [] },
-    ],
-  });
+  const fetchData = async () => {
+    const gainDataSnap = await getGainData();
+    setGainData(gainDataSnap);
+  };
 
-  const handleAddExercise = (dayIndex) => {
-    const exercise = {
-      groupName: "Chest",
-      exerciseName: "Banca",
-    };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+  const handleAddExercise = (dayIndex, exercise) => {
     setUserTrainingData((prevData) => {
       const newUserTrainingData = { ...prevData };
-      const existingGroup = newUserTrainingData.days[dayIndex].groups.find(
+      const existingGroup = newUserTrainingData.days[dayIndex]?.groups.find(
         (group) => group.groupName === exercise.groupName
       );
 
@@ -65,7 +72,7 @@ export default function CreateTraining({ navigation }) {
           sets: [{ setNumber: 1, details: { reps: 1, weight: 1 } }],
         });
       } else {
-        newUserTrainingData.days[dayIndex].groups.push({
+        newUserTrainingData.days[dayIndex]?.groups.push({
           groupName: exercise.groupName,
           exercises: [
             {
@@ -97,8 +104,16 @@ export default function CreateTraining({ navigation }) {
           details: { reps: 1, weight: 1 },
         });
       }
+      console.log(JSON.stringify(userTrainingData, null, 2));
       return newUserTrainingdata;
     });
+  };
+
+  const handleTrainingNameChange = (value) => {
+    setUserTrainingData((prevData) => ({
+      ...prevData,
+      trainingName: value,
+    }));
   };
 
   return (
@@ -110,6 +125,7 @@ export default function CreateTraining({ navigation }) {
           }}
           title="Back"
         />
+        <Button />
         <View>
           <Controller
             name="trainingName"
@@ -120,7 +136,10 @@ export default function CreateTraining({ navigation }) {
                 inputMode="text"
                 maxLength={30}
                 value={value}
-                onChangeText={onChange}
+                onChangeText={(value) => {
+                  onChange(value);
+                  handleTrainingNameChange(value);
+                }}
                 onBlur={onBlur}
                 className="text-3xl ml-2"
               />
@@ -178,18 +197,32 @@ export default function CreateTraining({ navigation }) {
                   }
                 >
                   <View className="flex-1 justify-end">
-                    <View className="bg-gray-400 m-1 rounded-3xl">
-                      <Button
-                        title="ADD"
-                        onPress={() => {
-                          handleAddExercise(selectExerciseModalShow.dayIndex);
-                          setSelectExerciseModalShow({
-                            ...selectExerciseModalShow,
-                            visible: false,
-                          });
-                        }}
-                      />
-                    </View>
+                    <ScrollView>
+                      <View className="bg-gray-400 m-1 rounded-3xl">
+                        {gainData?.trainingExercises?.map(
+                          (exercise, exerciseIndex) => (
+                            <View key={exerciseIndex}>
+                              <Pressable
+                                onPress={() => {
+                                  handleAddExercise(
+                                    selectExerciseModalShow.dayIndex,
+                                    exercise
+                                  );
+                                  setSelectExerciseModalShow({
+                                    ...selectExerciseModalShow,
+                                    visible: false,
+                                  });
+                                }}
+                              >
+                                <Text className="text-xl text-center h-14">
+                                  {exercise.exerciseName}
+                                </Text>
+                              </Pressable>
+                            </View>
+                          )
+                        )}
+                      </View>
+                    </ScrollView>
                     <Pressable
                       onPress={() =>
                         setSelectExerciseModalShow({

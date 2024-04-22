@@ -155,17 +155,17 @@ export const newUserTrainingDay = async (email, userTrainingName) => {
   }
 };
 
-/* export const readUsers = async () => {
-  const snapshot = await getDocs(collection(database, "users"));
-  const data = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  console.log(">>> DATA READED");
-  return data;
-}; */
-
-/* export const removeUser = async (userId) => {
-  await deleteDoc(doc(database, "users", userId));
-  console.log(">>> USER DELETED");
-}; */
+export const getGainData = async () => {
+  try {
+    const docRef = doc(database, "gain", "gainData");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data());
+      return docSnap.data();
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
