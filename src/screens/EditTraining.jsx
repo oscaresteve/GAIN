@@ -6,9 +6,7 @@ export default function EditTraining({ navigation }) {
     <SafeAreaView>
       <Button
         title="Back"
-        onPress={() => {
-          navigation.goBack();
-        }}
+        onPress={navigation.goBack}
       />
       <View>
         <Text>EditTraining</Text>

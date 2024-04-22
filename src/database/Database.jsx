@@ -80,6 +80,18 @@ export const getUserTraining = async (email, userTrainingName) => {
   }
 };
 
+export const deleteUserTraining = async (email, userTrainingName) => {
+  try {
+    const docRef = doc(
+      collection(database, "users", email, "userTrainings"),
+      userTrainingName
+    );
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getUserAllTrainings = async (email) => {
   try {
     const docsSnap = await getDocs(
@@ -160,7 +172,6 @@ export const getGainData = async () => {
     const docRef = doc(database, "gain", "gainData");
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log(docSnap.data());
       return docSnap.data();
     } else {
       return false;

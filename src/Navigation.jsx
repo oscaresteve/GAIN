@@ -11,7 +11,7 @@ import Profile from "./screens/Profile";
 import Configuration from "./screens/Configuration";
 import TrainingView from "./screens/TrainingView";
 import CreateTraining from "./screens/CreateTraining";
-import EditTraining from "./EditTraining";
+import EditTraining from "./screens/EditTraining";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

@@ -96,7 +96,7 @@ export default function LogIn({ navigation }) {
           <Text className="text-md font-bold">ByPass</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.goBack()}
+          onPress={navigation.goBack}
           className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
         >
           <Text className="text-md font-bold">Atrás</Text>

@@ -1,17 +1,29 @@
 import { View, Text, ScrollView, Button } from "react-native";
 import React from "react";
+import { deleteUserTraining } from "../database/Database";
 
 export default function Training({ navigation, route }) {
   const { userTrainingData } = route.params;
+
+  const handleDeleteTraining = async () => {
+    try {
+      await deleteUserTraining(
+        "oscar@esteve.com",
+        userTrainingData.trainingName
+      );
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <ScrollView>
       <Button
         title="Edit"
-        onPress={() => {
-          navigation.navigate("EditTraining");
-        }}
+        onPress={() => navigation.navigate("EditTraining")}
       />
+      <Button title="Delete" onPress={handleDeleteTraining} />
       <View key={userTrainingData?.trainingName}>
         <Text>{userTrainingData?.trainingName}</Text>
 

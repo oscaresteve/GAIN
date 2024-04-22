@@ -234,7 +234,7 @@ export default function Register({ navigation }) {
           animationType="slide"
           transparent={true}
           visible={genderModalShow}
-          onRequestClose={() => !genderModalShow}
+          onRequestClose={!genderModalShow}
         >
           <View className="flex-1 justify-end">
             <View className="bg-gray-400 m-1 rounded-3xl">
@@ -265,7 +265,7 @@ export default function Register({ navigation }) {
           <Text className="text-md font-bold">Hecho</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.goBack()}
+          onPress={navigation.goBack}
           className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
         >
           <Text className="text-md font-bold">Atrás</Text>

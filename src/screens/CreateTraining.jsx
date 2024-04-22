@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { getGainData } from "../database/Database";
+import { getGainData, setUserTraining } from "../database/Database";
 
 export default function CreateTraining({ navigation }) {
   const [gainData, setGainData] = useState();
@@ -40,7 +40,8 @@ export default function CreateTraining({ navigation }) {
     .shape({
       trainingName: yup
         .string()
-        .required("Introduce el nombre de tu entrenamiento"),
+        .required("Introduce el nombre de tu entrenamiento")
+        .min(3, "El nombre debe tener al menos 3 caracteres"),
     })
     .required();
 
@@ -69,7 +70,7 @@ export default function CreateTraining({ navigation }) {
       if (existingGroup) {
         existingGroup.exercises.push({
           exerciseName: exercise.exerciseName,
-          sets: [{ setNumber: 1, details: { reps: 1, weight: 1 } }],
+          sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
         });
       } else {
         newUserTrainingData.days[dayIndex]?.groups.push({
@@ -77,7 +78,7 @@ export default function CreateTraining({ navigation }) {
           exercises: [
             {
               exerciseName: exercise.exerciseName,
-              sets: [{ setNumber: 1, details: { reps: 1, weight: 1 } }],
+              sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
             },
           ],
         });
@@ -101,7 +102,7 @@ export default function CreateTraining({ navigation }) {
           exerciseIndex
         ].sets.push({
           setNumber: lastSet.setNumber + 1,
-          details: { reps: 1, weight: 1 },
+          details: { reps: 1, weight: 5 },
         });
       }
       console.log(JSON.stringify(userTrainingData, null, 2));
@@ -116,16 +117,134 @@ export default function CreateTraining({ navigation }) {
     }));
   };
 
+  const handleDeleteExercise = (dayIndex, groupIndex, exerciseIndex) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData };
+      if (
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises
+          .length === 1
+      ) {
+        newUserTrainingData.days[dayIndex].groups.splice(groupIndex, 1);
+      } else {
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises.splice(
+          exerciseIndex,
+          1
+        );
+      }
+      return newUserTrainingData;
+    });
+    console.log(JSON.stringify(userTrainingData, null, 2));
+  };
+
+  const handleDeleteSet = (dayIndex, groupIndex, exerciseIndex, setIndex) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData };
+      newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+        exerciseIndex
+      ].sets.splice(setIndex, 1);
+      return newUserTrainingData;
+    });
+    console.log(JSON.stringify(userTrainingData, null, 2));
+  };
+
+  const handleIncrementReps = (
+    dayIndex,
+    groupIndex,
+    exerciseIndex,
+    setIndex
+  ) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData };
+      if (
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.reps < 30
+      ) {
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.reps++;
+      }
+      return newUserTrainingData;
+    });
+  };
+
+  const handleDecrementReps = (
+    dayIndex,
+    groupIndex,
+    exerciseIndex,
+    setIndex
+  ) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData };
+      if (
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.reps > 1
+      ) {
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.reps--;
+      }
+      return newUserTrainingData;
+    });
+  };
+
+  const handleIncrementWeight = (
+    dayIndex,
+    groupIndex,
+    exerciseIndex,
+    setIndex
+  ) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData };
+      if (
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.weight < 300
+      ) {
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.weight += 5;
+      }
+      return newUserTrainingData;
+    });
+  };
+
+  const handleDecrementWeight = (
+    dayIndex,
+    groupIndex,
+    exerciseIndex,
+    setIndex
+  ) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData };
+      if (
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.weight > 5
+      ) {
+        newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[
+          exerciseIndex
+        ].sets[setIndex].details.weight -= 5;
+      }
+      return newUserTrainingData;
+    });
+  };
+
+  const handleSaveTraining = async () => {
+    try {
+      await setUserTraining("oscar@esteve.com", userTrainingData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
-        <Button
-          onPress={() => {
-            navigation.goBack();
-          }}
-          title="Back"
-        />
-        <Button />
+        <Button onPress={navigation.goBack} title="Back" />
+        <Button title="save" onPress={handleSubmit(handleSaveTraining)} />
+
         <View>
           <Controller
             name="trainingName"
@@ -145,6 +264,7 @@ export default function CreateTraining({ navigation }) {
               />
             )}
           />
+          {errors.trainingName && <Text>{errors.trainingName.message}</Text>}
           <View>
             {userTrainingData?.days?.map((day, dayIndex) => (
               <View key={dayIndex}>
@@ -157,12 +277,80 @@ export default function CreateTraining({ navigation }) {
                         <Text className="text-lg ml-6">
                           {exercise.exerciseName}
                         </Text>
+                        <Button
+                          title="Delete Exercise"
+                          onPress={() =>
+                            handleDeleteExercise(
+                              dayIndex,
+                              groupIndex,
+                              exerciseIndex
+                            )
+                          }
+                        />
                         {exercise.sets?.map((set, setIndex) => (
                           <View key={setIndex}>
                             <Text className="text-md ml-8">
                               Set {set.setNumber}: Reps {set.details.reps},
                               Weight {set.details.weight}
                             </Text>
+                            <Button
+                              title="Incr. Reps"
+                              onPress={() =>
+                                handleIncrementReps(
+                                  dayIndex,
+                                  groupIndex,
+                                  exerciseIndex,
+                                  setIndex
+                                )
+                              }
+                            />
+                            <Button
+                              title="Decr. Reps"
+                              onPress={() =>
+                                handleDecrementReps(
+                                  dayIndex,
+                                  groupIndex,
+                                  exerciseIndex,
+                                  setIndex
+                                )
+                              }
+                            />
+                            <Button
+                              title="Incr. Weight"
+                              onPress={() =>
+                                handleIncrementWeight(
+                                  dayIndex,
+                                  groupIndex,
+                                  exerciseIndex,
+                                  setIndex
+                                )
+                              }
+                            />
+                            <Button
+                              title="Decr. Weight"
+                              onPress={() =>
+                                handleDecrementWeight(
+                                  dayIndex,
+                                  groupIndex,
+                                  exerciseIndex,
+                                  setIndex
+                                )
+                              }
+                            />
+                            {exercise.sets?.length === setIndex + 1 &&
+                              exercise.sets.length > 1 && (
+                                <Button
+                                  title="Delete Set"
+                                  onPress={() =>
+                                    handleDeleteSet(
+                                      dayIndex,
+                                      groupIndex,
+                                      exerciseIndex,
+                                      setIndex
+                                    )
+                                  }
+                                />
+                              )}
                           </View>
                         ))}
                         <Button
@@ -197,8 +385,8 @@ export default function CreateTraining({ navigation }) {
                   }
                 >
                   <View className="flex-1 justify-end">
-                    <ScrollView>
-                      <View className="bg-gray-400 m-1 rounded-3xl">
+                    <View className="bg-gray-400 m-1 rounded-3xl">
+                      <ScrollView>
                         {gainData?.trainingExercises?.map(
                           (exercise, exerciseIndex) => (
                             <View key={exerciseIndex}>
@@ -221,8 +409,9 @@ export default function CreateTraining({ navigation }) {
                             </View>
                           )
                         )}
-                      </View>
-                    </ScrollView>
+                      </ScrollView>
+                    </View>
+
                     <Pressable
                       onPress={() =>
                         setSelectExerciseModalShow({
