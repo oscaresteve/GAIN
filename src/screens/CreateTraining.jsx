@@ -12,10 +12,15 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { getGainData, setUserTraining } from "../database/Database";
+import {
+  getGainData,
+  setUserTraining,
+  getUserAllTrainingsNames,
+} from "../database/Database";
 
 export default function CreateTraining({ navigation }) {
   const [gainData, setGainData] = useState();
+  const [userTrainingsNames, setUserTrainingsNames] = useState();
 
   const [userTrainingData, setUserTrainingData] = useState({
     trainingName: "",
@@ -41,7 +46,14 @@ export default function CreateTraining({ navigation }) {
       trainingName: yup
         .string()
         .required("Introduce el nombre de tu entrenamiento")
-        .min(3, "El nombre debe tener al menos 3 caracteres"),
+        .min(3, "El nombre debe tener al menos 3 caracteres")
+        .test(
+          "is-unique",
+          "Este nombre de entrenamiento ya está en uso",
+          function (value) {
+            return !userTrainingsNames.includes(value);
+          }
+        ),
     })
     .required();
 
@@ -52,8 +64,8 @@ export default function CreateTraining({ navigation }) {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const fetchData = async () => {
-    const gainDataSnap = await getGainData();
-    setGainData(gainDataSnap);
+    setGainData(await getGainData());
+    setUserTrainingsNames(await getUserAllTrainingsNames("oscar@esteve.com"));
   };
 
   useEffect(() => {
@@ -234,6 +246,7 @@ export default function CreateTraining({ navigation }) {
   const handleSaveTraining = async () => {
     try {
       await setUserTraining("oscar@esteve.com", userTrainingData);
+      navigation.navigate("MyTrainings");
     } catch (error) {
       console.error(error);
     }
@@ -254,7 +267,7 @@ export default function CreateTraining({ navigation }) {
                 placeholder="New Training"
                 inputMode="text"
                 maxLength={30}
-                value={value}
+                value={value || userTrainingData.trainingName}
                 onChangeText={(value) => {
                   onChange(value);
                   handleTrainingNameChange(value);
@@ -387,28 +400,62 @@ export default function CreateTraining({ navigation }) {
                   <View className="flex-1 justify-end">
                     <View className="bg-gray-400 m-1 rounded-3xl">
                       <ScrollView>
-                        {gainData?.trainingExercises?.map(
-                          (exercise, exerciseIndex) => (
-                            <View key={exerciseIndex}>
-                              <Pressable
-                                onPress={() => {
-                                  handleAddExercise(
-                                    selectExerciseModalShow.dayIndex,
-                                    exercise
-                                  );
-                                  setSelectExerciseModalShow({
-                                    ...selectExerciseModalShow,
-                                    visible: false,
-                                  });
-                                }}
-                              >
-                                <Text className="text-xl text-center h-14">
-                                  {exercise.exerciseName}
-                                </Text>
-                              </Pressable>
-                            </View>
+                        <Text>Bicep</Text>
+                        {gainData?.trainingExercises
+                          ?.sort((a, b) =>
+                            a.exerciseName.localeCompare(b.exerciseName)
                           )
-                        )}
+                          .map(
+                            (exercise, exerciseIndex) =>
+                              exercise.groupName === "Bicep" && (
+                                <View key={exerciseIndex}>
+                                  <Pressable
+                                    onPress={() => {
+                                      handleAddExercise(
+                                        selectExerciseModalShow.dayIndex,
+                                        exercise
+                                      );
+                                      setSelectExerciseModalShow({
+                                        ...selectExerciseModalShow,
+                                        visible: false,
+                                      });
+                                    }}
+                                  >
+                                    <Text className="text-xl text-center h-14">
+                                      {exercise.exerciseName}
+                                    </Text>
+                                  </Pressable>
+                                </View>
+                              )
+                          )}
+                        <Text>Chest</Text>
+                        {gainData?.trainingExercises
+                          ?.sort((a, b) =>
+                            a.exerciseName.localeCompare(b.exerciseName)
+                          )
+                          .map(
+                            (exercise, exerciseIndex) =>
+                              exercise.groupName === "Chest" && (
+                                <View key={exerciseIndex}>
+                                  <Pressable
+                                    onPress={() => {
+                                      handleAddExercise(
+                                        selectExerciseModalShow.dayIndex,
+                                        exercise
+                                      );
+                                      setSelectExerciseModalShow({
+                                        ...selectExerciseModalShow,
+                                        visible: false,
+                                      });
+                                    }}
+                                  >
+                                    <Text className="text-xl text-center h-14">
+                                      {exercise.exerciseName}
+                                    </Text>
+                                  </Pressable>
+                                </View>
+                              )
+                          )}
                       </ScrollView>
                     </View>
 

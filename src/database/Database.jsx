@@ -103,6 +103,17 @@ export const getUserAllTrainings = async (email) => {
   }
 };
 
+export const getUserAllTrainingsNames = async (email) => {
+  try {
+    const docsSnap = await getDocs(
+      collection(database, "users", email, "userTrainings")
+    );
+    return docsSnap.docs.map((doc) => doc.data().trainingName);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const setUserTraining = async (email, userTrainingData) => {
   const docRef = doc(
     collection(database, "users", email, "userTrainings"),

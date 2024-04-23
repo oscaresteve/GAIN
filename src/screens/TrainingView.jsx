@@ -21,7 +21,11 @@ export default function Training({ navigation, route }) {
     <ScrollView>
       <Button
         title="Edit"
-        onPress={() => navigation.navigate("EditTraining")}
+        onPress={() =>
+          navigation.navigate("EditTraining", {
+            userTrainingData: userTrainingData,
+          })
+        }
       />
       <Button title="Delete" onPress={handleDeleteTraining} />
       <View key={userTrainingData?.trainingName}>

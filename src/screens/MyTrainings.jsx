@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import AppBar from "../components/AppBar";
 import TrainingCard from "../components/TrainingCard";
 import { getUserAllTrainings } from "../database/Database";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function MyTrainings({ navigation }) {
   const [userAllTrainingsData, setUserAllTrainingsData] = useState();
@@ -18,14 +19,16 @@ export default function MyTrainings({ navigation }) {
     setUserAllTrainingsData(await getUserAllTrainings("oscar@esteve.com"));
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+      return () => {};
+    }, [])
+  );
 
   return (
     <SafeAreaView>
       <AppBar />
-      <Button title="refresh" onPress={fetchData} />
       <ScrollView>
         <View>
           {userAllTrainingsData?.map((userTrainingData, index) => (
