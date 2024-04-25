@@ -298,11 +298,8 @@ export default function CreateTraining({ navigation }) {
                         }
                       />
                       {exercise.sets?.map((set, setIndex) => (
-                        <View className="">
-                          <View
-                            key={setIndex}
-                            className="flex-row items-center justify-between my-1 p-2 shadow-sm rounded-md bg-gray-200"
-                          >
+                        <View key={setIndex}>
+                          <View className="flex-row items-center justify-between my-1 p-2 shadow-sm rounded-md bg-gray-200">
                             <View className="flex-row items-center justify-around flex-grow">
                               <View className="">
                                 <Text className="text-lg">{set.setNumber}</Text>
