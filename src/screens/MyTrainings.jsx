@@ -27,24 +27,28 @@ export default function MyTrainings({ navigation }) {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <AppBar />
-      <ScrollView>
-        <View>
-          {userAllTrainingsData?.map((userTrainingData, index) => (
-            <TrainingCard
-              key={index}
-              userTrainingData={userTrainingData}
-              navigation={navigation}
-            />
-          ))}
-          <View className="m-5 border p-2">
-            <Pressable onPress={() => navigation.navigate("CreateTraining")}>
-              <Text>Create new Training</Text>
-            </Pressable>
+      <View>
+        <ScrollView>
+          <View className="pb-10 pt-2">
+            {userAllTrainingsData?.map((userTrainingData, index) => (
+              <TrainingCard
+                key={index}
+                userTrainingData={userTrainingData}
+                navigation={navigation}
+              />
+            ))}
+            <View className="mx-4 mb-2 p-2 bg-white rounded-md shadow-sm">
+              <Pressable onPress={() => navigation.navigate("CreateTraining")}>
+                <View className="p-1 bg-gray-50 rounded-md shadow-sm">
+                  <Text className="text-xl font-bold">Create new Training</Text>
+                </View>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

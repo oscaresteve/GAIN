@@ -253,59 +253,77 @@ export default function CreateTraining({ navigation }) {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <Button onPress={navigation.goBack} title="Back" />
-        <Button title="save" onPress={handleSubmit(handleSaveTraining)} />
-
-        <View>
-          <Controller
-            name="trainingName"
-            control={control}
-            render={({ field: { value, onChange, onBlur } }) => (
-              <TextInput
-                placeholder="New Training"
-                inputMode="text"
-                maxLength={30}
-                value={value || userTrainingData.trainingName}
-                onChangeText={(value) => {
-                  onChange(value);
-                  handleTrainingNameChange(value);
-                }}
-                onBlur={onBlur}
-                className="text-3xl ml-2"
-              />
-            )}
+    <SafeAreaView className="flex-1">
+      <Button onPress={navigation.goBack} title="Back" />
+      <Button title="save" onPress={handleSubmit(handleSaveTraining)} />
+      <Controller
+        name="trainingName"
+        control={control}
+        render={({ field: { value, onChange, onBlur } }) => (
+          <TextInput
+            placeholder="New Training"
+            inputMode="text"
+            maxLength={30}
+            value={value || userTrainingData.trainingName}
+            onChangeText={(value) => {
+              onChange(value);
+              handleTrainingNameChange(value);
+            }}
+            onBlur={onBlur}
+            className="text-3xl ml-2"
           />
-          {errors.trainingName && <Text>{errors.trainingName.message}</Text>}
-          <View>
-            {userTrainingData?.days?.map((day, dayIndex) => (
-              <View key={dayIndex}>
-                <Text className="text-2xl ml-4">{day.dayName}</Text>
-                {day.groups?.map((group, groupIndex) => (
-                  <View key={groupIndex}>
-                    <Text className="text-xl ml-5">{group.groupName}</Text>
-                    {group.exercises?.map((exercise, exerciseIndex) => (
-                      <View key={exerciseIndex}>
-                        <Text className="text-lg ml-6">
-                          {exercise.exerciseName}
-                        </Text>
-                        <Button
-                          title="Delete Exercise"
-                          onPress={() =>
-                            handleDeleteExercise(
-                              dayIndex,
-                              groupIndex,
-                              exerciseIndex
-                            )
-                          }
-                        />
-                        {exercise.sets?.map((set, setIndex) => (
-                          <View key={setIndex}>
-                            <Text className="text-md ml-8">
-                              Set {set.setNumber}: Reps {set.details.reps},
-                              Weight {set.details.weight}
-                            </Text>
+        )}
+      />
+      {errors.trainingName && <Text>{errors.trainingName.message}</Text>}
+      <ScrollView>
+        <View className="flex-1">
+          {userTrainingData?.days?.map((day, dayIndex) => (
+            <View key={dayIndex} className="mx-2">
+              <Text className="text-3xl font-bold">{day.dayName}</Text>
+              {day.groups?.map((group, groupIndex) => (
+                <View key={groupIndex}>
+                  <Text className="text-2xl font-bold">{group.groupName}</Text>
+                  {group.exercises?.map((exercise, exerciseIndex) => (
+                    <View
+                      key={exerciseIndex}
+                      className="bg-white my-1 p-2 rounded-md shadow-sm"
+                    >
+                      <Text className="text-2xl font-medium">
+                        {exercise.exerciseName}
+                      </Text>
+                      <Button
+                        title="Delete Exercise"
+                        onPress={() =>
+                          handleDeleteExercise(
+                            dayIndex,
+                            groupIndex,
+                            exerciseIndex
+                          )
+                        }
+                      />
+                      {exercise.sets?.map((set, setIndex) => (
+                        <View className="">
+                          <View
+                            key={setIndex}
+                            className="flex-row items-center justify-between my-1 p-2 shadow-sm rounded-md bg-gray-200"
+                          >
+                            <View className="flex-row items-center justify-around flex-grow">
+                              <View className="">
+                                <Text className="text-lg">{set.setNumber}</Text>
+                              </View>
+                              <View className="">
+                                <Text className="text-lg">
+                                  {set.details.reps} reps
+                                </Text>
+                              </View>
+                              <View className="">
+                                <Text className="text-lg">
+                                  {set.details.weight} kg
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                          <View className="flex-row flex-wrap">
                             <Button
                               title="Incr. Reps"
                               onPress={() =>
@@ -365,118 +383,118 @@ export default function CreateTraining({ navigation }) {
                                 />
                               )}
                           </View>
-                        ))}
-                        <Button
-                          title="Add Set"
-                          onPress={() =>
-                            handleAddSet(dayIndex, groupIndex, exerciseIndex)
-                          }
-                        />
-                      </View>
-                    ))}
-                  </View>
-                ))}
-                <Button
-                  title="Add Exercise"
-                  onPress={() =>
-                    setSelectExerciseModalShow({
-                      ...selectExerciseModalShow,
-                      visible: true,
-                      dayIndex: dayIndex,
-                    })
-                  }
-                />
-                <Modal
-                  animationType="slide"
-                  transparent={false}
-                  visible={selectExerciseModalShow.visible}
-                  onRequestClose={() =>
-                    setSelectExerciseModalShow({
-                      ...selectExerciseModalShow,
-                      visible: false,
-                    })
-                  }
-                >
-                  <View className="flex-1 justify-end">
-                    <View className="bg-gray-400 m-1 rounded-3xl">
-                      <ScrollView>
-                        <Text>Bicep</Text>
-                        {gainData?.trainingExercises
-                          ?.sort((a, b) =>
-                            a.exerciseName.localeCompare(b.exerciseName)
-                          )
-                          .map(
-                            (exercise, exerciseIndex) =>
-                              exercise.groupName === "Bicep" && (
-                                <View key={exerciseIndex}>
-                                  <Pressable
-                                    onPress={() => {
-                                      handleAddExercise(
-                                        selectExerciseModalShow.dayIndex,
-                                        exercise
-                                      );
-                                      setSelectExerciseModalShow({
-                                        ...selectExerciseModalShow,
-                                        visible: false,
-                                      });
-                                    }}
-                                  >
-                                    <Text className="text-xl text-center h-14">
-                                      {exercise.exerciseName}
-                                    </Text>
-                                  </Pressable>
-                                </View>
-                              )
-                          )}
-                        <Text>Chest</Text>
-                        {gainData?.trainingExercises
-                          ?.sort((a, b) =>
-                            a.exerciseName.localeCompare(b.exerciseName)
-                          )
-                          .map(
-                            (exercise, exerciseIndex) =>
-                              exercise.groupName === "Chest" && (
-                                <View key={exerciseIndex}>
-                                  <Pressable
-                                    onPress={() => {
-                                      handleAddExercise(
-                                        selectExerciseModalShow.dayIndex,
-                                        exercise
-                                      );
-                                      setSelectExerciseModalShow({
-                                        ...selectExerciseModalShow,
-                                        visible: false,
-                                      });
-                                    }}
-                                  >
-                                    <Text className="text-xl text-center h-14">
-                                      {exercise.exerciseName}
-                                    </Text>
-                                  </Pressable>
-                                </View>
-                              )
-                          )}
-                      </ScrollView>
+                        </View>
+                      ))}
+                      <Button
+                        title="Add Set"
+                        onPress={() =>
+                          handleAddSet(dayIndex, groupIndex, exerciseIndex)
+                        }
+                      />
                     </View>
-
-                    <Pressable
+                  ))}
+                </View>
+              ))}
+              <Button
+                title="Add Exercise"
+                onPress={() =>
+                  setSelectExerciseModalShow({
+                    ...selectExerciseModalShow,
+                    visible: true,
+                    dayIndex: dayIndex,
+                  })
+                }
+              />
+              <Modal
+                animationType="slide"
+                transparent={false}
+                visible={selectExerciseModalShow.visible}
+                onRequestClose={() =>
+                  setSelectExerciseModalShow({
+                    ...selectExerciseModalShow,
+                    visible: false,
+                  })
+                }
+              >
+                <ScrollView>
+                  <View className="bg-gray-200 rounded-3xl mt-16 p-2">
+                    <Button
+                      title="Close"
                       onPress={() =>
                         setSelectExerciseModalShow({
                           ...selectExerciseModalShow,
                           visible: false,
                         })
                       }
-                      className="bg-gray-400 m-1 rounded-3xl items-center"
-                    >
-                      <Text className="text-xl text-center h-14">
-                        Hide Modal
-                      </Text>
-                    </Pressable>
+                    />
+
+                    <Text className="text-3xl font-bold">Bicep</Text>
+                    {gainData?.trainingExercises
+                      ?.sort((a, b) =>
+                        a.exerciseName.localeCompare(b.exerciseName)
+                      )
+                      .map(
+                        (exercise, exerciseIndex) =>
+                          exercise.groupName === "Bicep" && (
+                            <View
+                              key={exerciseIndex}
+                              className="bg-white m-2 p-2 rounded-md shadow-sm"
+                            >
+                              <Pressable
+                                onPress={() => {
+                                  handleAddExercise(
+                                    selectExerciseModalShow.dayIndex,
+                                    exercise
+                                  );
+                                  setSelectExerciseModalShow({
+                                    ...selectExerciseModalShow,
+                                    visible: false,
+                                  });
+                                }}
+                              >
+                                <Text className="text-2xl font-medium">
+                                  {exercise.exerciseName}
+                                </Text>
+                              </Pressable>
+                            </View>
+                          )
+                      )}
+                    <Text className="text-3xl font-bold">Chest</Text>
+                    {gainData?.trainingExercises
+                      ?.sort((a, b) =>
+                        a.exerciseName.localeCompare(b.exerciseName)
+                      )
+                      .map(
+                        (exercise, exerciseIndex) =>
+                          exercise.groupName === "Chest" && (
+                            <View
+                              key={exerciseIndex}
+                              className="bg-white m-2 p-2 rounded-md shadow-sm"
+                            >
+                              <Pressable
+                                onPress={() => {
+                                  handleAddExercise(
+                                    selectExerciseModalShow.dayIndex,
+                                    exercise
+                                  );
+                                  setSelectExerciseModalShow({
+                                    ...selectExerciseModalShow,
+                                    visible: false,
+                                  });
+                                }}
+                              >
+                                <Text className="text-2xl font-medium">
+                                  {exercise.exerciseName}
+                                </Text>
+                              </Pressable>
+                            </View>
+                          )
+                      )}
                   </View>
-                </Modal>
-              </View>
-            ))}
-          </View>
+                </ScrollView>
+              </Modal>
+            </View>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -207,19 +207,25 @@ export default function EditTraining({ navigation, route }) {
       <ScrollView>
         <Button onPress={navigation.goBack} title="Back" />
         <Button title="save" onPress={handleSaveTraining} />
-
         <View>
-          <Text className="text-3xl ml-2">{userTrainingData.trainingName}</Text>
+          <Text className="text-4xl font-bold">
+            {userTrainingData.trainingName}
+          </Text>
           <View>
             {userTrainingData?.days?.map((day, dayIndex) => (
-              <View key={dayIndex}>
-                <Text className="text-2xl ml-4">{day.dayName}</Text>
+              <View key={dayIndex} className="mx-2">
+                <Text className="text-3xl font-bold">{day.dayName}</Text>
                 {day.groups?.map((group, groupIndex) => (
                   <View key={groupIndex}>
-                    <Text className="text-xl ml-5">{group.groupName}</Text>
+                    <Text className="text-2xl font-bold">
+                      {group.groupName}
+                    </Text>
                     {group.exercises?.map((exercise, exerciseIndex) => (
-                      <View key={exerciseIndex}>
-                        <Text className="text-lg ml-6">
+                      <View
+                        key={exerciseIndex}
+                        className="bg-white my-1 p-2 rounded-md shadow-sm"
+                      >
+                        <Text className="text-2xl font-medium">
                           {exercise.exerciseName}
                         </Text>
                         <Button
@@ -233,69 +239,89 @@ export default function EditTraining({ navigation, route }) {
                           }
                         />
                         {exercise.sets?.map((set, setIndex) => (
-                          <View key={setIndex}>
-                            <Text className="text-md ml-8">
-                              Set {set.setNumber}: Reps {set.details.reps},
-                              Weight {set.details.weight}
-                            </Text>
-                            <Button
-                              title="Incr. Reps"
-                              onPress={() =>
-                                handleIncrementReps(
-                                  dayIndex,
-                                  groupIndex,
-                                  exerciseIndex,
-                                  setIndex
-                                )
-                              }
-                            />
-                            <Button
-                              title="Decr. Reps"
-                              onPress={() =>
-                                handleDecrementReps(
-                                  dayIndex,
-                                  groupIndex,
-                                  exerciseIndex,
-                                  setIndex
-                                )
-                              }
-                            />
-                            <Button
-                              title="Incr. Weight"
-                              onPress={() =>
-                                handleIncrementWeight(
-                                  dayIndex,
-                                  groupIndex,
-                                  exerciseIndex,
-                                  setIndex
-                                )
-                              }
-                            />
-                            <Button
-                              title="Decr. Weight"
-                              onPress={() =>
-                                handleDecrementWeight(
-                                  dayIndex,
-                                  groupIndex,
-                                  exerciseIndex,
-                                  setIndex
-                                )
-                              }
-                            />
-                            {exercise.sets?.length === setIndex + 1 &&
-                              exercise.sets.length > 1 && (
-                                <Button
-                                  title="Delete Set"
-                                  onPress={() =>
-                                    handleDeleteSet(
-                                      dayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex
-                                    )
-                                  }
-                                />
-                              )}
+                          <View className="">
+                            <View
+                              key={setIndex}
+                              className="flex-row items-center justify-between my-1 p-2 shadow-sm rounded-md bg-gray-200"
+                            >
+                              <View className="flex-row items-center justify-around flex-grow">
+                                <View className="">
+                                  <Text className="text-lg">
+                                    {set.setNumber}
+                                  </Text>
+                                </View>
+                                <View className="">
+                                  <Text className="text-lg">
+                                    {set.details.reps} reps
+                                  </Text>
+                                </View>
+                                <View className="">
+                                  <Text className="text-lg">
+                                    {set.details.weight} kg
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                            <View className="flex-row flex-wrap">
+                              <Button
+                                title="Incr. Reps"
+                                onPress={() =>
+                                  handleIncrementReps(
+                                    dayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex
+                                  )
+                                }
+                              />
+                              <Button
+                                title="Decr. Reps"
+                                onPress={() =>
+                                  handleDecrementReps(
+                                    dayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex
+                                  )
+                                }
+                              />
+                              <Button
+                                title="Incr. Weight"
+                                onPress={() =>
+                                  handleIncrementWeight(
+                                    dayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex
+                                  )
+                                }
+                              />
+                              <Button
+                                title="Decr. Weight"
+                                onPress={() =>
+                                  handleDecrementWeight(
+                                    dayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex
+                                  )
+                                }
+                              />
+                              {exercise.sets?.length === setIndex + 1 &&
+                                exercise.sets.length > 1 && (
+                                  <Button
+                                    title="Delete Set"
+                                    onPress={() =>
+                                      handleDeleteSet(
+                                        dayIndex,
+                                        groupIndex,
+                                        exerciseIndex,
+                                        setIndex
+                                      )
+                                    }
+                                  />
+                                )}
+                            </View>
                           </View>
                         ))}
                         <Button

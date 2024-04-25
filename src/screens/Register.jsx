@@ -72,7 +72,7 @@ export default function Register({ navigation }) {
   };
 
   return (
-    <SafeAreaView className="bg-gray-200 h-full justify-center items-center">
+    <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
       <View className="bg-gray-300 rounded-lg p-5 w-80">
         <Text className="text-4xl font-bold text-center">Crea tu cuenta</Text>
         <Controller

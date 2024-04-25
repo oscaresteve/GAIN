@@ -7,8 +7,8 @@ export default function AppBar() {
   const currentDay = moment(currentDate).format("dddd");
 
   return (
-    <View className="flex-row w-full bg-gray-300 items-center">
-      <Text className="text-xl font-bold m-2">GAIN</Text>
+    <View className="flex-row items-center">
+      <Text className="text-3xl font-bold my-1 mx-2">GAIN</Text>
       <Text className="text-lg">
         {currentDay} {moment(currentDate).format("Do")}
       </Text>

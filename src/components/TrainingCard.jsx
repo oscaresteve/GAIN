@@ -3,26 +3,30 @@ import React from "react";
 
 export default function TrainingCard({ navigation, userTrainingData }) {
   return (
-    <Pressable
-      onPress={() => {
-        navigation.navigate("TrainingView", {
-          userTrainingData: userTrainingData,
-        });
-      }}
-    >
-      <View className="m-5 border p-2">
-        <Text>{userTrainingData?.trainingName}</Text>
-        {userTrainingData?.days?.map((day, dayIndex) => (
-          <View key={dayIndex}>
-            <Text>{day.dayName}</Text>
-            {day.groups?.map((group, groupIndex) => (
-              <View key={groupIndex}>
-                <Text>{group.groupName}</Text>
-              </View>
-            ))}
-          </View>
-        ))}
-      </View>
-    </Pressable>
+    <View className="mx-4 mb-2 p-2 bg-white rounded-md shadow-sm">
+      <Pressable
+        onPress={() => {
+          navigation.navigate("TrainingView", {
+            userTrainingData: userTrainingData,
+          });
+        }}
+      >
+        <Text className="text-xl font-bold">
+          {userTrainingData?.trainingName}
+        </Text>
+        <View className="p-1 bg-gray-50 rounded-md shadow-sm">
+          {userTrainingData?.days?.map((day, dayIndex) => (
+            <View key={dayIndex} className="mb-1">
+              <Text className="font-medium text-xl">{day.dayName}</Text>
+              {day.groups?.map((group, groupIndex) => (
+                <View key={groupIndex} className="ml-1">
+                  <Text className="">{group.groupName}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+        </View>
+      </Pressable>
+    </View>
   );
 }

@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Wellcome({ navigation }) {
   return (
-    <SafeAreaView className="bg-gray-200 h-full justify-center items-center">
+    <SafeAreaView className="flex-1 justify-center items-center">
       <View className="bg-gray-300 rounded-lg p-5 w-80">
         <Text className="text-4xl font-bold text-center">Wellcome</Text>
         <Text className="text-xl text-center">Mensaje de Bienvenida</Text>

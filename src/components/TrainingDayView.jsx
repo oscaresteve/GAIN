@@ -41,28 +41,36 @@ export default function TrainingDayView({ email, userTrainingName }) {
 
   return (
     <ScrollView>
-      <View key={userTrainingDayData?.dayName}>
-        <Text>{userTrainingDayData?.dayName}</Text>
-
+      <View className="flex-1 pb-10">
         {userTrainingDayData?.groups?.map((group, groupIndex) => (
-          <View key={groupIndex}>
-            <Text>{group.groupName}</Text>
-
+          <View key={groupIndex} className="mx-2">
+            <Text className="text-3xl font-bold">{group.groupName}</Text>
             {group.exercises?.map((exercise, exerciseIndex) => (
-              <View key={exerciseIndex}>
-                <Text>{exercise.exerciseName}</Text>
-
+              <View
+                key={exerciseIndex}
+                className="bg-white my-1 p-2 rounded-md shadow-sm"
+              >
+                <Text className="text-2xl font-medium">
+                  {exercise.exerciseName}
+                </Text>
                 {exercise.sets?.map((set, setIndex) => (
                   <View
                     key={setIndex}
-                    className={`flex-row justify-between m-1 p-2 ${
-                      set.details.done ? "bg-green-300" : "bg-gray-300"
+                    className={`flex-row justify-between items-center my-1 p-2 shadow-sm rounded-md  ${
+                      set.details.done ? "bg-green-300" : "bg-gray-50"
                     }`}
                   >
-                    <Text>
-                      Set {set.setNumber}: Reps {set.details.reps}, Weight{" "}
-                      {set.details.weight}
-                    </Text>
+                    <View className="flex-row items-center">
+                      <View className="w-10">
+                        <Text className="text-lg">{set.setNumber}</Text>
+                      </View>
+                      <View className="w-24">
+                        <Text className="text-lg">{set.details.reps} reps</Text>
+                      </View>
+                      <View className="w-24">
+                        <Text className="text-lg">{set.details.weight} kg</Text>
+                      </View>
+                    </View>
                     <Pressable
                       onPress={() =>
                         handleDone(groupIndex, exerciseIndex, setIndex)
@@ -72,8 +80,9 @@ export default function TrainingDayView({ email, userTrainingName }) {
                           ? false
                           : !exercise.sets[setIndex - 1].details.done
                       }
+                      className="flex-end items-center"
                     >
-                      <Text>Done</Text>
+                      <Text className="text-lg font-bold mx-2">Done</Text>
                     </Pressable>
                   </View>
                 ))}

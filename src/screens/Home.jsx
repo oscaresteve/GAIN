@@ -1,17 +1,18 @@
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
-import moment from "moment";
+import { View, SafeAreaView } from "react-native";
+import React from "react";
 import TrainingDayView from "../components/TrainingDayView";
 import AppBar from "../components/AppBar";
 
 export default function Home() {
   return (
-    <SafeAreaView className="h-full">
+    <SafeAreaView className="flex-1">
       <AppBar />
-      <TrainingDayView
-        email="oscar@esteve.com"
-        userTrainingName="TrainingTestNuevo"
-      />
+      <View>
+        <TrainingDayView
+          email="oscar@esteve.com"
+          userTrainingName="TrainingTestNuevo"
+        />
+      </View>
     </SafeAreaView>
   );
 }
