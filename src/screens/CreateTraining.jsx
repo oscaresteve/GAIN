@@ -95,7 +95,6 @@ export default function CreateTraining({ navigation }) {
           ],
         });
       }
-      console.log(JSON.stringify(userTrainingData, null, 2));
       return newUserTrainingData;
     });
   };
@@ -117,7 +116,6 @@ export default function CreateTraining({ navigation }) {
           details: { reps: 1, weight: 5 },
         });
       }
-      console.log(JSON.stringify(userTrainingData, null, 2));
       return newUserTrainingdata;
     });
   };
@@ -145,7 +143,6 @@ export default function CreateTraining({ navigation }) {
       }
       return newUserTrainingData;
     });
-    console.log(JSON.stringify(userTrainingData, null, 2));
   };
 
   const handleDeleteSet = (dayIndex, groupIndex, exerciseIndex, setIndex) => {
@@ -156,7 +153,6 @@ export default function CreateTraining({ navigation }) {
       ].sets.splice(setIndex, 1);
       return newUserTrainingData;
     });
-    console.log(JSON.stringify(userTrainingData, null, 2));
   };
 
   const handleIncrementReps = (
@@ -368,21 +364,21 @@ export default function CreateTraining({ navigation }) {
                                 )
                               }
                             />
-                            {exercise.sets?.length === setIndex + 1 &&
-                              exercise.sets.length > 1 && (
-                                <Button
-                                  title="Delete Set"
-                                  onPress={() =>
-                                    handleDeleteSet(
-                                      dayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex
-                                    )
-                                  }
-                                />
-                              )}
                           </View>
+                          {exercise.sets?.length === setIndex + 1 &&
+                            exercise.sets.length > 1 && (
+                              <Button
+                                title="Delete Set"
+                                onPress={() =>
+                                  handleDeleteSet(
+                                    dayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex
+                                  )
+                                }
+                              />
+                            )}
                         </View>
                       ))}
                       <Button
@@ -430,18 +426,30 @@ export default function CreateTraining({ navigation }) {
 
                     <Text className="text-3xl font-bold">Bicep</Text>
                     {gainData?.trainingExercises
+                      ?.filter((exercise) => exercise.groupName === "Bicep")
                       ?.sort((a, b) =>
                         a.exerciseName.localeCompare(b.exerciseName)
                       )
-                      .map(
-                        (exercise, exerciseIndex) =>
-                          exercise.groupName === "Bicep" && (
-                            <View
-                              key={exerciseIndex}
-                              className="bg-white m-2 p-2 rounded-md shadow-sm"
-                            >
-                              <Pressable
-                                onPress={() => {
+                      .map((exercise, exerciseIndex) => {
+                        const exerciseExists = userTrainingData.days[
+                          selectExerciseModalShow.dayIndex
+                        ]?.groups?.some((group) =>
+                          group.exercises.some(
+                            (existingExercise) =>
+                              existingExercise.exerciseName ===
+                              exercise.exerciseName
+                          )
+                        );
+                        return (
+                          <View
+                            key={exerciseIndex}
+                            className={`bg-white m-2 p-2 rounded-md shadow-sm ${
+                              exerciseExists ? "bg-gray-300" : "bg-gray-100"
+                            }`}
+                          >
+                            <Pressable
+                              onPress={() => {
+                                if (!exerciseExists) {
                                   handleAddExercise(
                                     selectExerciseModalShow.dayIndex,
                                     exercise
@@ -450,29 +458,44 @@ export default function CreateTraining({ navigation }) {
                                     ...selectExerciseModalShow,
                                     visible: false,
                                   });
-                                }}
-                              >
-                                <Text className="text-2xl font-medium">
-                                  {exercise.exerciseName}
-                                </Text>
-                              </Pressable>
-                            </View>
-                          )
-                      )}
+                                }
+                              }}
+                              disabled={exerciseExists}
+                            >
+                              <Text className="text-2xl font-medium">
+                                {exercise.exerciseName}
+                              </Text>
+                            </Pressable>
+                          </View>
+                        );
+                      })}
+
                     <Text className="text-3xl font-bold">Chest</Text>
                     {gainData?.trainingExercises
+                      ?.filter((exercise) => exercise.groupName === "Chest")
                       ?.sort((a, b) =>
                         a.exerciseName.localeCompare(b.exerciseName)
                       )
-                      .map(
-                        (exercise, exerciseIndex) =>
-                          exercise.groupName === "Chest" && (
-                            <View
-                              key={exerciseIndex}
-                              className="bg-white m-2 p-2 rounded-md shadow-sm"
-                            >
-                              <Pressable
-                                onPress={() => {
+                      .map((exercise, exerciseIndex) => {
+                        const exerciseExists = userTrainingData.days[
+                          selectExerciseModalShow.dayIndex
+                        ]?.groups?.some((group) =>
+                          group.exercises.some(
+                            (existingExercise) =>
+                              existingExercise.exerciseName ===
+                              exercise.exerciseName
+                          )
+                        );
+                        return (
+                          <View
+                            key={exerciseIndex}
+                            className={`bg-white m-2 p-2 rounded-md shadow-sm ${
+                              exerciseExists ? "bg-gray-300" : "bg-gray-100"
+                            }`}
+                          >
+                            <Pressable
+                              onPress={() => {
+                                if (!exerciseExists) {
                                   handleAddExercise(
                                     selectExerciseModalShow.dayIndex,
                                     exercise
@@ -481,15 +504,17 @@ export default function CreateTraining({ navigation }) {
                                     ...selectExerciseModalShow,
                                     visible: false,
                                   });
-                                }}
-                              >
-                                <Text className="text-2xl font-medium">
-                                  {exercise.exerciseName}
-                                </Text>
-                              </Pressable>
-                            </View>
-                          )
-                      )}
+                                }
+                              }}
+                              disabled={exerciseExists}
+                            >
+                              <Text className="text-2xl font-medium">
+                                {exercise.exerciseName}
+                              </Text>
+                            </Pressable>
+                          </View>
+                        );
+                      })}
                   </View>
                 </ScrollView>
               </Modal>
