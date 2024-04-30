@@ -8,14 +8,17 @@ import {
   Keyboard,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { logInUser, getUserData } from "../database/Database";
 
-import { logInUser } from "../database/Database";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../Redux/userSlice";
 
 export default function LogIn({ navigation }) {
+  const dispatch = useDispatch();
+
   const validationSchema = yup
     .object()
     .shape({
@@ -34,12 +37,19 @@ export default function LogIn({ navigation }) {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const handleLogIn = async (formData) => {
-    if ((await logInUser(formData.email, formData.password)) === true) {
+    const loginSuccess = await logInUser(formData.email, formData.password);
+    if (loginSuccess === true) {
+      fetchData(formData.email);
       navigation.navigate("TabGroup");
     } else {
-      Alert.alert("Correo o Contraseña incorrectos");
     }
   };
+
+  const fetchData = async (email) => {
+    const userDataSnap = await getUserData(email);
+    dispatch(setUserData(userDataSnap));
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
       <View className="bg-gray-300 rounded-lg p-5 w-80">

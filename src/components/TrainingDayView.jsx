@@ -1,41 +1,40 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-  getUserTrainingDay,
-  newUserTrainingDay,
-  setUserTrainingDay,
-} from "../database/Database";
+import { setUserTrainingDay } from "../database/Database";
+import { useSelector } from "react-redux";
+import { selectUserData } from "../Redux/userSlice";
+import { selectUserTrainingDayData } from "../Redux/userSlice";
+import { useDispatch } from "react-redux";
+import { setUserTrainingDayData } from "../Redux/userSlice";
+import { fetchUserTrainingDayData } from "../Redux/userSlice";
 
-export default function TrainingDayView({ email, userTrainingName }) {
-  const [userTrainingDayData, setUserTrainingDayData] = useState();
+export default function TrainingDayView({ userTrainingName }) {
+  const dispatch = useDispatch();
+  const userData = useSelector(selectUserData);
+  const userTrainingDayData = useSelector(selectUserTrainingDayData);
 
   useEffect(() => {
-    fetchData();
+    dispatch(fetchUserTrainingDayData(userData?.email, userTrainingName));
   }, []);
 
-  const fetchData = async () => {
-    const userTrainingDaySnap = await getUserTrainingDay(email);
-    if (userTrainingDaySnap !== false) {
-      setUserTrainingDayData(userTrainingDaySnap);
-    } else {
-      await newUserTrainingDay(email, userTrainingName);
-      setUserTrainingDayData(await getUserTrainingDay(email));
-    }
-  };
-
   const saveData = async () => {
-    await setUserTrainingDay(email, userTrainingDayData);
+    await setUserTrainingDay(userData?.email, userTrainingDayData);
   };
 
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {
-    setUserTrainingDayData((prevData) => {
-      const newUserTrainingDayData = { ...prevData };
-      newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
-        setIndex
-      ].details.done = true;
-
-      return newUserTrainingDayData;
-    });
+    const newUserTrainingDayData = { ...userTrainingDayData };
+    userTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
+      setIndex
+    ].details.done = true;
+    console.log(
+      "newUserTrainingDayData",
+      JSON.stringify(newUserTrainingDayData, null, 2)
+    );
+    dispatch(setUserTrainingDayData(newUserTrainingDayData));
+    console.log(
+      "userTrainingDayData",
+      JSON.stringify(userTrainingDayData, null, 2)
+    );
     saveData();
   };
 

@@ -12,15 +12,23 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  getGainData,
-  setUserTraining,
-  getUserAllTrainingsNames,
-} from "../database/Database";
+
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectGainData } from "../Redux/gainSlice";
+import { selectUserData } from "../Redux/userSlice";
+import { selectUserAllTrainingsData } from "../Redux/userSlice";
+import { fetchGainData } from "../Redux/gainSlice";
+import { saveUserTrainingData } from "../Redux/userSlice";
 
 export default function CreateTraining({ navigation }) {
-  const [gainData, setGainData] = useState();
-  const [userTrainingsNames, setUserTrainingsNames] = useState();
+  const dispatch = useDispatch();
+  const gainData = useSelector(selectGainData);
+  const userData = useSelector(selectUserData);
+  const userAllTraings = useSelector(selectUserAllTrainingsData);
+  const userTrainingsNames = userAllTraings.map(
+    (training) => training.trainingName
+  );
 
   const [userTrainingData, setUserTrainingData] = useState({
     trainingName: "",
@@ -63,13 +71,8 @@ export default function CreateTraining({ navigation }) {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const fetchData = async () => {
-    setGainData(await getGainData());
-    setUserTrainingsNames(await getUserAllTrainingsNames("oscar@esteve.com"));
-  };
-
   useEffect(() => {
-    fetchData();
+    dispatch(fetchGainData());
   }, []);
 
   const handleAddExercise = (dayIndex, exercise) => {
@@ -239,13 +242,9 @@ export default function CreateTraining({ navigation }) {
     });
   };
 
-  const handleSaveTraining = async () => {
-    try {
-      await setUserTraining("oscar@esteve.com", userTrainingData);
-      navigation.navigate("MyTrainings");
-    } catch (error) {
-      console.error(error);
-    }
+  const handleSaveTraining = () => {
+    dispatch(saveUserTrainingData(userData?.email, userTrainingData));
+    navigation.navigate("MyTrainings");
   };
 
   return (

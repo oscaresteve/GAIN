@@ -1,20 +1,19 @@
 import { View, Text, ScrollView, Button, SafeAreaView } from "react-native";
 import React from "react";
-import { deleteUserTraining } from "../database/Database";
-
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectUserData } from "../Redux/userSlice";
+import { deleteUserTrainingData } from "../Redux/userSlice";
 export default function Training({ navigation, route }) {
+  const dispatch = useDispatch();
+  const userData = useSelector(selectUserData);
   const { userTrainingData } = route.params;
 
-  const handleDeleteTraining = async () => {
-    try {
-      await deleteUserTraining(
-        "oscar@esteve.com",
-        userTrainingData.trainingName
-      );
-      navigation.goBack();
-    } catch (error) {
-      console.error(error);
-    }
+  const handleDeleteTraining = () => {
+    dispatch(
+      deleteUserTrainingData(userData?.email, userTrainingData?.trainingName)
+    );
+    navigation.goBack();
   };
 
   return (

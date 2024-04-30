@@ -6,25 +6,23 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AppBar from "../components/AppBar";
 import TrainingCard from "../components/TrainingCard";
-import { getUserAllTrainings } from "../database/Database";
-import { useFocusEffect } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectUserData } from "../Redux/userSlice";
+import { selectUserAllTrainingsData } from "../Redux/userSlice";
+import { fetchUserAllTrainingsData } from "../Redux/userSlice";
 
 export default function MyTrainings({ navigation }) {
-  const [userAllTrainingsData, setUserAllTrainingsData] = useState();
+  const dispatch = useDispatch();
+  const userData = useSelector(selectUserData);
+  const userAllTrainings = useSelector(selectUserAllTrainingsData);
 
-  const fetchData = async () => {
-    setUserAllTrainingsData(await getUserAllTrainings("oscar@esteve.com"));
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchData();
-      return () => {};
-    }, [])
-  );
+  useEffect(() => {
+    dispatch(fetchUserAllTrainingsData(userData?.email));
+  }, []);
 
   return (
     <SafeAreaView className="flex-1">
@@ -32,7 +30,7 @@ export default function MyTrainings({ navigation }) {
       <View>
         <ScrollView>
           <View className="pb-10 pt-2">
-            {userAllTrainingsData?.map((userTrainingData, index) => (
+            {userAllTrainings?.map((userTrainingData, index) => (
               <TrainingCard
                 key={index}
                 userTrainingData={userTrainingData}

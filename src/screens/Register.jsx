@@ -11,15 +11,23 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registerUser, setUserInfo } from "../database/Database";
+import {
+  registerUser,
+  updateUserData,
+  getUserData,
+} from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import { useDispatch } from "react-redux";
+import { setUser } from "../Redux/userSlice";
+import moment from "moment";
 
 export default function Register({ navigation }) {
   const [dateBirthModalShow, setdateBirthModalShow] = useState(false);
-  const [selectedDateBirth, setSelectedDateBirth] = useState();
+  const [selectedDateBirth, setSelectedDateBirth] = useState(null);
   const [genderModalShow, setGenderModalShow] = useState(false);
-  const [selectedGender, setSelectedGendre] = useState();
+  const [selectedGender, setSelectedGendre] = useState(null);
+  const dispatch = useDispatch();
   const validationSchema = yup
     .object()
     .shape({
@@ -57,18 +65,29 @@ export default function Register({ navigation }) {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const handleRegister = async (formData) => {
-    if ((await registerUser(formData.email, formData.password)) === true) {
-      await setUserInfo(
+    const registerUserSuccess = await registerUser(
+      formData.email,
+      formData.password
+    );
+    if (registerUserSuccess === true) {
+      const dateBirthISOString = formData.dateBirth.toISOString();
+      await updateUserData(
         formData.email,
         formData.name,
         formData.lastName,
-        formData.dateBirth,
+        dateBirthISOString,
         formData.gender
       );
+      fetchUserData(formData.email);
       navigation.navigate("TabGroup");
     } else {
       Alert.alert("Ese correo ya esta en uso");
     }
+  };
+
+  const fetchUserData = async (email) => {
+    const userDataSnap = await getUserData(email);
+    dispatch(setUser(userDataSnap));
   };
 
   return (
@@ -205,7 +224,9 @@ export default function Register({ navigation }) {
                     maximumDate={new Date()}
                     onChange={(event, selectedDate) => {
                       onChange(selectedDate);
-                      setSelectedDateBirth(selectedDate.toLocaleDateString());
+                      setSelectedDateBirth(
+                        moment(selectedDate).format("YYYY-MM-DD")
+                      );
                     }}
                   />
                 )}

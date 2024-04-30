@@ -9,6 +9,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useState } from "react";
 import moment from "moment";
@@ -23,44 +24,73 @@ const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
 export const logInUser = async (email, password) => {
-  const docRef = doc(database, "users", email);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    if (docSnap.data().password === password) {
-      return true;
+  try {
+    const docRef = doc(database, "users", email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      if (docSnap.data().password === password) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
-  } else {
-    return false;
+  } catch (error) {
+    console.error(error);
   }
 };
 
 export const registerUser = async (email, password) => {
-  const docRef = doc(database, "users", email);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return false;
-  } else {
-    await setDoc(doc(database, "users", email), {
-      email: email,
-      password: password,
-    });
-    return true;
+  try {
+    const docRef = doc(database, "users", email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return false;
+    } else {
+      await setDoc(doc(database, "users", email), {
+        email: email,
+        password: password,
+      });
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
-export const setUserInfo = async (email, name, lastName, dateBirth, gender) => {
-  const docRef = doc(
-    collection(database, "users", email, "userInfo"),
-    "personalInfo"
-  );
-  await setDoc(docRef, {
-    name: name,
-    lastName: lastName,
-    dateBirth: dateBirth,
-    gender: gender,
-  });
+export const updateUserData = async (
+  email,
+  name,
+  lastName,
+  dateBirth,
+  gender
+) => {
+  try {
+    const docRef = doc(database, "users", email);
+    await updateDoc(docRef, {
+      name: name,
+      lastName: lastName,
+      dateBirth: dateBirth,
+      gender: gender,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getUserData = async (email) => {
+  try {
+    const docRef = doc(database, "users", email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getUserTraining = async (email, userTrainingName) => {
@@ -103,27 +133,20 @@ export const getUserAllTrainings = async (email) => {
   }
 };
 
-export const getUserAllTrainingsNames = async (email) => {
+export const setUserTraining = async (email, userTrainingData) => {
   try {
-    const docsSnap = await getDocs(
-      collection(database, "users", email, "userTrainings")
+    const docRef = doc(
+      collection(database, "users", email, "userTrainings"),
+      userTrainingData.trainingName
     );
-    return docsSnap.docs.map((doc) => doc.data().trainingName);
+    await setDoc(docRef, userTrainingData);
+    if ((await getDoc(docRef)).exists()) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.error(error);
-  }
-};
-
-export const setUserTraining = async (email, userTrainingData) => {
-  const docRef = doc(
-    collection(database, "users", email, "userTrainings"),
-    userTrainingData.trainingName
-  );
-  await setDoc(docRef, userTrainingData);
-  if ((await getDoc(docRef)).exists()) {
-    return true;
-  } else {
-    return false;
   }
 };
 
@@ -135,6 +158,7 @@ export const getUserTrainingDay = async (email) => {
     );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
+      console.log("Firestore", docSnap.data());
       return docSnap.data();
     } else {
       return false;

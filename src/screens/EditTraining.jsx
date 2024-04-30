@@ -8,10 +8,18 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getGainData, setUserTraining } from "../database/Database";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectGainData } from "../Redux/gainSlice";
+import { selectUserData } from "../Redux/userSlice";
+import { fetchGainData } from "../Redux/gainSlice";
+import { saveUserTrainingData } from "../Redux/userSlice";
 
 export default function EditTraining({ navigation, route }) {
-  const [gainData, setGainData] = useState();
+  const dispatch = useDispatch();
+  const gainData = useSelector(selectGainData);
+  const userData = useSelector(selectUserData);
+
   const [userTrainingData, setUserTrainingData] = useState(
     route.params.userTrainingData
   );
@@ -21,12 +29,8 @@ export default function EditTraining({ navigation, route }) {
     dayIndex: null,
   });
 
-  const fetchData = async () => {
-    setGainData(await getGainData());
-  };
-
   useEffect(() => {
-    fetchData();
+    dispatch(fetchGainData());
   }, []);
 
   const handleAddExercise = (dayIndex, exercise) => {
@@ -193,13 +197,9 @@ export default function EditTraining({ navigation, route }) {
     });
   };
 
-  const handleSaveTraining = async () => {
-    try {
-      await setUserTraining("oscar@esteve.com", userTrainingData);
-      navigation.navigate("MyTrainings");
-    } catch (error) {
-      console.error(error);
-    }
+  const handleSaveTraining = () => {
+    dispatch(saveUserTrainingData(userData?.email, userTrainingData));
+    navigation.navigate("MyTrainings");
   };
 
   return (
