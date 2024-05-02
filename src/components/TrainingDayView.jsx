@@ -1,12 +1,12 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
-import { setUserTrainingDay } from "../database/Database";
-import { useSelector } from "react-redux";
-import { selectUserData } from "../Redux/userSlice";
-import { selectUserTrainingDayData } from "../Redux/userSlice";
-import { useDispatch } from "react-redux";
-import { setUserTrainingDayData } from "../Redux/userSlice";
-import { fetchUserTrainingDayData } from "../Redux/userSlice";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectUserData,
+  selectUserTrainingDayData,
+  fetchUserTrainingDayData,
+  setSetDone,
+} from "../Redux/userSlice";
 
 export default function TrainingDayView({ userTrainingName }) {
   const dispatch = useDispatch();
@@ -15,27 +15,11 @@ export default function TrainingDayView({ userTrainingName }) {
 
   useEffect(() => {
     dispatch(fetchUserTrainingDayData(userData?.email, userTrainingName));
+    console.log(userTrainingDayData);
   }, []);
 
-  const saveData = async () => {
-    await setUserTrainingDay(userData?.email, userTrainingDayData);
-  };
-
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {
-    const newUserTrainingDayData = { ...userTrainingDayData };
-    userTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
-      setIndex
-    ].details.done = true;
-    console.log(
-      "newUserTrainingDayData",
-      JSON.stringify(newUserTrainingDayData, null, 2)
-    );
-    dispatch(setUserTrainingDayData(newUserTrainingDayData));
-    console.log(
-      "userTrainingDayData",
-      JSON.stringify(userTrainingDayData, null, 2)
-    );
-    saveData();
+    dispatch(setSetDone(userData?.email, groupIndex, exerciseIndex, setIndex));
   };
 
   return (

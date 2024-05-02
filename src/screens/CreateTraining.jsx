@@ -12,14 +12,13 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { selectGainData } from "../Redux/gainSlice";
-import { selectUserData } from "../Redux/userSlice";
-import { selectUserAllTrainingsData } from "../Redux/userSlice";
-import { fetchGainData } from "../Redux/gainSlice";
-import { saveUserTrainingData } from "../Redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectGainData, fetchGainData } from "../Redux/gainSlice";
+import {
+  selectUserData,
+  selectUserAllTrainingsData,
+  saveUserTrainingData,
+} from "../Redux/userSlice";
 
 export default function CreateTraining({ navigation }) {
   const dispatch = useDispatch();

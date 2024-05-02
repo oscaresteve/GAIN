@@ -1,19 +1,13 @@
-import {
-  View,
-  SafeAreaView,
-  Button,
-  Text,
-  Pressable,
-  ScrollView,
-} from "react-native";
+import { View, SafeAreaView, Text, Pressable, ScrollView } from "react-native";
 import React, { useEffect } from "react";
 import AppBar from "../components/AppBar";
 import TrainingCard from "../components/TrainingCard";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { selectUserData } from "../Redux/userSlice";
-import { selectUserAllTrainingsData } from "../Redux/userSlice";
-import { fetchUserAllTrainingsData } from "../Redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectUserData,
+  selectUserAllTrainingsData,
+  fetchUserAllTrainingsData,
+} from "../Redux/userSlice";
 
 export default function MyTrainings({ navigation }) {
   const dispatch = useDispatch();

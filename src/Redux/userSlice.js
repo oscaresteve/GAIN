@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserData } from "../database/Database";
-import { getUserAllTrainings } from "../database/Database";
-import { getUserTrainingDay } from "../database/Database";
-import { newUserTrainingDay } from "../database/Database";
-import { deleteUserTraining } from "../database/Database";
-import { setUserTraining } from "../database/Database";
+import {
+  getUserData,
+  getUserAllTrainings,
+  getUserTrainingDay,
+  newUserTrainingDay,
+  deleteUserTraining,
+  setUserTraining,
+  setUserTrainingDay,
+} from "../database/Database";
 
 export const fetchUserData = (email) => {
   return async (dispatch) => {
@@ -32,6 +35,23 @@ export const fetchUserAllTrainingsData = (email) => {
   };
 };
 
+export const fetchUserTrainingDayData = (email, userTrainingName) => {
+  return async (dispatch) => {
+    try {
+      const userTrainingDayDataSnap = await getUserTrainingDay(email);
+      if (userTrainingDayDataSnap !== false) {
+        dispatch(setUserTrainingDayData(userTrainingDayDataSnap));
+      } else {
+        await newUserTrainingDay(email, userTrainingName);
+        const newUserTrainingDaySnap = await getUserTrainingDay(email);
+        dispatch(setUserTrainingDayData(newUserTrainingDaySnap));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const saveUserTrainingData = (email, userTrainingData) => {
   return async (dispatch) => {
     try {
@@ -54,17 +74,18 @@ export const deleteUserTrainingData = (email, userTrainingName) => {
   };
 };
 
-export const fetchUserTrainingDayData = (email, userTrainingName) => {
-  return async (dispatch) => {
+export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
+  return async (dispatch, getState) => {
     try {
-      const userTrainingDayDataSnap = await getUserTrainingDay(email);
-      if (userTrainingDayDataSnap !== false) {
-        dispatch(setUserTrainingDayData(userTrainingDayDataSnap));
-      } else {
-        await newUserTrainingDay(email, userTrainingName);
-        const newUserTrainingDaySnap = await getUserTrainingDay(email);
-        dispatch(setUserTrainingDayData(newUserTrainingDaySnap));
-      }
+      const state = getState();
+      const newUserTrainingDayData = JSON.parse(
+        JSON.stringify(state.user.userTrainingDayData)
+      );
+      newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
+        setIndex
+      ].details.done = true;
+      dispatch(setUserTrainingDayData(newUserTrainingDayData));
+      await setUserTrainingDay(email, newUserTrainingDayData);
     } catch (error) {
       console.error(error);
     }

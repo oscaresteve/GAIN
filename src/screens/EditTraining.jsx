@@ -8,12 +8,9 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { selectGainData } from "../Redux/gainSlice";
-import { selectUserData } from "../Redux/userSlice";
-import { fetchGainData } from "../Redux/gainSlice";
-import { saveUserTrainingData } from "../Redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectGainData, fetchGainData } from "../Redux/gainSlice";
+import { selectUserData, saveUserTrainingData } from "../Redux/userSlice";
 
 export default function EditTraining({ navigation, route }) {
   const dispatch = useDispatch();

@@ -11,15 +11,11 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  registerUser,
-  updateUserData,
-  getUserData,
-} from "../database/Database";
+import { registerUser, updateUserData } from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { useDispatch } from "react-redux";
-import { setUser } from "../Redux/userSlice";
+import { fetchUserData } from "../Redux/userSlice";
 import moment from "moment";
 
 export default function Register({ navigation }) {
@@ -78,16 +74,11 @@ export default function Register({ navigation }) {
         dateBirthISOString,
         formData.gender
       );
-      fetchUserData(formData.email);
+      dispatch(fetchUserData(formData.email));
       navigation.navigate("TabGroup");
     } else {
       Alert.alert("Ese correo ya esta en uso");
     }
-  };
-
-  const fetchUserData = async (email) => {
-    const userDataSnap = await getUserData(email);
-    dispatch(setUser(userDataSnap));
   };
 
   return (

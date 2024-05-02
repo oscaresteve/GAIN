@@ -5,16 +5,15 @@ import {
   Alert,
   Pressable,
   View,
-  Keyboard,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { logInUser, getUserData } from "../database/Database";
+import { logInUser } from "../database/Database";
 
 import { useDispatch } from "react-redux";
-import { setUserData } from "../Redux/userSlice";
+import { fetchUserData } from "../Redux/userSlice";
 
 export default function LogIn({ navigation }) {
   const dispatch = useDispatch();
@@ -42,12 +41,12 @@ export default function LogIn({ navigation }) {
       fetchData(formData.email);
       navigation.navigate("TabGroup");
     } else {
+      Alert.alert("Correo o contraseña incorrectos");
     }
   };
 
-  const fetchData = async (email) => {
-    const userDataSnap = await getUserData(email);
-    dispatch(setUserData(userDataSnap));
+  const fetchData = (email) => {
+    dispatch(fetchUserData(email));
   };
 
   return (

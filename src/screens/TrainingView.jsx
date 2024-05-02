@@ -1,9 +1,7 @@
 import { View, Text, ScrollView, Button, SafeAreaView } from "react-native";
 import React from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { selectUserData } from "../Redux/userSlice";
-import { deleteUserTrainingData } from "../Redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUserData, deleteUserTrainingData } from "../Redux/userSlice";
 export default function Training({ navigation, route }) {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
