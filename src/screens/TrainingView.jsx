@@ -1,7 +1,11 @@
 import { View, Text, ScrollView, Button, SafeAreaView } from "react-native";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUserData, deleteUserTrainingData } from "../Redux/userSlice";
+import {
+  selectUserData,
+  deleteUserTrainingData,
+  setUserTrainingPrimary,
+} from "../Redux/userSlice";
 export default function Training({ navigation, route }) {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
@@ -9,29 +13,38 @@ export default function Training({ navigation, route }) {
 
   const handleDeleteTraining = () => {
     dispatch(
-      deleteUserTrainingData(userData?.email, userTrainingData?.trainingName)
+      deleteUserTrainingData(userData.email, userTrainingData.trainingName)
     );
     navigation.goBack();
   };
 
+  const handleMakeTrainingPrimary = (trainingName) => {
+    dispatch(setUserTrainingPrimary(trainingName));
+    navigation.goBack();
+  };
+
+  const handleEditTraining = () => {
+    navigation.navigate("EditTraining", {
+      userTrainingData: userTrainingData,
+    });
+  };
+
   return (
     <SafeAreaView>
-      <Button
-        title="Edit"
-        onPress={() =>
-          navigation.navigate("EditTraining", {
-            userTrainingData: userTrainingData,
-          })
-        }
-      />
+      <Button title="Edit" onPress={handleEditTraining} />
       <Button title="Delete" onPress={handleDeleteTraining} />
+      <Button
+        title="Make primary"
+        onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
+        disabled={userTrainingData.primary ? true : false}
+      />
       <ScrollView>
-        <View key={userTrainingData?.trainingName}>
+        <View key={userTrainingData.trainingName}>
           <Text className="text-4xl font-bold">
-            {userTrainingData?.trainingName}
+            {userTrainingData.trainingName}
           </Text>
 
-          {userTrainingData?.days?.map((day, dayIndex) => (
+          {userTrainingData.days?.map((day, dayIndex) => (
             <View key={dayIndex}>
               <Text className="text-3xl font-bold">{day.dayName}</Text>
 

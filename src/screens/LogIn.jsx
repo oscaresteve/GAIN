@@ -49,6 +49,16 @@ export default function LogIn({ navigation }) {
     dispatch(fetchUserData(email));
   };
 
+  const handleLoginOscar = async () => {
+    const loginSuccess = await logInUser("oscar@esteve.com", "Oscar2024@");
+    if (loginSuccess === true) {
+      fetchData("oscar@esteve.com");
+      navigation.navigate("TabGroup");
+    } else {
+      Alert.alert("Correo o contraseña incorrectos");
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
       <View className="bg-gray-300 rounded-lg p-5 w-80">
@@ -99,10 +109,10 @@ export default function LogIn({ navigation }) {
           <Text className="text-md font-bold">Hecho</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate("TabGroup")}
+          onPress={handleLoginOscar}
           className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
         >
-          <Text className="text-md font-bold">ByPass</Text>
+          <Text className="text-md font-bold">Login As Oscar</Text>
         </Pressable>
         <Pressable
           onPress={navigation.goBack}

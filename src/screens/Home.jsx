@@ -8,7 +8,7 @@ export default function Home() {
     <SafeAreaView className="flex-1">
       <AppBar />
       <View>
-        <TrainingDayView userTrainingName="TrainingTestNuevo" />
+        <TrainingDayView />
       </View>
     </SafeAreaView>
   );

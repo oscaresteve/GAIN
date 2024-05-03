@@ -7,7 +7,6 @@ import { selectUserData } from "../Redux/userSlice";
 
 export default function Profile() {
   const userData = useSelector(selectUserData);
-  console.log(userData);
 
   return (
     <SafeAreaView>

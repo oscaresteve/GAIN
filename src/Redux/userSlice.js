@@ -26,25 +26,37 @@ export const fetchUserData = (email) => {
 export const fetchUserAllTrainingsData = (email) => {
   return async (dispatch) => {
     try {
-      const userAllTrainigsDataSnap = await getUserAllTrainings(email);
-      if (userAllTrainigsDataSnap !== false) {
-        dispatch(setUserAllTrainingsData(userAllTrainigsDataSnap));
+      const userAllTrainingsDataSnap = await getUserAllTrainings(email);
+      if (userAllTrainingsDataSnap !== false) {
+        dispatch(setUserAllTrainingsData(userAllTrainingsDataSnap));
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 };
 
-export const fetchUserTrainingDayData = (email, userTrainingName) => {
-  return async (dispatch) => {
+export const fetchUserTrainingDayData = (email) => {
+  return async (dispatch, getState) => {
     try {
+      dispatch(fetchUserAllTrainingsData(email));
+      const state = getState();
+      const userAllTrainingsData = state.user.userAllTrainingsData;
       const userTrainingDayDataSnap = await getUserTrainingDay(email);
-      if (userTrainingDayDataSnap !== false) {
+      if (userTrainingDayDataSnap) {
         dispatch(setUserTrainingDayData(userTrainingDayDataSnap));
       } else {
-        await newUserTrainingDay(email, userTrainingName);
-        const newUserTrainingDaySnap = await getUserTrainingDay(email);
-        dispatch(setUserTrainingDayData(newUserTrainingDaySnap));
+        const userTrainingPrimaryData = userAllTrainingsData?.find(
+          (userTrainingData) => userTrainingData.primary === true
+        );
+        if (userTrainingPrimaryData) {
+          await newUserTrainingDay(email, userTrainingPrimaryData);
+          const newUserTrainingDayDataSnap = await getUserTrainingDay(email);
+          dispatch(setUserTrainingDayData(newUserTrainingDayDataSnap));
+        } else {
+          // No hay training marcado como primario
+        }
       }
     } catch (error) {
       console.error(error);
@@ -92,11 +104,35 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
   };
 };
 
+export const setUserTrainingPrimary = (userTrainingName) => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const userData = state.user.userData;
+      const userAllTrainingsData = state.user.userAllTrainingsData;
+      const newUserAllTrainingsData = userAllTrainingsData.map(
+        (userTrainingData) => {
+          if (userTrainingData.trainingName === userTrainingName) {
+            return { ...userTrainingData, primary: true };
+          } else {
+            return { ...userTrainingData, primary: false };
+          }
+        }
+      );
+      newUserAllTrainingsData.map((userTrainingData) => {
+        dispatch(saveUserTrainingData(userData.email, userTrainingData));
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     userData: null,
-    userAllTrainigsData: null,
+    userAllTrainingsData: null,
     userTrainingDayData: null,
   },
   reducers: {
@@ -104,7 +140,7 @@ export const userSlice = createSlice({
       state.userData = action.payload;
     },
     setUserAllTrainingsData: (state, action) => {
-      state.userAllTrainigsData = action.payload;
+      state.userAllTrainingsData = action.payload;
     },
     setUserTrainingDayData: (state, action) => {
       state.userTrainingDayData = action.payload;
@@ -116,7 +152,7 @@ export const { setUserData, setUserAllTrainingsData, setUserTrainingDayData } =
   userSlice.actions;
 export const selectUserData = (state) => state.user.userData;
 export const selectUserAllTrainingsData = (state) =>
-  state.user.userAllTrainigsData;
+  state.user.userAllTrainingsData;
 export const selectUserTrainingDayData = (state) =>
   state.user.userTrainingDayData;
 export default userSlice.reducer;

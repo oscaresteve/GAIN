@@ -18,7 +18,7 @@ export default function EditTraining({ navigation, route }) {
   const userData = useSelector(selectUserData);
 
   const [userTrainingData, setUserTrainingData] = useState(
-    route.params.userTrainingData
+    JSON.parse(JSON.stringify(route.params.userTrainingData))
   );
 
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
@@ -33,7 +33,7 @@ export default function EditTraining({ navigation, route }) {
   const handleAddExercise = (dayIndex, exercise) => {
     setUserTrainingData((prevData) => {
       const newUserTrainingData = { ...prevData };
-      const existingGroup = newUserTrainingData.days[dayIndex]?.groups.find(
+      const existingGroup = newUserTrainingData.days[dayIndex].groups.find(
         (group) => group.groupName === exercise.groupName
       );
 
@@ -43,7 +43,7 @@ export default function EditTraining({ navigation, route }) {
           sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
         });
       } else {
-        newUserTrainingData.days[dayIndex]?.groups.push({
+        newUserTrainingData.days[dayIndex].groups.push({
           groupName: exercise.groupName,
           exercises: [
             {
@@ -53,7 +53,6 @@ export default function EditTraining({ navigation, route }) {
           ],
         });
       }
-      console.log(JSON.stringify(userTrainingData, null, 2));
       return newUserTrainingData;
     });
   };
@@ -75,7 +74,6 @@ export default function EditTraining({ navigation, route }) {
           details: { reps: 1, weight: 5 },
         });
       }
-      console.log(JSON.stringify(userTrainingData, null, 2));
       return newUserTrainingdata;
     });
   };
@@ -96,7 +94,6 @@ export default function EditTraining({ navigation, route }) {
       }
       return newUserTrainingData;
     });
-    console.log(JSON.stringify(userTrainingData, null, 2));
   };
 
   const handleDeleteSet = (dayIndex, groupIndex, exerciseIndex, setIndex) => {
@@ -107,7 +104,6 @@ export default function EditTraining({ navigation, route }) {
       ].sets.splice(setIndex, 1);
       return newUserTrainingData;
     });
-    console.log(JSON.stringify(userTrainingData, null, 2));
   };
 
   const handleIncrementReps = (
@@ -209,7 +205,7 @@ export default function EditTraining({ navigation, route }) {
             {userTrainingData.trainingName}
           </Text>
           <View>
-            {userTrainingData?.days?.map((day, dayIndex) => (
+            {userTrainingData.days?.map((day, dayIndex) => (
               <View key={dayIndex} className="mx-2">
                 <Text className="text-3xl font-bold">{day.dayName}</Text>
                 {day.groups?.map((group, groupIndex) => (
@@ -301,7 +297,7 @@ export default function EditTraining({ navigation, route }) {
                                   )
                                 }
                               />
-                              {exercise.sets?.length === setIndex + 1 &&
+                              {exercise.sets.length === setIndex + 1 &&
                                 exercise.sets.length > 1 && (
                                   <Button
                                     title="Delete Set"
@@ -362,7 +358,7 @@ export default function EditTraining({ navigation, route }) {
                       />
 
                       <Text className="text-3xl font-bold">Bicep</Text>
-                      {gainData?.trainingExercises
+                      {gainData.trainingExercises
                         ?.filter((exercise) => exercise.groupName === "Bicep")
                         ?.sort((a, b) =>
                           a.exerciseName.localeCompare(b.exerciseName)
@@ -408,7 +404,7 @@ export default function EditTraining({ navigation, route }) {
                         })}
 
                       <Text className="text-3xl font-bold">Chest</Text>
-                      {gainData?.trainingExercises
+                      {gainData.trainingExercises
                         ?.filter((exercise) => exercise.groupName === "Chest")
                         ?.sort((a, b) =>
                           a.exerciseName.localeCompare(b.exerciseName)

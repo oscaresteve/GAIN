@@ -8,14 +8,13 @@ import {
   setSetDone,
 } from "../Redux/userSlice";
 
-export default function TrainingDayView({ userTrainingName }) {
+export default function TrainingDayView() {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
   const userTrainingDayData = useSelector(selectUserTrainingDayData);
 
   useEffect(() => {
-    dispatch(fetchUserTrainingDayData(userData?.email, userTrainingName));
-    console.log(userTrainingDayData);
+    dispatch(fetchUserTrainingDayData(userData?.email));
   }, []);
 
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {

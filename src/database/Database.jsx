@@ -158,10 +158,9 @@ export const getUserTrainingDay = async (email) => {
     );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("Firestore", docSnap.data());
       return docSnap.data();
     } else {
-      return false;
+      return null;
     }
   } catch (error) {
     console.error(error);
@@ -180,22 +179,17 @@ export const setUserTrainingDay = async (email, userTrainingDayData) => {
   }
 };
 
-export const newUserTrainingDay = async (email, userTrainingName) => {
+export const newUserTrainingDay = async (email, userTrainingData) => {
   try {
-    const userTrainingData = await getUserTraining(email, userTrainingName);
-    if (userTrainingData !== false) {
+    if (userTrainingData) {
       const docRef = doc(
         collection(database, "users", email, "userTrainingDay"),
         moment(new Date()).format("DD-MM-YYYY")
       );
-      await setDoc(
-        docRef,
-        userTrainingData.days.find(
-          (day) => day.dayName === moment(new Date()).format("dddd")
-        )
+      const dayData = userTrainingData?.days.find(
+        (day) => day.dayName === moment(new Date()).format("dddd")
       );
-    } else {
-      return false;
+      await setDoc(docRef, dayData);
     }
   } catch (error) {
     console.error(error);

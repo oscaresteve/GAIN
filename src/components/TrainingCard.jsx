@@ -12,10 +12,10 @@ export default function TrainingCard({ navigation, userTrainingData }) {
         }}
       >
         <Text className="text-xl font-bold">
-          {userTrainingData?.trainingName}
+          {userTrainingData.trainingName}
         </Text>
         <View className="p-1 bg-gray-50 rounded-md shadow-sm">
-          {userTrainingData?.days?.map((day, dayIndex) => (
+          {userTrainingData.days?.map((day, dayIndex) => (
             <View key={dayIndex} className="mb-1">
               <Text className="font-medium text-xl">{day.dayName}</Text>
               {day.groups?.map((group, groupIndex) => (
