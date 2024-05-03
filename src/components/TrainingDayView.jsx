@@ -14,8 +14,10 @@ export default function TrainingDayView() {
   const userTrainingDayData = useSelector(selectUserTrainingDayData);
 
   useEffect(() => {
-    dispatch(fetchUserTrainingDayData(userData?.email));
-  }, []);
+    if (userData) {
+      dispatch(fetchUserTrainingDayData(userData?.email));
+    }
+  }, [userData]);
 
   const handleDone = (groupIndex, exerciseIndex, setIndex) => {
     dispatch(setSetDone(userData?.email, groupIndex, exerciseIndex, setIndex));

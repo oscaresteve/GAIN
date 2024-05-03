@@ -8,6 +8,7 @@ import {
   setUserTraining,
   setUserTrainingDay,
 } from "../database/Database";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const fetchUserData = (email) => {
   return async (dispatch) => {
@@ -128,6 +129,22 @@ export const setUserTrainingPrimary = (userTrainingName) => {
   };
 };
 
+export const clearUserSession = () => {
+  return async (dispatch) => {
+    try {
+      await AsyncStorage.removeItem("userData");
+      await AsyncStorage.removeItem("userAllTrainingsData");
+      await AsyncStorage.removeItem("userTrainingDayData");
+      // Add any other keys you have stored in AsyncStorage related to the user session
+
+      // Then dispatch logOutUser to reset the Redux state
+      dispatch(logOutUser());
+    } catch (error) {
+      console.error("Error clearing user session:", error);
+    }
+  };
+};
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -145,11 +162,20 @@ export const userSlice = createSlice({
     setUserTrainingDayData: (state, action) => {
       state.userTrainingDayData = action.payload;
     },
+    logOutUser: (state) => {
+      state.userData = null;
+      state.userAllTrainingsData = null;
+      state.userTrainingDayData = null;
+    },
   },
 });
 
-export const { setUserData, setUserAllTrainingsData, setUserTrainingDayData } =
-  userSlice.actions;
+export const {
+  setUserData,
+  setUserAllTrainingsData,
+  setUserTrainingDayData,
+  logOutUser,
+} = userSlice.actions;
 export const selectUserData = (state) => state.user.userData;
 export const selectUserAllTrainingsData = (state) =>
   state.user.userAllTrainingsData;

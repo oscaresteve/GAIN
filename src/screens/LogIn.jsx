@@ -59,6 +59,16 @@ export default function LogIn({ navigation }) {
     }
   };
 
+  const handleLoginTest = async () => {
+    const loginSuccess = await logInUser("test@test.com", "Test111@");
+    if (loginSuccess === true) {
+      fetchData("test@test.com");
+      navigation.navigate("TabGroup");
+    } else {
+      Alert.alert("Correo o contraseña incorrectos");
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
       <View className="bg-gray-300 rounded-lg p-5 w-80">
@@ -113,6 +123,12 @@ export default function LogIn({ navigation }) {
           className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
         >
           <Text className="text-md font-bold">Login As Oscar</Text>
+        </Pressable>
+        <Pressable
+          onPress={handleLoginTest}
+          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
+        >
+          <Text className="text-md font-bold">Login As Test</Text>
         </Pressable>
         <Pressable
           onPress={navigation.goBack}

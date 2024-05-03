@@ -15,8 +15,10 @@ export default function MyTrainings({ navigation }) {
   const userAllTrainings = useSelector(selectUserAllTrainingsData);
 
   useEffect(() => {
-    dispatch(fetchUserAllTrainingsData(userData?.email));
-  }, []);
+    if (userData) {
+      dispatch(fetchUserAllTrainingsData(userData?.email));
+    }
+  }, [userData]);
 
   return (
     <SafeAreaView className="flex-1">

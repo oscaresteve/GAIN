@@ -129,6 +129,7 @@ export const getUserAllTrainings = async (email) => {
     );
     return docsSnap.docs.map((doc) => doc.data());
   } catch (error) {
+    console.log("Error al recoger los trainings");
     console.error(error);
   }
 };
