@@ -1,22 +1,30 @@
-import { View, Text, SafeAreaView, Button } from "react-native";
+import { View, Text, SafeAreaView, Button, Image } from "react-native";
 import React from "react";
 import AppBar from "../components/AppBar";
 
 import { useSelector, useDispatch } from "react-redux";
-import { selectUserData, clearUserSession } from "../Redux/userSlice";
+import { selectUserData, incrementXp } from "../Redux/userSlice";
 
 export default function Profile({ navigation }) {
-  const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
-  const handleLogOut = () => {
-    dispatch(clearUserSession());
-    navigation.navigate("LogIn");
-  };
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView>
       <AppBar />
-      <Text>Email: {userData?.email}</Text>
-      <Button title="logOut" onPress={handleLogOut} />
+      <Image source={{ uri: userData.profilePic }} className="w-48 h-48" />
+      <Text className="text-2xl font-bold">
+        {userData?.name} {userData?.lastName}
+      </Text>
+      <Text>Experience Points: {userData.userXp}</Text>
+      <Button
+        title="Edit Profile"
+        onPress={() => navigation.navigate("EditProfile")}
+      />
+      <Button
+        title="Configuration"
+        onPress={() => navigation.navigate("Configuration")}
+      />
     </SafeAreaView>
   );
 }

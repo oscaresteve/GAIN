@@ -12,6 +12,8 @@ import Configuration from "./screens/Configuration";
 import TrainingView from "./screens/TrainingView";
 import CreateTraining from "./screens/CreateTraining";
 import EditTraining from "./screens/EditTraining";
+import EditProfile from "./screens/EditProfile";
+import Progress from "./screens/Progress";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +29,11 @@ const TabGroup = () => {
       <Tab.Screen
         name="MyTrainings"
         component={MyTrainings}
+        options={{ headerShown: false, animationEnabled: false }}
+      />
+      <Tab.Screen
+        name="Progress"
+        component={Progress}
         options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen
@@ -78,7 +85,15 @@ export default function Navigation() {
             animationEnabled: false,
           }}
         />
-        <Stack.Screen name="TrainingView" component={TrainingView} />
+        <Stack.Screen
+          name="TrainingView"
+          component={TrainingView}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
+        />
         <Stack.Screen
           name="CreateTraining"
           component={CreateTraining}
@@ -91,6 +106,24 @@ export default function Navigation() {
         <Stack.Screen
           name="EditTraining"
           component={EditTraining}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="Configuration"
+          component={Configuration}
           options={{
             headerShown: false,
             gestureEnabled: false,

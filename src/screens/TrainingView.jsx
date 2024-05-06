@@ -31,8 +31,13 @@ export default function Training({ navigation, route }) {
 
   return (
     <SafeAreaView>
+      <Button title="Back" onPress={navigation.goBack} />
       <Button title="Edit" onPress={handleEditTraining} />
-      <Button title="Delete" onPress={handleDeleteTraining} />
+      <Button
+        title="Delete"
+        onPress={handleDeleteTraining}
+        disabled={userTrainingData.primary ? true : false}
+      />
       <Button
         title="Make primary"
         onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}

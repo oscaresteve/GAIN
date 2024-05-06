@@ -7,6 +7,8 @@ import {
   deleteUserTraining,
   setUserTraining,
   setUserTrainingDay,
+  updateUserData,
+  setUserXp,
 } from "../database/Database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -18,6 +20,24 @@ export const fetchUserData = (email) => {
         dispatch(setUserData(userDataSnap));
       } else {
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const saveUserData = (email, userData) => {
+  return async (dispatch) => {
+    try {
+      await updateUserData(
+        email,
+        userData.name,
+        userData.lastName,
+        userData.dateBirth,
+        userData.gender,
+        userData.profilePic
+      );
+      dispatch(setUserData(userData));
     } catch (error) {
       console.error(error);
     }
@@ -68,8 +88,8 @@ export const fetchUserTrainingDayData = (email) => {
 export const saveUserTrainingData = (email, userTrainingData) => {
   return async (dispatch) => {
     try {
-      await setUserTraining(email, userTrainingData);
       dispatch(fetchUserAllTrainingsData(email));
+      await setUserTraining(email, userTrainingData);
     } catch (error) {
       console.error(error);
     }
@@ -79,8 +99,8 @@ export const saveUserTrainingData = (email, userTrainingData) => {
 export const deleteUserTrainingData = (email, userTrainingName) => {
   return async (dispatch) => {
     try {
-      await deleteUserTraining(email, userTrainingName);
       dispatch(fetchUserAllTrainingsData(email));
+      await deleteUserTraining(email, userTrainingName);
     } catch (error) {
       console.error(error);
     }
@@ -91,12 +111,39 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
   return async (dispatch, getState) => {
     try {
       const state = getState();
+      const userData = state.user.userData;
       const newUserTrainingDayData = JSON.parse(
         JSON.stringify(state.user.userTrainingDayData)
       );
+
       newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
         setIndex
       ].details.done = true;
+
+      if (
+        newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets
+          .length -
+          1 ===
+        setIndex
+      ) {
+        newUserTrainingDayData.groups[groupIndex].exercises[
+          exerciseIndex
+        ].done = true;
+        dispatch(incrementXp(userData.email, 15));
+        console.log("Exercise done!");
+      }
+
+      if (
+        newUserTrainingDayData.groups.every((group) =>
+          group.exercises.every((exercise) =>
+            exercise.sets.every((set) => set.details.done)
+          )
+        )
+      ) {
+        newUserTrainingDayData.done = true;
+        dispatch(incrementXp(userData.email, 150));
+        console.log("Day done!");
+      }
       dispatch(setUserTrainingDayData(newUserTrainingDayData));
       await setUserTrainingDay(email, newUserTrainingDayData);
     } catch (error) {
@@ -106,6 +153,7 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
 };
 
 export const setUserTrainingPrimary = (userTrainingName) => {
+  // pasar email por parametro
   return async (dispatch, getState) => {
     try {
       const state = getState();
@@ -135,12 +183,30 @@ export const clearUserSession = () => {
       await AsyncStorage.removeItem("userData");
       await AsyncStorage.removeItem("userAllTrainingsData");
       await AsyncStorage.removeItem("userTrainingDayData");
-      // Add any other keys you have stored in AsyncStorage related to the user session
 
-      // Then dispatch logOutUser to reset the Redux state
       dispatch(logOutUser());
     } catch (error) {
       console.error("Error clearing user session:", error);
+    }
+  };
+};
+
+export const incrementXp = (email, amount) => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const userData = state.user.userData;
+      const newUserData = JSON.parse(JSON.stringify(userData));
+      if (newUserData.userXp) {
+        newUserData.userXp = newUserData.userXp + amount;
+      } else {
+        newUserData.userXp = amount;
+      }
+      console.log(newUserData.userXp);
+      dispatch(setUserData(newUserData));
+      await setUserXp(email, newUserData.userXp);
+    } catch (error) {
+      console.error(error);
     }
   };
 };

@@ -6,6 +6,7 @@ import {
   selectUserTrainingDayData,
   fetchUserTrainingDayData,
   setSetDone,
+  incrementXp,
 } from "../Redux/userSlice";
 
 export default function TrainingDayView() {
@@ -19,8 +20,17 @@ export default function TrainingDayView() {
     }
   }, [userData]);
 
-  const handleDone = (groupIndex, exerciseIndex, setIndex) => {
+  const handleSetDone = (groupIndex, exerciseIndex, setIndex) => {
     dispatch(setSetDone(userData?.email, groupIndex, exerciseIndex, setIndex));
+    dispatch(incrementXp(userData.email, 20));
+  };
+
+  const handleExerciseDone = () => {
+    
+  };
+
+  const handleDayDone = () => {
+    
   };
 
   return (
@@ -57,12 +67,12 @@ export default function TrainingDayView() {
                     </View>
                     <Pressable
                       onPress={() =>
-                        handleDone(groupIndex, exerciseIndex, setIndex)
+                        handleSetDone(groupIndex, exerciseIndex, setIndex)
                       }
                       disabled={
-                        setIndex === 0
-                          ? false
-                          : !exercise.sets[setIndex - 1].details.done
+                        set.details.done ||
+                        (setIndex !== 0 &&
+                          !exercise.sets[setIndex - 1].details.done)
                       }
                       className="flex-end items-center"
                     >

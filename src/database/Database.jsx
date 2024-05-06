@@ -64,7 +64,8 @@ export const updateUserData = async (
   name,
   lastName,
   dateBirth,
-  gender
+  gender,
+  profilePic
 ) => {
   try {
     const docRef = doc(database, "users", email);
@@ -73,6 +74,7 @@ export const updateUserData = async (
       lastName: lastName,
       dateBirth: dateBirth,
       gender: gender,
+      profilePic: profilePic,
     });
   } catch (error) {
     console.error(error);
@@ -206,6 +208,15 @@ export const getGainData = async () => {
     } else {
       return false;
     }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const setUserXp = async (email, newXp) => {
+  try {
+    const docRef = doc(database, "users", email);
+    await updateDoc(docRef, { userXp: newXp });
   } catch (error) {
     console.error(error);
   }
