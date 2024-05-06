@@ -32,13 +32,55 @@ export default function CreateTraining({ navigation }) {
   const [userTrainingData, setUserTrainingData] = useState({
     trainingName: "",
     days: [
-      { dayName: "Monday", groups: [] },
-      { dayName: "Tuesday", groups: [] },
-      { dayName: "Wednesday", groups: [] },
-      { dayName: "Thursday", groups: [] },
-      { dayName: "Friday", groups: [] },
-      { dayName: "Saturday", groups: [] },
-      { dayName: "Sunday", groups: [] },
+      {
+        dayName: "Monday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
+      {
+        dayName: "Tuesday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
+      {
+        dayName: "Wednesday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
+      {
+        dayName: "Thursday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
+      {
+        dayName: "Friday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
+      {
+        dayName: "Saturday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
+      {
+        dayName: "Sunday",
+        groups: [],
+        timeStarted: false,
+        timeEnded: false,
+        done: false,
+      },
     ],
   });
 
@@ -84,7 +126,10 @@ export default function CreateTraining({ navigation }) {
       if (existingGroup) {
         existingGroup.exercises.push({
           exerciseName: exercise.exerciseName,
-          sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
+          sets: [
+            { setNumber: 1, details: { reps: 1, weight: 5, done: false } },
+          ],
+          done: false,
         });
       } else {
         newUserTrainingData.days[dayIndex]?.groups.push({
@@ -92,7 +137,10 @@ export default function CreateTraining({ navigation }) {
           exercises: [
             {
               exerciseName: exercise.exerciseName,
-              sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
+              sets: [
+                { setNumber: 1, details: { reps: 1, weight: 5, done: false } },
+              ],
+              done: false,
             },
           ],
         });
@@ -115,7 +163,7 @@ export default function CreateTraining({ navigation }) {
           exerciseIndex
         ].sets.push({
           setNumber: lastSet.setNumber + 1,
-          details: { reps: 1, weight: 5 },
+          details: { reps: 1, weight: 5, done: false },
         });
       }
       return newUserTrainingdata;

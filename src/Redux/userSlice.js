@@ -141,11 +141,48 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         )
       ) {
         newUserTrainingDayData.done = true;
+        newUserTrainingDayData.timeEnded = new Date().getTime();
         dispatch(incrementXp(userData.email, 150));
         console.log("Day done!");
       }
       dispatch(setUserTrainingDayData(newUserTrainingDayData));
       await setUserTrainingDay(email, newUserTrainingDayData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const startUserTrainingDay = () => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const userData = state.user.userData;
+      const userTrainingDayData = state.user.userTrainingDayData;
+      const newUserTrainingDayData = JSON.parse(
+        JSON.stringify(userTrainingDayData)
+      );
+      newUserTrainingDayData.timeStarted = new Date().getTime();
+      dispatch(setUserTrainingDayData(newUserTrainingDayData));
+      await setUserTrainingDay(userData.email, newUserTrainingDayData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const endUserTrainingDay = () => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const userData = state.user.userData;
+      const userTrainingDayData = state.user.userTrainingDayData;
+      const newUserTrainingDayData = JSON.parse(
+        JSON.stringify(userTrainingDayData)
+      );
+      newUserTrainingDayData.timeEnded = new Date().getTime();
+      dispatch(setUserTrainingDayData(newUserTrainingDayData));
+      await setUserTrainingDay(userData.email, newUserTrainingDayData);
     } catch (error) {
       console.error(error);
     }

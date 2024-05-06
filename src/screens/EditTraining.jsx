@@ -40,7 +40,10 @@ export default function EditTraining({ navigation, route }) {
       if (existingGroup) {
         existingGroup.exercises.push({
           exerciseName: exercise.exerciseName,
-          sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
+          sets: [
+            { setNumber: 1, details: { reps: 1, weight: 5, done: false } },
+          ],
+          done: false,
         });
       } else {
         newUserTrainingData.days[dayIndex].groups.push({
@@ -48,7 +51,10 @@ export default function EditTraining({ navigation, route }) {
           exercises: [
             {
               exerciseName: exercise.exerciseName,
-              sets: [{ setNumber: 1, details: { reps: 1, weight: 5 } }],
+              sets: [
+                { setNumber: 1, details: { reps: 1, weight: 5, done: false } },
+              ],
+              done: false,
             },
           ],
         });
@@ -71,7 +77,7 @@ export default function EditTraining({ navigation, route }) {
           exerciseIndex
         ].sets.push({
           setNumber: lastSet.setNumber + 1,
-          details: { reps: 1, weight: 5 },
+          details: { reps: 1, weight: 5, done: false },
         });
       }
       return newUserTrainingdata;
