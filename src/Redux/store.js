@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import {
   persistReducer,
   persistStore,
@@ -8,23 +8,23 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import userSliceReducer from "./userSlice";
-import gainSliceReducer from "./gainSlice";
-import thunk from "redux-thunk";
+} from 'redux-persist'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import userSliceReducer from './userSlice'
+import gainSliceReducer from './gainSlice'
+import thunk from 'redux-thunk'
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage: AsyncStorage,
-};
+}
 
 const rootReducer = combineReducers({
   user: userSliceReducer,
   gain: gainSliceReducer,
-});
+})
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -34,5 +34,5 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-});
-export const persistor = persistStore(store);
+})
+export const persistor = persistStore(store)

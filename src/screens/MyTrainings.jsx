@@ -1,24 +1,24 @@
-import { View, SafeAreaView, Text, Pressable, ScrollView } from "react-native";
-import React, { useEffect } from "react";
-import AppBar from "../components/AppBar";
-import TrainingCard from "../components/TrainingCard";
-import { useSelector, useDispatch } from "react-redux";
+import { View, SafeAreaView, Text, Pressable, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
+import AppBar from '../components/AppBar'
+import TrainingCard from '../components/TrainingCard'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   selectUserData,
   selectUserAllTrainingsData,
   fetchUserAllTrainingsData,
-} from "../Redux/userSlice";
+} from '../Redux/userSlice'
 
 export default function MyTrainings({ navigation }) {
-  const dispatch = useDispatch();
-  const userData = useSelector(selectUserData);
-  const userAllTrainings = useSelector(selectUserAllTrainingsData);
+  const dispatch = useDispatch()
+  const userData = useSelector(selectUserData)
+  const userAllTrainings = useSelector(selectUserAllTrainingsData)
 
   useEffect(() => {
     if (userData) {
-      dispatch(fetchUserAllTrainingsData(userData?.email));
+      dispatch(fetchUserAllTrainingsData(userData?.email))
     }
-  }, [userData]);
+  }, [userData])
 
   return (
     <SafeAreaView className="flex-1">
@@ -34,7 +34,7 @@ export default function MyTrainings({ navigation }) {
               />
             ))}
             <View className="mx-4 mb-2 p-2 bg-white rounded-md shadow-sm">
-              <Pressable onPress={() => navigation.navigate("CreateTraining")}>
+              <Pressable onPress={() => navigation.navigate('CreateTraining')}>
                 <View className="p-1 bg-gray-50 rounded-md shadow-sm">
                   <Text className="text-xl font-bold">Create new Training</Text>
                 </View>
@@ -44,5 +44,5 @@ export default function MyTrainings({ navigation }) {
         </ScrollView>
       </View>
     </SafeAreaView>
-  );
+  )
 }

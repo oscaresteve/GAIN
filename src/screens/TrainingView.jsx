@@ -1,33 +1,27 @@
-import { View, Text, ScrollView, Button, SafeAreaView } from "react-native";
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  selectUserData,
-  deleteUserTrainingData,
-  setUserTrainingPrimary,
-} from "../Redux/userSlice";
+import { View, Text, ScrollView, Button, SafeAreaView } from 'react-native'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectUserData, deleteUserTrainingData, setUserTrainingPrimary } from '../Redux/userSlice'
 export default function Training({ navigation, route }) {
-  const dispatch = useDispatch();
-  const userData = useSelector(selectUserData);
-  const { userTrainingData } = route.params;
+  const dispatch = useDispatch()
+  const userData = useSelector(selectUserData)
+  const { userTrainingData } = route.params
 
   const handleDeleteTraining = () => {
-    dispatch(
-      deleteUserTrainingData(userData.email, userTrainingData.trainingName)
-    );
-    navigation.goBack();
-  };
+    dispatch(deleteUserTrainingData(userData.email, userTrainingData.trainingName))
+    navigation.goBack()
+  }
 
   const handleMakeTrainingPrimary = (trainingName) => {
-    dispatch(setUserTrainingPrimary(trainingName));
-    navigation.goBack();
-  };
+    dispatch(setUserTrainingPrimary(trainingName))
+    navigation.goBack()
+  }
 
   const handleEditTraining = () => {
-    navigation.navigate("EditTraining", {
+    navigation.navigate('EditTraining', {
       userTrainingData: userTrainingData,
-    });
-  };
+    })
+  }
 
   return (
     <SafeAreaView>
@@ -45,9 +39,7 @@ export default function Training({ navigation, route }) {
       />
       <ScrollView>
         <View key={userTrainingData.trainingName}>
-          <Text className="text-4xl font-bold">
-            {userTrainingData.trainingName}
-          </Text>
+          <Text className="text-4xl font-bold">{userTrainingData.trainingName}</Text>
 
           {userTrainingData.days?.map((day, dayIndex) => (
             <View key={dayIndex}>
@@ -58,13 +50,8 @@ export default function Training({ navigation, route }) {
                   <Text className="text-2xl font-bold">{group.groupName}</Text>
 
                   {group.exercises?.map((exercise, exerciseIndex) => (
-                    <View
-                      key={exerciseIndex}
-                      className="bg-white my-1 p-2 rounded-md shadow-sm"
-                    >
-                      <Text className="text-2xl font-medium">
-                        {exercise.exerciseName}
-                      </Text>
+                    <View key={exerciseIndex} className="bg-white my-1 p-2 rounded-md shadow-sm">
+                      <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
 
                       {exercise.sets?.map((set, setIndex) => (
                         <View
@@ -76,14 +63,10 @@ export default function Training({ navigation, route }) {
                               <Text className="text-lg">{set.setNumber}</Text>
                             </View>
                             <View className="">
-                              <Text className="text-lg">
-                                {set.details.reps} reps
-                              </Text>
+                              <Text className="text-lg">{set.details.reps} reps</Text>
                             </View>
                             <View className="">
-                              <Text className="text-lg">
-                                {set.details.weight} kg
-                              </Text>
+                              <Text className="text-lg">{set.details.weight} kg</Text>
                             </View>
                           </View>
                         </View>
@@ -97,5 +80,5 @@ export default function Training({ navigation, route }) {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }

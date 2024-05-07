@@ -1,85 +1,68 @@
-import {
-  View,
-  Text,
-  Pressable,
-  SafeAreaView,
-  TextInput,
-  Alert,
-  Modal,
-} from "react-native";
-import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { registerUser, updateUserData } from "../database/Database";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Picker } from "@react-native-picker/picker";
-import { useDispatch } from "react-redux";
-import { fetchUserData } from "../Redux/userSlice";
-import moment from "moment";
+import { View, Text, Pressable, SafeAreaView, TextInput, Alert, Modal } from 'react-native'
+import React, { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { registerUser, updateUserData } from '../database/Database'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { Picker } from '@react-native-picker/picker'
+import { useDispatch } from 'react-redux'
+import { fetchUserData } from '../Redux/userSlice'
+import moment from 'moment'
 
 export default function Register({ navigation }) {
-  const [dateBirthModalShow, setdateBirthModalShow] = useState(false);
-  const [selectedDateBirth, setSelectedDateBirth] = useState(null);
-  const [genderModalShow, setGenderModalShow] = useState(false);
-  const [selectedGender, setSelectedGendre] = useState(null);
-  const dispatch = useDispatch();
+  const [dateBirthModalShow, setdateBirthModalShow] = useState(false)
+  const [selectedDateBirth, setSelectedDateBirth] = useState(null)
+  const [genderModalShow, setGenderModalShow] = useState(false)
+  const [selectedGender, setSelectedGendre] = useState(null)
+  const dispatch = useDispatch()
   const validationSchema = yup
     .object()
     .shape({
-      email: yup
-        .string()
-        .email("Correo no valido")
-        .required("Introduce tu correo"),
+      email: yup.string().email('Correo no valido').required('Introduce tu correo'),
       password: yup
         .string()
-        .min(6, "Debe contener al menos 6 caracteres")
-        .required("Introduce una contraseña")
-        .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula")
-        .matches(/[a-z]/, "Debe contener al menos una letra minúscula")
-        .matches(/[0-9]/, "Debe contener al menos un número")
-        .matches(
-          /[!@#$%^&*(),.?":{}|<>]/,
-          "Debe contener al menos un carácter especial"
-        ),
+        .min(6, 'Debe contener al menos 6 caracteres')
+        .required('Introduce una contraseña')
+        .matches(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
+        .matches(/[a-z]/, 'Debe contener al menos una letra minúscula')
+        .matches(/[0-9]/, 'Debe contener al menos un número')
+        .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener al menos un carácter especial'),
       confirmPassword: yup
         .string()
-        .oneOf([yup.ref("password")], "Las contraseñas no coinciden")
-        .required("Repite la contraseña"),
-      name: yup.string().required("Introduce tu nombre"),
-      lastName: yup.string().required("Introduce tus apellidos"),
-      dateBirth: yup.date().required("Selecciona tu fecha de nacimiento"),
-      gender: yup.string().required("Selecciona tu género"),
+        .oneOf([yup.ref('password')], 'Las contraseñas no coinciden')
+        .required('Repite la contraseña'),
+      name: yup.string().required('Introduce tu nombre'),
+      lastName: yup.string().required('Introduce tus apellidos'),
+      dateBirth: yup.date().required('Selecciona tu fecha de nacimiento'),
+      gender: yup.string().required('Selecciona tu género'),
     })
-    .required();
+    .required()
 
   const {
     control,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ resolver: yupResolver(validationSchema) });
+  } = useForm({ resolver: yupResolver(validationSchema) })
 
   const handleRegister = async (formData) => {
-    const registerUserSuccess = await registerUser(
-      formData.email,
-      formData.password
-    );
+    const registerUserSuccess = await registerUser(formData.email, formData.password)
     if (registerUserSuccess === true) {
-      const dateBirthISOString = formData.dateBirth.toISOString();
+      const dateBirthISOString = formData.dateBirth.toISOString()
       await updateUserData(
         formData.email,
         formData.name,
         formData.lastName,
         dateBirthISOString,
         formData.gender
-      );
-      dispatch(fetchUserData(formData.email));
-      navigation.navigate("TabGroup");
+      )
+      dispatch(fetchUserData(formData.email))
+      navigation.navigate('TabGroup')
     } else {
-      Alert.alert("Ese correo ya esta en uso");
+      Alert.alert('Ese correo ya esta en uso')
     }
-  };
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
@@ -99,9 +82,7 @@ export default function Register({ navigation }) {
             />
           )}
         />
-        {errors.email && (
-          <Text className="text-red-500 text-xs">{errors.email.message}</Text>
-        )}
+        {errors.email && <Text className="text-red-500 text-xs">{errors.email.message}</Text>}
         <Controller
           name="password"
           control={control}
@@ -118,11 +99,7 @@ export default function Register({ navigation }) {
             />
           )}
         />
-        {errors.password && (
-          <Text className="text-red-500 text-xs">
-            {errors.password.message}
-          </Text>
-        )}
+        {errors.password && <Text className="text-red-500 text-xs">{errors.password.message}</Text>}
         <Controller
           name="confirmPassword"
           control={control}
@@ -140,9 +117,7 @@ export default function Register({ navigation }) {
           )}
         />
         {errors.confirmPassword && (
-          <Text className="text-red-500 text-xs">
-            {errors.confirmPassword.message}
-          </Text>
+          <Text className="text-red-500 text-xs">{errors.confirmPassword.message}</Text>
         )}
         <Controller
           name="name"
@@ -159,9 +134,7 @@ export default function Register({ navigation }) {
             />
           )}
         />
-        {errors.name && (
-          <Text className="text-red-500 text-xs">{errors.name.message}</Text>
-        )}
+        {errors.name && <Text className="text-red-500 text-xs">{errors.name.message}</Text>}
         <Controller
           name="lastName"
           control={control}
@@ -177,11 +150,7 @@ export default function Register({ navigation }) {
             />
           )}
         />
-        {errors.lastName && (
-          <Text className="text-red-500 text-xs">
-            {errors.lastName.message}
-          </Text>
-        )}
+        {errors.lastName && <Text className="text-red-500 text-xs">{errors.lastName.message}</Text>}
 
         <TextInput
           placeholder="Fecha de nacimiento"
@@ -191,9 +160,7 @@ export default function Register({ navigation }) {
           className="bg-gray-100 p-2 m-1 rounded-lg"
         />
         {errors.dateBirth && (
-          <Text className="text-red-500 text-xs">
-            {errors.dateBirth.message}
-          </Text>
+          <Text className="text-red-500 text-xs">{errors.dateBirth.message}</Text>
         )}
         <Modal
           animationType="slide"
@@ -214,10 +181,8 @@ export default function Register({ navigation }) {
                     minimumDate={new Date(1950, 0, 1)}
                     maximumDate={new Date()}
                     onChange={(event, selectedDate) => {
-                      onChange(selectedDate);
-                      setSelectedDateBirth(
-                        moment(selectedDate).format("YYYY-MM-DD")
-                      );
+                      onChange(selectedDate)
+                      setSelectedDateBirth(moment(selectedDate).format('YYYY-MM-DD'))
                     }}
                   />
                 )}
@@ -239,9 +204,7 @@ export default function Register({ navigation }) {
           value={selectedGender}
           className="bg-gray-100 p-2 m-1 rounded-lg"
         />
-        {errors.gender && (
-          <Text className="text-red-500 text-xs">{errors.gender.message}</Text>
-        )}
+        {errors.gender && <Text className="text-red-500 text-xs">{errors.gender.message}</Text>}
         <Modal
           animationType="slide"
           transparent={true}
@@ -284,5 +247,5 @@ export default function Register({ navigation }) {
         </Pressable>
       </View>
     </SafeAreaView>
-  );
+  )
 }

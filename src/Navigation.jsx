@@ -1,22 +1,22 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import LogIn from "./screens/LogIn";
-import Wellcome from "./screens/Wellcome";
-import Home from "./screens/Home";
-import Register from "./screens/Register";
-import MyTrainings from "./screens/MyTrainings";
-import Profile from "./screens/Profile";
-import Configuration from "./screens/Configuration";
-import TrainingView from "./screens/TrainingView";
-import CreateTraining from "./screens/CreateTraining";
-import EditTraining from "./screens/EditTraining";
-import EditProfile from "./screens/EditProfile";
-import Progress from "./screens/Progress";
+import LogIn from './screens/LogIn'
+import Wellcome from './screens/Wellcome'
+import Home from './screens/Home'
+import Register from './screens/Register'
+import MyTrainings from './screens/MyTrainings'
+import Profile from './screens/Profile'
+import Configuration from './screens/Configuration'
+import TrainingView from './screens/TrainingView'
+import CreateTraining from './screens/CreateTraining'
+import EditTraining from './screens/EditTraining'
+import EditProfile from './screens/EditProfile'
+import Progress from './screens/Progress'
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
 const TabGroup = () => {
   return (
@@ -42,8 +42,8 @@ const TabGroup = () => {
         options={{ headerShown: false, animationEnabled: false }}
       />
     </Tab.Navigator>
-  );
-};
+  )
+}
 
 export default function Navigation() {
   return (
@@ -132,5 +132,5 @@ export default function Navigation() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }

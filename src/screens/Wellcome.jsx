@@ -1,5 +1,5 @@
-import { View, Text, Pressable, SafeAreaView } from "react-native";
-import React from "react";
+import { View, Text, Pressable, SafeAreaView } from 'react-native'
+import React from 'react'
 
 export default function Wellcome({ navigation }) {
   return (
@@ -9,19 +9,19 @@ export default function Wellcome({ navigation }) {
         <Text className="text-xl text-center">Mensaje de Bienvenida</Text>
         <Pressable
           title="Log In"
-          onPress={() => navigation.navigate("LogIn")}
+          onPress={() => navigation.navigate('LogIn')}
           className="bg-gray-400 justify-center items-center p-3 rounded-lg m-1"
         >
           <Text className="text-lg font-bold">Inicia Sesion</Text>
         </Pressable>
 
         <Pressable
-          onPress={() => navigation.navigate("Register")}
+          onPress={() => navigation.navigate('Register')}
           className="bg-gray-400 justify-center items-center p-3 rounded-lg m-1"
         >
           <Text className="text-lg font-bold">Crea tu cuenta</Text>
         </Pressable>
       </View>
     </SafeAreaView>
-  );
+  )
 }

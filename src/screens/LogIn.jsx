@@ -1,73 +1,63 @@
-import {
-  Text,
-  TextInput,
-  SafeAreaView,
-  Alert,
-  Pressable,
-  View,
-} from "react-native";
-import React from "react";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { logInUser } from "../database/Database";
+import { Text, TextInput, SafeAreaView, Alert, Pressable, View } from 'react-native'
+import React from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { logInUser } from '../database/Database'
 
-import { useDispatch } from "react-redux";
-import { fetchUserData } from "../Redux/userSlice";
+import { useDispatch } from 'react-redux'
+import { fetchUserData } from '../Redux/userSlice'
 
 export default function LogIn({ navigation }) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const validationSchema = yup
     .object()
     .shape({
-      email: yup
-        .string()
-        .required("Introduce tu correo electronico")
-        .email("Correo no valido"),
-      password: yup.string().required("Introduce tu contraseña"),
+      email: yup.string().required('Introduce tu correo electronico').email('Correo no valido'),
+      password: yup.string().required('Introduce tu contraseña'),
     })
-    .required();
+    .required()
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(validationSchema) });
+  } = useForm({ resolver: yupResolver(validationSchema) })
 
   const handleLogIn = async (formData) => {
-    const loginSuccess = await logInUser(formData.email, formData.password);
+    const loginSuccess = await logInUser(formData.email, formData.password)
     if (loginSuccess === true) {
-      fetchData(formData.email);
-      navigation.navigate("TabGroup");
+      fetchData(formData.email)
+      navigation.navigate('TabGroup')
     } else {
-      Alert.alert("Correo o contraseña incorrectos");
+      Alert.alert('Correo o contraseña incorrectos')
     }
-  };
+  }
 
   const fetchData = (email) => {
-    dispatch(fetchUserData(email));
-  };
+    dispatch(fetchUserData(email))
+  }
 
   const handleLoginOscar = async () => {
-    const loginSuccess = await logInUser("oscar@esteve.com", "Oscar2024@");
+    const loginSuccess = await logInUser('oscar@esteve.com', 'Oscar2024@')
     if (loginSuccess === true) {
-      fetchData("oscar@esteve.com");
-      navigation.navigate("TabGroup");
+      fetchData('oscar@esteve.com')
+      navigation.navigate('TabGroup')
     } else {
-      Alert.alert("Correo o contraseña incorrectos");
+      Alert.alert('Correo o contraseña incorrectos')
     }
-  };
+  }
 
   const handleLoginTest = async () => {
-    const loginSuccess = await logInUser("test@test.com", "Test111@");
+    const loginSuccess = await logInUser('test@test.com', 'Test111@')
     if (loginSuccess === true) {
-      fetchData("test@test.com");
-      navigation.navigate("TabGroup");
+      fetchData('test@test.com')
+      navigation.navigate('TabGroup')
     } else {
-      Alert.alert("Correo o contraseña incorrectos");
+      Alert.alert('Correo o contraseña incorrectos')
     }
-  };
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
@@ -88,9 +78,7 @@ export default function LogIn({ navigation }) {
             />
           )}
         />
-        {errors.email && (
-          <Text className="text-red-500 text-xs">{errors.email.message}</Text>
-        )}
+        {errors.email && <Text className="text-red-500 text-xs">{errors.email.message}</Text>}
 
         <Controller
           name="password"
@@ -107,11 +95,7 @@ export default function LogIn({ navigation }) {
             />
           )}
         />
-        {errors.password && (
-          <Text className="text-red-500 text-xs">
-            {errors.password.message}
-          </Text>
-        )}
+        {errors.password && <Text className="text-red-500 text-xs">{errors.password.message}</Text>}
         <Pressable
           onPress={handleSubmit(handleLogIn)}
           className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
@@ -138,5 +122,5 @@ export default function LogIn({ navigation }) {
         </Pressable>
       </View>
     </SafeAreaView>
-  );
+  )
 }

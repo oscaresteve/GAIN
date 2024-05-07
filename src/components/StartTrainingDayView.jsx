@@ -1,12 +1,12 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { startUserTrainingDay } from "../Redux/userSlice";
+import { View, Text, Button } from 'react-native'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { startUserTrainingDay } from '../Redux/userSlice'
 export default function StartTrainingView() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const handleStartTrainingDay = () => {
-    dispatch(startUserTrainingDay());
-  };
+    dispatch(startUserTrainingDay())
+  }
   return (
     <View>
       <Text>StartTrainingView</Text>
@@ -14,5 +14,5 @@ export default function StartTrainingView() {
         <Button title="start training now" onPress={handleStartTrainingDay} />
       </View>
     </View>
-  );
+  )
 }

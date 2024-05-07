@@ -1,39 +1,32 @@
-import {
-  View,
-  Text,
-  Button,
-  SafeAreaView,
-  TextInput,
-  Image,
-} from "react-native";
-import React, { useState } from "react";
+import { View, Text, Button, SafeAreaView, TextInput, Image } from 'react-native'
+import React, { useState } from 'react'
 
-import { useSelector, useDispatch } from "react-redux";
-import { selectUserData, saveUserData } from "../Redux/userSlice";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as ImagePicker from "expo-image-picker";
+import { useSelector, useDispatch } from 'react-redux'
+import { selectUserData, saveUserData } from '../Redux/userSlice'
+import { useForm, Controller } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as ImagePicker from 'expo-image-picker'
 
 export default function EditProfile({ navigation }) {
-  const dispatch = useDispatch();
-  const userData = useSelector(selectUserData);
-  const [selectedProfilePic, setSelectedProfilePic] = useState(null);
+  const dispatch = useDispatch()
+  const userData = useSelector(selectUserData)
+  const [selectedProfilePic, setSelectedProfilePic] = useState(null)
 
   const validationSchema = yup
     .object()
     .shape({
-      name: yup.string().required("Introduce tu nombre"),
-      lastName: yup.string().required("Introduce tus apellidos"),
+      name: yup.string().required('Introduce tu nombre'),
+      lastName: yup.string().required('Introduce tus apellidos'),
     })
-    .required();
+    .required()
 
   const {
     control,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ resolver: yupResolver(validationSchema) });
+  } = useForm({ resolver: yupResolver(validationSchema) })
 
   const handleSelectProfilePic = async () => {
     // No permissions request is necessary for launching the image library
@@ -41,35 +34,29 @@ export default function EditProfile({ navigation }) {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
-    });
-    console.log(result);
+    })
+    console.log(result)
     if (!result.canceled) {
-      setSelectedProfilePic(result.assets[0].uri);
+      setSelectedProfilePic(result.assets[0].uri)
     }
-  };
+  }
 
   const handleSave = async (formData) => {
-    const newUserData = JSON.parse(JSON.stringify(userData));
-    newUserData.name = formData.name;
-    newUserData.lastName = formData.lastName;
-    newUserData.profilePic = selectedProfilePic;
-    dispatch(saveUserData(userData.email, newUserData));
-    navigation.navigate("Profile");
-  };
+    const newUserData = JSON.parse(JSON.stringify(userData))
+    newUserData.name = formData.name
+    newUserData.lastName = formData.lastName
+    newUserData.profilePic = selectedProfilePic
+    dispatch(saveUserData(userData.email, newUserData))
+    navigation.navigate('Profile')
+  }
 
   return (
     <SafeAreaView>
       <Button title="Back" onPress={navigation.goBack} />
       <View>
-        <Button
-          title="Pick an image from camera roll"
-          onPress={handleSelectProfilePic}
-        />
+        <Button title="Pick an image from camera roll" onPress={handleSelectProfilePic} />
       </View>
-      <Image
-        source={{ uri: selectedProfilePic || userData.profilePic }}
-        className="w-48 h-48"
-      />
+      <Image source={{ uri: selectedProfilePic || userData.profilePic }} className="w-48 h-48" />
       <Text>Name: </Text>
       <Controller
         name="name"
@@ -86,9 +73,7 @@ export default function EditProfile({ navigation }) {
           />
         )}
       />
-      {errors.name && (
-        <Text className="text-red-500 text-xs">{errors.name.message}</Text>
-      )}
+      {errors.name && <Text className="text-red-500 text-xs">{errors.name.message}</Text>}
       <Text>Last Name: </Text>
       <Controller
         name="lastName"
@@ -105,11 +90,9 @@ export default function EditProfile({ navigation }) {
           />
         )}
       />
-      {errors.lastName && (
-        <Text className="text-red-500 text-xs">{errors.lastName.message}</Text>
-      )}
+      {errors.lastName && <Text className="text-red-500 text-xs">{errors.lastName.message}</Text>}
 
       <Button title="save" onPress={handleSubmit(handleSave)} />
     </SafeAreaView>
-  );
+  )
 }
