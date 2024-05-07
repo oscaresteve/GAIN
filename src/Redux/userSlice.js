@@ -162,39 +162,9 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         dispatch(incrementXp(email, 150))
         console.log('Day done!')
       }
-      dispatch(setUserData(newUserData))
+      dispatch(saveUserData(email, newUserData))
       dispatch(setUserTrainingDayData(newUserTrainingDayData))
-      /* dispatch(updateUserStats(email)) */
-      await updateUserData(email, newUserData)
       await setUserTrainingDay(email, newUserTrainingDayData)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
-
-export const updateUserStats = (email) => {
-  return async (dispatch, getState) => {
-    try {
-      const state = getState()
-      const userData = state.user.userData
-      const newUserData = JSON.parse(JSON.stringify(userData))
-      const userTrainingDayData = state.user.userTrainingDayData
-
-      const totalExercisesNumber = userTrainingDayData.dayStats.totalExercisesNumber
-      const totalSetsNumber = userTrainingDayData.dayStats.totalSetsNumber
-      const totalRepsNumber = userTrainingDayData.dayStats.totalRepsNumber
-      const totalWeightNumber = userTrainingDayData.dayStats.totalWeightNumber
-      const totalTrainingTime = userTrainingDayData.dayStats.totalTrainingTime
-
-      newUserData.userStats.userTotalExercisesNumber = totalExercisesNumber
-      newUserData.userStats.userTotalSetsNumber = totalSetsNumber
-      newUserData.userStats.userTotalRepsNumber = totalRepsNumber
-      newUserData.userStats.userTotalWeightNumber = totalWeightNumber
-      newUserData.userStats.userTotalTrainingTime = totalTrainingTime
-
-      dispatch(setUserData(newUserData))
-      await setUserStats(email, newUserData.userStats)
     } catch (error) {
       console.error(error)
     }
