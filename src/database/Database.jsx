@@ -184,7 +184,20 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
       const dayData = userTrainingData?.days.find(
         (day) => day.dayName === moment(new Date()).format('dddd')
       )
-      await setDoc(docRef, dayData)
+      const newDayData = JSON.parse(JSON.stringify(dayData))
+      newDayData.trainingName = userTrainingData.trainingName
+      newDayData.done = false
+      newDayData.timeStarted = false
+      newDayData.timeEnded = false
+      newDayData.dayStats = {
+        totalTrainingTime: null,
+        totalExercisesNumber: null,
+        totalSetsNumber: null,
+        totalRepsNumber: null,
+        totalWeightNumber: null,
+      }
+
+      await setDoc(docRef, newDayData)
     }
   } catch (error) {
     console.error(error)
