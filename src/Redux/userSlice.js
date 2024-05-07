@@ -87,10 +87,16 @@ export const fetchUserTrainingDayData = (email) => {
 }
 
 export const saveUserTrainingData = (email, userTrainingData) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
+      const state = getState()
+      const userAllTrainingsData = state.user.userAllTrainingsData
+      const newUserTrainingData = userTrainingData
+      if (userAllTrainingsData.length === 0) {
+        newUserTrainingData.primary = true
+      }
       dispatch(fetchUserAllTrainingsData(email))
-      await setUserTraining(email, userTrainingData)
+      await setUserTraining(email, newUserTrainingData)
     } catch (error) {
       console.error(error)
     }

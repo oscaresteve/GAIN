@@ -129,6 +129,7 @@ export default function CreateTraining({ navigation }) {
         },
       },
     ],
+    primary: false,
   })
 
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
@@ -298,7 +299,6 @@ export default function CreateTraining({ navigation }) {
       return newUserTrainingData
     })
   }
-
   const handleSaveTraining = () => {
     dispatch(saveUserTrainingData(userData?.email, userTrainingData))
     navigation.navigate('MyTrainings')
