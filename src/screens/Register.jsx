@@ -47,17 +47,17 @@ export default function Register({ navigation }) {
   } = useForm({ resolver: yupResolver(validationSchema) })
 
   const handleRegister = async (formData) => {
+    const userData = {
+      email: formData.email,
+      name: formData.name,
+      lastName: formData.lastName,
+      dateBirth: formData.dateBirth.getTime(),
+      gender: formData.gender,
+    }
     const registerUserSuccess = await registerUser(formData.email, formData.password)
     if (registerUserSuccess === true) {
-      const dateBirthISOString = formData.dateBirth.toISOString()
-      await updateUserData(
-        formData.email,
-        formData.name,
-        formData.lastName,
-        dateBirthISOString,
-        formData.gender
-      )
-      dispatch(fetchUserData(formData.email))
+      await updateUserData(formData.email, userData)
+      dispatch(fetchUserData(userData.email))
       navigation.navigate('TabGroup')
     } else {
       Alert.alert('Ese correo ya esta en uso')

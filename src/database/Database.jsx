@@ -72,16 +72,10 @@ export const registerUser = async (email, password) => {
   }
 }
 
-export const updateUserData = async (email, name, lastName, dateBirth, gender, profilePic) => {
+export const updateUserData = async (email, userData) => {
   try {
     const docRef = doc(database, 'users', email)
-    await updateDoc(docRef, {
-      name: name,
-      lastName: lastName,
-      dateBirth: dateBirth,
-      gender: gender,
-      profilePic: profilePic,
-    })
+    await updateDoc(docRef, userData)
   } catch (error) {
     console.error(error)
   }
