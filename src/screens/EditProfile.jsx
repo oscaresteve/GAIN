@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker'
 export default function EditProfile({ navigation }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
-  const [selectedProfilePic, setSelectedProfilePic] = useState(null)
+  const [profilePic, setProfilePic] = useState(userData.profilePic)
 
   const validationSchema = yup
     .object()
@@ -35,9 +35,8 @@ export default function EditProfile({ navigation }) {
       aspect: [1, 1],
       quality: 1,
     })
-    console.log(result)
     if (!result.canceled) {
-      setSelectedProfilePic(result.assets[0].uri)
+      setProfilePic(result.assets[0].uri)
     }
   }
 
@@ -45,7 +44,7 @@ export default function EditProfile({ navigation }) {
     const newUserData = JSON.parse(JSON.stringify(userData))
     newUserData.name = formData.name
     newUserData.lastName = formData.lastName
-    newUserData.profilePic = selectedProfilePic
+    newUserData.profilePic = profilePic
     dispatch(saveUserData(userData.email, newUserData))
     navigation.navigate('Profile')
   }
@@ -56,7 +55,7 @@ export default function EditProfile({ navigation }) {
       <View>
         <Button title="Pick an image from camera roll" onPress={handleSelectProfilePic} />
       </View>
-      <Image source={{ uri: selectedProfilePic || userData.profilePic }} className="w-48 h-48" />
+      <Image source={{ uri: profilePic }} className="w-48 h-48" />
       <Text>Name: </Text>
       <Controller
         name="name"
