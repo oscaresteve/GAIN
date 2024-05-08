@@ -12,6 +12,7 @@ import {
   setUserStats,
 } from '../database/Database'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import moment from 'moment'
 
 export const fetchUserData = (email) => {
   return async (dispatch) => {
@@ -253,6 +254,62 @@ export const incrementXp = (email, amount) => {
       }
       dispatch(setUserData(newUserData))
       await setUserXp(email, newUserData.userXp)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const saveBodyWeightProgress = (email, bodyWeight) => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState()
+      const userData = state.user.userData
+      const newUserData = JSON.parse(JSON.stringify(userData))
+      newUserData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYYMMDD')] = {
+        date: moment(new Date()).format('YYYYMMDD'),
+        bodyWeight: bodyWeight,
+      }
+      dispatch(saveUserData(email, newUserData))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const newPersonalRecord = (email, exercise, reps) => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState()
+      const userData = state.user.userData
+      const newUserData = JSON.parse(JSON.stringify(userData))
+      newUserData.userProgress.userPersonalRecords.push({
+        exercise: exercise,
+        reps: reps,
+        marks: {},
+      })
+
+      dispatch(saveUserData(email, newUserData))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const markPersonalRecord = (email, exercise, reps, mark) => {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState()
+      const newUserData = JSON.parse(JSON.stringify(state.user.userData))
+      newUserData.userProgress.userPresonalRecords.map((record) => {
+        if (record.exercise.exerciseName === exercise.exerciseName) {
+          record.marks[moment(new Date()).format('YYYYMMDD')] = {
+            date: moment(new Date()).format('YYYYMMDD'),
+            mark: mark,
+          }
+        }
+      })
+      dispatch(saveUserData(email, newUserData))
     } catch (error) {
       console.error(error)
     }

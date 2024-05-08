@@ -19,6 +19,7 @@ import {
   selectUserAllTrainingsData,
   saveUserTrainingData,
 } from '../Redux/userSlice'
+import moment from 'moment'
 
 export default function CreateTraining({ navigation }) {
   const dispatch = useDispatch()
@@ -30,13 +31,13 @@ export default function CreateTraining({ navigation }) {
   const [userTrainingData, setUserTrainingData] = useState({
     trainingName: '',
     days: [
-      { dayName: 'Monday', groups: [] },
-      { dayName: 'Tuesday', groups: [] },
-      { dayName: 'Wednesday', groups: [] },
-      { dayName: 'Thursday', groups: [] },
-      { dayName: 'Friday', groups: [] },
-      { dayName: 'Saturday', groups: [] },
-      { dayName: 'Sunday', groups: [] },
+      { day: '1', groups: [] },
+      { day: '2', groups: [] },
+      { day: '3', groups: [] },
+      { day: '4', groups: [] },
+      { day: '5', groups: [] },
+      { day: '6', groups: [] },
+      { day: '0', groups: [] },
     ],
     primary: false,
   })
@@ -240,7 +241,7 @@ export default function CreateTraining({ navigation }) {
         <View className="flex-1">
           {userTrainingData?.days?.map((day, dayIndex) => (
             <View key={dayIndex} className="mx-2">
-              <Text className="text-3xl font-bold">{day.dayName}</Text>
+              <Text className="text-3xl font-bold">{moment(day.day, 'd').format('dddd')}</Text>
               {day.groups?.map((group, groupIndex) => (
                 <View key={groupIndex}>
                   <Text className="text-2xl font-bold">{group.groupName}</Text>

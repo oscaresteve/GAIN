@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectGainData, fetchGainData } from '../Redux/gainSlice'
 import { selectUserData, saveUserTrainingData } from '../Redux/userSlice'
+import moment from 'moment'
 
 export default function EditTraining({ navigation, route }) {
   const dispatch = useDispatch()
@@ -170,7 +171,7 @@ export default function EditTraining({ navigation, route }) {
           <View>
             {userTrainingData.days?.map((day, dayIndex) => (
               <View key={dayIndex} className="mx-2">
-                <Text className="text-3xl font-bold">{day.dayName}</Text>
+                <Text className="text-3xl font-bold">{moment(day.day, 'd').format('dddd')}</Text>
                 {day.groups?.map((group, groupIndex) => (
                   <View key={groupIndex}>
                     <Text className="text-2xl font-bold">{group.groupName}</Text>

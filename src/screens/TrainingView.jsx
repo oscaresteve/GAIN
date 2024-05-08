@@ -2,6 +2,8 @@ import { View, Text, ScrollView, Button, SafeAreaView } from 'react-native'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUserData, deleteUserTrainingData, setUserTrainingPrimary } from '../Redux/userSlice'
+import moment from 'moment'
+
 export default function Training({ navigation, route }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
@@ -43,7 +45,7 @@ export default function Training({ navigation, route }) {
 
           {userTrainingData.days?.map((day, dayIndex) => (
             <View key={dayIndex}>
-              <Text className="text-3xl font-bold">{day.dayName}</Text>
+              <Text className="text-3xl font-bold">{moment(day.day, 'd').format('dddd')}</Text>
 
               {day.groups?.map((group, groupIndex) => (
                 <View key={groupIndex}>

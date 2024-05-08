@@ -64,6 +64,10 @@ export const registerUser = async (email, password) => {
           userTotalTrainingTime: null,
           userTotalWeightNumber: null,
         },
+        userProgress: {
+          bodyWeightProgress: [],
+          userPersonalRecords: [],
+        },
       })
       return true
     }
@@ -148,8 +152,8 @@ export const setUserTraining = async (email, userTrainingData) => {
 export const getUserTrainingDay = async (email) => {
   try {
     const docRef = doc(
-      collection(database, 'users', email, 'userTrainingDay'),
-      moment(new Date()).format('DD-MM-YYYY')
+      collection(database, 'users', email, 'userTrainingDays'),
+      moment(new Date()).format('YYYYMMDD')
     )
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
@@ -165,8 +169,8 @@ export const getUserTrainingDay = async (email) => {
 export const setUserTrainingDay = async (email, userTrainingDayData) => {
   try {
     const docRef = doc(
-      collection(database, 'users', email, 'userTrainingDay'),
-      moment(new Date()).format('DD-MM-YYYY')
+      collection(database, 'users', email, 'userTrainingDays'),
+      moment(new Date()).format('YYYYMMDD')
     )
     await setDoc(docRef, userTrainingDayData)
   } catch (error) {
@@ -178,13 +182,14 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
   try {
     if (userTrainingData) {
       const docRef = doc(
-        collection(database, 'users', email, 'userTrainingDay'),
-        moment(new Date()).format('DD-MM-YYYY')
+        collection(database, 'users', email, 'userTrainingDays'),
+        moment(new Date()).format('YYYYMMDD')
       )
       const dayData = userTrainingData?.days.find(
-        (day) => day.dayName === moment(new Date()).format('dddd')
+        (day) => day.day === moment(new Date()).format('d')
       )
       const newDayData = JSON.parse(JSON.stringify(dayData))
+      newDayData.date = moment(new Date()).format('YYYYMMDD')
       newDayData.trainingName = userTrainingData.trainingName
       newDayData.done = false
       newDayData.timeStarted = false
