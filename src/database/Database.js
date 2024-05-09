@@ -191,15 +191,22 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
       const newDayData = JSON.parse(JSON.stringify(dayData))
       newDayData.date = moment(new Date()).format('YYYYMMDD')
       newDayData.trainingName = userTrainingData.trainingName
-      newDayData.done = false
-      newDayData.timeStarted = false
-      newDayData.timeEnded = false
-      newDayData.dayStats = {
-        totalTrainingTime: null,
-        totalExercisesNumber: null,
-        totalSetsNumber: null,
-        totalRepsNumber: null,
-        totalWeightNumber: null,
+
+      if (newDayData.groups.length > 0) {
+        newDayData.restDay = false
+        newDayData.done = false
+        newDayData.timeStarted = false
+        newDayData.timeEnded = false
+        newDayData.dayStats = {
+          totalTrainingTime: null,
+          totalExercisesNumber: null,
+          totalSetsNumber: null,
+          totalRepsNumber: null,
+          totalWeightNumber: null,
+        }
+      } else {
+        newDayData.restDay = true
+        newDayData.done = true
       }
 
       await setDoc(docRef, newDayData)

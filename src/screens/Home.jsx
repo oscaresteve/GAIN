@@ -10,7 +10,7 @@ import {
   selectUserData,
   fetchUserTrainingDayData,
 } from '../Redux/userSlice'
-
+import RestDayTrainingView from '../components/RestDayTrainingView'
 export default function Home() {
   const dispatch = useDispatch()
   const userTrainingDayData = useSelector(selectUserTrainingDayData)
@@ -24,7 +24,9 @@ export default function Home() {
   }, [userData])
 
   useEffect(() => {
-    if (userTrainingDayData) {
+    if (userTrainingDayData.restDay) {
+      setView(<RestDayTrainingView />)
+    } else {
       if (userTrainingDayData.timeEnded) {
         setView(<FinishTrainingView />)
       } else if (userTrainingDayData.timeStarted) {
