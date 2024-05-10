@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Button, SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, Button, SafeAreaView, TextInput } from 'react-native'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUserData, deleteUserTrainingData, setUserTrainingPrimary } from '../Redux/userSlice'
@@ -73,6 +73,12 @@ export default function Training({ navigation, route }) {
                           </View>
                         </View>
                       ))}
+
+                      <TextInput
+                        value={exercise.exerciseNotes}
+                        editable={false}
+                        className="bg-gray-100 p-2 m-1 rounded-lg"
+                      />
                     </View>
                   ))}
                 </View>

@@ -82,6 +82,7 @@ export default function CreateTraining({ navigation }) {
           exerciseName: exercise.exerciseName,
           sets: [{ setNumber: 1, details: { reps: 1, weight: 5, done: false } }],
           done: false,
+          exerciseNotes: null,
         })
       } else {
         newUserTrainingData.days[dayIndex]?.groups.push({
@@ -91,6 +92,7 @@ export default function CreateTraining({ navigation }) {
               exerciseName: exercise.exerciseName,
               sets: [{ setNumber: 1, details: { reps: 1, weight: 5, done: false } }],
               done: false,
+              exerciseNotes: null,
             },
           ],
         })
@@ -113,6 +115,15 @@ export default function CreateTraining({ navigation }) {
         })
       }
       return newUserTrainingdata
+    })
+  }
+
+  const handleSetExerciseNotes = (text, dayIndex, groupIndex, exerciseIndex) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData }
+      newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[exerciseIndex].exerciseNotes =
+        text
+      return newUserTrainingData
     })
   }
 
@@ -306,6 +317,14 @@ export default function CreateTraining({ navigation }) {
                       <Button
                         title="Add Set"
                         onPress={() => handleAddSet(dayIndex, groupIndex, exerciseIndex)}
+                      />
+                      <TextInput
+                        value={exercise.exerciseNotes}
+                        placeholder="Add exercise Notes"
+                        onChangeText={(text) =>
+                          handleSetExerciseNotes(text, dayIndex, groupIndex, exerciseIndex)
+                        }
+                        className="bg-gray-100 p-2 m-1 rounded-lg"
                       />
                     </View>
                   ))}

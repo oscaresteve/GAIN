@@ -1,4 +1,13 @@
-import { View, Text, SafeAreaView, Button, ScrollView, Modal, Pressable } from 'react-native'
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Button,
+  ScrollView,
+  Modal,
+  Pressable,
+  TextInput,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectGainData, fetchGainData } from '../Redux/gainSlice'
@@ -48,6 +57,15 @@ export default function EditTraining({ navigation, route }) {
           ],
         })
       }
+      return newUserTrainingData
+    })
+  }
+
+  const handleSetExerciseNotes = (text, dayIndex, groupIndex, exerciseIndex) => {
+    setUserTrainingData((prevData) => {
+      const newUserTrainingData = { ...prevData }
+      newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[exerciseIndex].exerciseNotes =
+        text
       return newUserTrainingData
     })
   }
@@ -247,6 +265,14 @@ export default function EditTraining({ navigation, route }) {
                         <Button
                           title="Add Set"
                           onPress={() => handleAddSet(dayIndex, groupIndex, exerciseIndex)}
+                        />
+                        <TextInput
+                          value={exercise.exerciseNotes}
+                          placeholder="Add exercise Notes"
+                          onChangeText={(text) =>
+                            handleSetExerciseNotes(text, dayIndex, groupIndex, exerciseIndex)
+                          }
+                          className="bg-gray-100 p-2 m-1 rounded-lg"
                         />
                       </View>
                     ))}
