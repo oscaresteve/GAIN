@@ -14,6 +14,7 @@ import CreateTraining from './screens/CreateTraining'
 import EditTraining from './screens/EditTraining'
 import EditProfile from './screens/EditProfile'
 import Progress from './screens/Progress'
+import CalendarView from './screens/CalendarView'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -22,8 +23,8 @@ const TabGroup = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="CalendarView"
+        component={CalendarView}
         options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen
@@ -31,6 +32,12 @@ const TabGroup = () => {
         component={MyTrainings}
         options={{ headerShown: false, animationEnabled: false }}
       />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false, animationEnabled: false }}
+      />
+
       <Tab.Screen
         name="Progress"
         component={Progress}

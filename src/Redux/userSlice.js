@@ -10,6 +10,7 @@ import {
   updateUserData,
   setUserXp,
   setUserStats,
+  getUserAllTrainingDays,
 } from '../database/Database'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
@@ -43,7 +44,7 @@ export const fetchUserAllTrainingsData = (email) => {
   return async (dispatch) => {
     try {
       const userAllTrainingsDataSnap = await getUserAllTrainings(email)
-      if (userAllTrainingsDataSnap !== false) {
+      if (userAllTrainingsDataSnap !== null) {
         dispatch(setUserAllTrainingsData(userAllTrainingsDataSnap))
       } else {
       }
@@ -73,6 +74,20 @@ export const fetchUserTrainingDayData = (email) => {
         } else {
           // No hay training marcado como primario
         }
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const fetchUserAllTrainingDaysData = (email) => {
+  return async (dispatch, getState) => {
+    try {
+      const userAllTrainingDaysDataSnap = await getUserAllTrainingDays(email)
+      if (userAllTrainingDaysDataSnap !== null) {
+        dispatch(setUserAllTrainingDaysData(userAllTrainingDaysDataSnap))
+        console.log(JSON.stringify(userAllTrainingDaysDataSnap, null, 2))
       }
     } catch (error) {
       console.error(error)
@@ -266,8 +281,8 @@ export const saveBodyWeightProgress = (email, bodyWeight) => {
       const state = getState()
       const userData = state.user.userData
       const newUserData = JSON.parse(JSON.stringify(userData))
-      newUserData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYYMMDD')] = {
-        date: moment(new Date()).format('YYYYMMDD'),
+      newUserData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')] = {
+        date: moment(new Date()).format('YYYY-MM-DD'),
         bodyWeight: bodyWeight,
       }
       dispatch(saveUserData(email, newUserData))
@@ -303,8 +318,8 @@ export const markPersonalRecord = (email, exercise, reps, mark) => {
       const newUserData = JSON.parse(JSON.stringify(state.user.userData))
       newUserData.userProgress.userPresonalRecords.map((record) => {
         if (record.exercise.exerciseName === exercise.exerciseName) {
-          record.marks[moment(new Date()).format('YYYYMMDD')] = {
-            date: moment(new Date()).format('YYYYMMDD'),
+          record.marks[moment(new Date()).format('YYYY-MM-DD')] = {
+            date: moment(new Date()).format('YYYY-MM-DD'),
             mark: mark,
           }
         }
@@ -322,6 +337,7 @@ export const userSlice = createSlice({
     userData: null,
     userAllTrainingsData: null,
     userTrainingDayData: null,
+    userAllTrainingDaysData: null,
   },
   reducers: {
     setUserData: (state, action) => {
@@ -333,6 +349,9 @@ export const userSlice = createSlice({
     setUserTrainingDayData: (state, action) => {
       state.userTrainingDayData = action.payload
     },
+    setUserAllTrainingDaysData: (state, action) => {
+      state.userAllTrainingDaysData = action.payload
+    },
     logOutUser: (state) => {
       state.userData = null
       state.userAllTrainingsData = null
@@ -341,9 +360,15 @@ export const userSlice = createSlice({
   },
 })
 
-export const { setUserData, setUserAllTrainingsData, setUserTrainingDayData, logOutUser } =
-  userSlice.actions
+export const {
+  setUserData,
+  setUserAllTrainingsData,
+  setUserTrainingDayData,
+  setUserAllTrainingDaysData,
+  logOutUser,
+} = userSlice.actions
 export const selectUserData = (state) => state.user.userData
 export const selectUserAllTrainingsData = (state) => state.user.userAllTrainingsData
 export const selectUserTrainingDayData = (state) => state.user.userTrainingDayData
+export const selectUserAllTrainingDaysData = (state) => state.user.userAllTrainingDaysData
 export default userSlice.reducer

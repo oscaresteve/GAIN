@@ -127,7 +127,6 @@ export const getUserAllTrainings = async (email) => {
     const docsSnap = await getDocs(collection(database, 'users', email, 'userTrainings'))
     return docsSnap.docs.map((doc) => doc.data())
   } catch (error) {
-    console.log('Error al recoger los trainings')
     console.error(error)
   }
 }
@@ -153,7 +152,7 @@ export const getUserTrainingDay = async (email) => {
   try {
     const docRef = doc(
       collection(database, 'users', email, 'userTrainingDays'),
-      moment(new Date()).format('YYYYMMDD')
+      moment(new Date()).format('YYYY-MM-DD')
     )
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
@@ -170,7 +169,7 @@ export const setUserTrainingDay = async (email, userTrainingDayData) => {
   try {
     const docRef = doc(
       collection(database, 'users', email, 'userTrainingDays'),
-      moment(new Date()).format('YYYYMMDD')
+      moment(new Date()).format('YYYY-MM-DD')
     )
     await setDoc(docRef, userTrainingDayData)
   } catch (error) {
@@ -183,13 +182,13 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
     if (userTrainingData) {
       const docRef = doc(
         collection(database, 'users', email, 'userTrainingDays'),
-        moment(new Date()).format('YYYYMMDD')
+        moment(new Date()).format('YYYY-MM-DD')
       )
       const dayData = userTrainingData?.days.find(
         (day) => day.day === moment(new Date()).format('d')
       )
       const newDayData = JSON.parse(JSON.stringify(dayData))
-      newDayData.date = moment(new Date()).format('YYYYMMDD')
+      newDayData.date = moment(new Date()).format('YYYY-MM-DD')
       newDayData.trainingName = userTrainingData.trainingName
 
       if (newDayData.groups.length > 0) {
@@ -211,6 +210,15 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
 
       await setDoc(docRef, newDayData)
     }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const getUserAllTrainingDays = async (email) => {
+  try {
+    const docsSnap = await getDocs(collection(database, 'users', email, 'userTrainingDays'))
+    return docsSnap.docs.map((doc) => doc.data())
   } catch (error) {
     console.error(error)
   }
