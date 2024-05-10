@@ -311,12 +311,12 @@ export const newPersonalRecord = (email, exercise, reps) => {
   }
 }
 
-export const markPersonalRecord = (email, exercise, reps, mark) => {
+export const markPersonalRecord = (email, exercise, mark) => {
   return async (dispatch, getState) => {
     try {
       const state = getState()
       const newUserData = JSON.parse(JSON.stringify(state.user.userData))
-      newUserData.userProgress.userPresonalRecords.map((record) => {
+      newUserData.userProgress.userPersonalRecords.map((record) => {
         if (record.exercise.exerciseName === exercise.exerciseName) {
           record.marks[moment(new Date()).format('YYYY-MM-DD')] = {
             date: moment(new Date()).format('YYYY-MM-DD'),

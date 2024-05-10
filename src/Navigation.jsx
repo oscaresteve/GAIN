@@ -15,6 +15,7 @@ import EditTraining from './screens/EditTraining'
 import EditProfile from './screens/EditProfile'
 import Progress from './screens/Progress'
 import CalendarView from './screens/CalendarView'
+import PersonalRecordView from './screens/PersonalRecordView'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -131,6 +132,15 @@ export default function Navigation() {
         <Stack.Screen
           name="Configuration"
           component={Configuration}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animationEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="PersonalRecordView"
+          component={PersonalRecordView}
           options={{
             headerShown: false,
             gestureEnabled: false,

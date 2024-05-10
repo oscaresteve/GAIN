@@ -11,46 +11,39 @@ import {
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  saveBodyWeightProgress,
+  saveBodyWeightValueProgress,
   selectUserData,
   newPersonalRecord,
   markPersonalRecord,
 } from '../Redux/userSlice'
 import { selectGainData, fetchGainData } from '../Redux/gainSlice'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import moment from 'moment'
 
-export default function Progress() {
+export default function Progress({ navigation }) {
   const userData = useSelector(selectUserData)
   const gainData = useSelector(selectGainData)
   const dispatch = useDispatch()
-
+  const [bodyWeightValue, setBodyWeightValue] = useState(null)
+  const [recordValues, setRecordValues] = useState([])
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState(false)
 
   useEffect(() => {
     dispatch(fetchGainData())
   }, [])
 
-  const validationSchema = yup
-    .object()
-    .shape({
-      bodyWeight: yup.number().max(200),
-    })
-    .required()
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(validationSchema) })
-
-  const handleSaveBodyWeightProgress = (formData) => {
-    if (formData.bodyWeight) {
-      dispatch(saveBodyWeightProgress(userData.email, formData.bodyWeight))
+  const handleSaveBodyWeightValueProgress = () => {
+    if (bodyWeightValue) {
+      dispatch(saveBodyWeightValueProgress(userData.email, bodyWeightValue))
+      setBodyWeightValue(null)
     }
   }
 
+  const handleSavePersonalRecord = (exercise, mark) => {
+    if (mark) {
+      dispatch(markPersonalRecord(userData.email, exercise, mark))
+      setRecordValues([])
+    }
+  }
   const handleNewPersonalRecord = (exercise, reps) => {
     dispatch(newPersonalRecord(userData.email, exercise, 1))
   }
@@ -60,33 +53,75 @@ export default function Progress() {
       <Text>Progress</Text>
       <View>
         <Text>Progreso del peso</Text>
+        <View className="bg-white my-1 p-2 rounded-md shadow-sm">
+          <TextInput
+            inputMode="decimal"
+            value={bodyWeightValue}
+            onChangeText={(bodyWeightValue) => setBodyWeightValue(bodyWeightValue)}
+            enterKeyHint="done"
+            editable={
+              !userData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')]
+            }
+            className="bg-gray-200 p-2 m-1 rounded-lg"
+          />
+          <Button
+            title="save peso"
+            onPress={handleSaveBodyWeightValueProgress}
+            disabled={
+              userData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')]
+            }
+          />
+        </View>
 
-        <Controller
-          name="bodyWeight"
-          control={control}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <TextInput
-              inputMode="numeric"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              enterKeyHint="done"
-              className="bg-gray-200 p-2 m-1 rounded-lg"
-            />
-          )}
-        />
         <Text>Personal Records</Text>
-        {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
-          <View key={index}>
-            <Text>{userPersonalRecord.exercise.exerciseName}</Text>
-            <Button title="View" /* onPress={} */ />
-          </View>
-        ))}
-        <Button
-          title="Añadir trackeo del peso"
-          onPress={handleSubmit(handleSaveBodyWeightProgress)}
-        />
-        <Button title="Add Exercise" onPress={() => setSelectExerciseModalShow(true)} />
+        {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => {
+          return (
+            <View key={index} className="bg-white my-1 p-2 rounded-md shadow-sm">
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('PersonalRecordView', {
+                    userPersonalRecord: userPersonalRecord,
+                  })
+                }}
+              >
+                <Text>{userPersonalRecord.exercise.exerciseName}</Text>
+                <TextInput
+                  inputMode="decimal"
+                  value={recordValues[index]}
+                  onChangeText={(newValue) => {
+                    const newValues = [...recordValues]
+                    newValues[index] = newValue
+                    setRecordValues(newValues)
+                  }}
+                  editable={
+                    !userData.userProgress.userPersonalRecords.find(
+                      (personalRecord) =>
+                        personalRecord.exercise.exerciseName ===
+                        userPersonalRecord.exercise.exerciseName
+                    ).marks[moment(new Date()).format('YYYY-MM-DD')]
+                  }
+                  enterKeyHint="done"
+                  className="bg-gray-200 p-2 m-1 rounded-lg"
+                />
+                <Button
+                  title="save record"
+                  onPress={() =>
+                    handleSavePersonalRecord(userPersonalRecord.exercise, recordValues[index])
+                  }
+                  disabled={
+                    userData.userProgress.userPersonalRecords.find(
+                      (personalRecord) =>
+                        personalRecord.exercise.exerciseName ===
+                        userPersonalRecord.exercise.exerciseName
+                    ).marks[moment(new Date()).format('YYYY-MM-DD')]
+                  }
+                />
+              </Pressable>
+            </View>
+          )
+        })}
+
+        <Button title="Add Record" onPress={() => setSelectExerciseModalShow(true)} />
         <Modal
           animationType="slide"
           transparent={false}
