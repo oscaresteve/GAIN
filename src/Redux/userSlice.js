@@ -142,6 +142,19 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
       const newUserData = JSON.parse(JSON.stringify(userData))
       const newUserTrainingDayData = JSON.parse(JSON.stringify(state.user.userTrainingDayData))
 
+      const increaseXp = (amount) => {
+        if (newUserData.userXp) {
+          newUserData.userXp = newUserData.userXp + amount
+        } else {
+          newUserData.userXp = amount
+        }
+        if (newUserTrainingDayData.xpObtained) {
+          newUserTrainingDayData.xpObtained = newUserTrainingDayData.xpObtained + amount
+        } else {
+          newUserTrainingDayData.xpObtained = amount
+        }
+      }
+
       const reps =
         newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[setIndex].details
           .reps
@@ -160,6 +173,8 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
       newUserTrainingDayData.dayStats.totalWeightNumber += reps * weight
       newUserData.userStats.userTotalWeightNumber += reps * weight
 
+      increaseXp(20)
+
       if (
         newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets.length - 1 ===
         setIndex
@@ -169,7 +184,7 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         newUserTrainingDayData.dayStats.totalExercisesNumber += 1
         newUserData.userStats.userTotalExercisesNumber += 1
 
-        dispatch(incrementXp(email, 15))
+        increaseXp(15)
         console.log('Exercise done!')
       }
 
@@ -186,7 +201,7 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         newUserTrainingDayData.dayStats.totalTrainingTime = totalTime
         newUserData.userStats.userTotalTrainingTime += totalTime
 
-        dispatch(incrementXp(email, 150))
+        increaseXp(150)
         console.log('Day done!')
       }
       dispatch(saveUserData(email, newUserData))
@@ -264,26 +279,7 @@ export const clearUserSession = () => {
   }
 }
 
-export const incrementXp = (email, amount) => {
-  return async (dispatch, getState) => {
-    try {
-      const state = getState()
-      const userData = state.user.userData
-      const newUserData = JSON.parse(JSON.stringify(userData))
-      if (newUserData.userXp) {
-        newUserData.userXp = newUserData.userXp + amount
-      } else {
-        newUserData.userXp = amount
-      }
-      dispatch(setUserData(newUserData))
-      await setUserXp(email, newUserData.userXp)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
-
-export const saveBodyWeightProgress = (email, bodyWeight) => {
+export const saveBodyWeightValueProgress = (email, bodyWeight) => {
   return async (dispatch, getState) => {
     try {
       const state = getState()

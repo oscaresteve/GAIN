@@ -48,6 +48,7 @@ export default function FinishTrainingView({ tomorrowTrainingDayData }) {
       <Text>Total reps: {userTrainingDayData.dayStats.totalRepsNumber}</Text>
       <Text>Total training Time: {userTrainingDayData.dayStats.totalTrainingTime}</Text>
       <Text>Total weight: {userTrainingDayData.dayStats.totalWeightNumber}</Text>
+      <Text>Total xp obtained: {userTrainingDayData.xpObtained}</Text>
       <Text className="text-2xl">Tomorrow:</Text>
       <Text>{JSON.stringify(tomorrowTrainingDayData)}</Text>
       <FeedbackView />

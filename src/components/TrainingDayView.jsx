@@ -1,12 +1,7 @@
 import { View, Text, Pressable, ScrollView, Button } from 'react-native'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  selectUserData,
-  selectUserTrainingDayData,
-  setSetDone,
-  incrementXp,
-} from '../Redux/userSlice'
+import { selectUserData, selectUserTrainingDayData, setSetDone } from '../Redux/userSlice'
 
 export default function TrainingDayView() {
   const dispatch = useDispatch()
@@ -15,7 +10,6 @@ export default function TrainingDayView() {
 
   const handleSetDone = (groupIndex, exerciseIndex, setIndex) => {
     dispatch(setSetDone(userData?.email, groupIndex, exerciseIndex, setIndex))
-    dispatch(incrementXp(userData.email, 20))
   }
 
   return (

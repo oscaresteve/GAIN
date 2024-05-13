@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView, Pressable } from 'react-native'
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Calendar } from 'react-native-calendars'
 import moment from 'moment'
@@ -44,10 +44,10 @@ export default function CalendarView() {
     return marked
   }, [selected, userAllTrainingDaysData])
 
-  const onDayPress = useCallback((day) => {
-    setSelected(day.dateString)
+  const onDayPress = useCallback((date) => {
+    setSelected(date.dateString)
     setSelectedDayData(
-      userAllTrainingDaysData.find((trainingDayData) => day.dateString === trainingDayData.date)
+      userAllTrainingDaysData.find((trainingDayData) => date.dateString === trainingDayData.date)
     )
   }, [])
 
@@ -60,8 +60,27 @@ export default function CalendarView() {
         onDayPress={onDayPress}
         markedDates={markedDates}
         style={{ backgroundColor: 'transparent' }}
+        dayComponent={({ date }) => {
+          const item = markedDates[date.dateString] || {}
+          return (
+            <Pressable onPress={() => onDayPress(date)}>
+              <View className="border rounded-md h-12 w-12 bg-slate-200">
+                <Text className="font-bold">{date.day}</Text>
+              </View>
+            </Pressable>
+          )
+        }}
       />
       <Text>{JSON.stringify(selectedDayData)}</Text>
+      <Text>{JSON.stringify(userData.userProgress.bodyWeightProgress[selected])}</Text>
+      {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
+        <View key={index}>
+          <Text>
+            {userPersonalRecord.exercise.exerciseName}
+            {JSON.stringify(userPersonalRecord.marks[selected])}
+          </Text>
+        </View>
+      ))}
     </SafeAreaView>
   )
 }
