@@ -22,15 +22,15 @@ const Tab = createBottomTabNavigator()
 
 const TabGroup = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
         name="CalendarView"
         component={CalendarView}
         options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen
-        name="MyTrainings"
-        component={MyTrainings}
+        name="Progress"
+        component={Progress}
         options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen
@@ -38,10 +38,9 @@ const TabGroup = () => {
         component={Home}
         options={{ headerShown: false, animationEnabled: false }}
       />
-
       <Tab.Screen
-        name="Progress"
-        component={Progress}
+        name="MyTrainings"
+        component={MyTrainings}
         options={{ headerShown: false, animationEnabled: false }}
       />
       <Tab.Screen

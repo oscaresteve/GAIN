@@ -12,7 +12,7 @@ import {
 export default function MyTrainings({ navigation }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
-  const userAllTrainings = useSelector(selectUserAllTrainingsData)
+  const userAllTrainingsData = useSelector(selectUserAllTrainingsData)
 
   useEffect(() => {
     if (userData) {
@@ -26,7 +26,7 @@ export default function MyTrainings({ navigation }) {
       <View>
         <ScrollView>
           <View className="pb-10 pt-2">
-            {userAllTrainings?.map((userTrainingData, index) => (
+            {userAllTrainingsData?.map((userTrainingData, index) => (
               <TrainingCard
                 key={index}
                 userTrainingData={userTrainingData}

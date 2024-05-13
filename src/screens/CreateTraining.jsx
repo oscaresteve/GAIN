@@ -31,13 +31,13 @@ export default function CreateTraining({ navigation }) {
   const [userTrainingData, setUserTrainingData] = useState({
     trainingName: '',
     days: [
+      { day: '0', groups: [] },
       { day: '1', groups: [] },
       { day: '2', groups: [] },
       { day: '3', groups: [] },
       { day: '4', groups: [] },
       { day: '5', groups: [] },
       { day: '6', groups: [] },
-      { day: '0', groups: [] },
     ],
     primary: false,
   })

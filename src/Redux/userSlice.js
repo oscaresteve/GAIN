@@ -81,6 +81,17 @@ export const fetchUserTrainingDayData = (email) => {
   }
 }
 
+export const saveUserTrainingDayData = (email, newUserTrainingDayData) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setUserTrainingDayData(newUserTrainingDayData))
+      await setUserTrainingDay(email, newUserTrainingDayData)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
 export const fetchUserAllTrainingDaysData = (email) => {
   return async (dispatch, getState) => {
     try {
@@ -179,8 +190,7 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         console.log('Day done!')
       }
       dispatch(saveUserData(email, newUserData))
-      dispatch(setUserTrainingDayData(newUserTrainingDayData))
-      await setUserTrainingDay(email, newUserTrainingDayData)
+      dispatch(saveUserTrainingDayData(email, newUserTrainingDayData))
     } catch (error) {
       console.error(error)
     }
@@ -195,8 +205,7 @@ export const startUserTrainingDay = () => {
       const userTrainingDayData = state.user.userTrainingDayData
       const newUserTrainingDayData = JSON.parse(JSON.stringify(userTrainingDayData))
       newUserTrainingDayData.timeStarted = new Date().getTime()
-      dispatch(setUserTrainingDayData(newUserTrainingDayData))
-      await setUserTrainingDay(userData.email, newUserTrainingDayData)
+      dispatch(saveUserTrainingDayData(userData.email, newUserTrainingDayData))
     } catch (error) {
       console.error(error)
     }
@@ -211,8 +220,7 @@ export const endUserTrainingDay = () => {
       const userTrainingDayData = state.user.userTrainingDayData
       const newUserTrainingDayData = JSON.parse(JSON.stringify(userTrainingDayData))
       newUserTrainingDayData.timeEnded = new Date().getTime()
-      dispatch(setUserTrainingDayData(newUserTrainingDayData))
-      await setUserTrainingDay(userData.email, newUserTrainingDayData)
+      dispatch(saveUserTrainingDayData(userData.email, newUserTrainingDayData))
     } catch (error) {
       console.error(error)
     }

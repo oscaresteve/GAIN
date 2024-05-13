@@ -203,6 +203,10 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
           totalRepsNumber: null,
           totalWeightNumber: null,
         }
+        newDayData.feedback = {
+          motivation: null,
+          energy: null,
+        }
       } else {
         newDayData.restDay = true
         newDayData.done = true
