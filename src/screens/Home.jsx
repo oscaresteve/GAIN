@@ -31,7 +31,6 @@ export default function Home() {
     if (userData) {
       dispatch(fetchUserTrainingDayData(userData?.email))
       dispatch(fetchUserAllTrainingsData(userData?.email))
-      console.log(tomorrowTrainingDayData)
     }
   }, [userData])
 

@@ -98,7 +98,6 @@ export const fetchUserAllTrainingDaysData = (email) => {
       const userAllTrainingDaysDataSnap = await getUserAllTrainingDays(email)
       if (userAllTrainingDaysDataSnap !== null) {
         dispatch(setUserAllTrainingDaysData(userAllTrainingDaysDataSnap))
-        console.log(JSON.stringify(userAllTrainingDaysDataSnap, null, 2))
       }
     } catch (error) {
       console.error(error)
