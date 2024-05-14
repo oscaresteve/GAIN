@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import moment from 'moment'
 
-export default Calendar = () => {
+export default Calendar = ({ onDayPress, data }) => {
   const [currentDate, setCurrentDate] = useState(moment())
 
   const handlePrevMonth = () => {
@@ -13,9 +13,9 @@ export default Calendar = () => {
     setCurrentDate(currentDate.clone().add(1, 'month'))
   }
 
-  const handleDayPress = (day) => {
-    const newDate = moment(day, 'D')
-    setCurrentDate(newDate)
+  const handleDayPress = (date) => {
+    setCurrentDate(date)
+    onDayPress(date)
   }
 
   const renderCalendar = () => {
@@ -24,6 +24,13 @@ export default Calendar = () => {
     const daysCount = moment(`${currentYear}-${currentMonth}`, 'YYYY-MM').daysInMonth()
     const startingDay = moment(`${currentYear}-${currentMonth}-01`, 'YYYY-MM-DD').day()
     let daysArray = []
+
+    const getDateStatus = (date) => {
+      const foundDay = data.find((item) => item.date === date.format('YYYY-MM-DD'))
+      if (foundDay) {
+        return foundDay?.restDay ? 'restDay' : foundDay?.done ? 'done' : 'notDone'
+      }
+    }
 
     // Agregar días en blanco al principio del mes
     for (let i = 0; i < startingDay; i++) {
@@ -36,13 +43,21 @@ export default Calendar = () => {
 
     // Agregar días del mes
     for (let i = 1; i <= daysCount; i++) {
+      const date = moment(`${currentYear}-${currentMonth}-${i}`, 'YYYY-MM-DD')
+      const dateStaus = getDateStatus(date)
       daysArray.push(
         <TouchableOpacity
           key={i}
-          onPress={() => handleDayPress(i)}
-          style={[styles.dayButton, i === currentDate.date() && styles.selectedDayButton]}
+          onPress={() => handleDayPress(date)}
+          style={[
+            styles.dayButton,
+            dateStaus === 'done' && styles.doneDayButton,
+            dateStaus === 'notDone' && styles.notDoneDayButton,
+            dateStaus === 'restDay' && styles.restDayButton,
+            date.isSame(currentDate, 'day') && styles.selectedDayButton,
+          ]}
         >
-          <Text style={[styles.dayText, i === currentDate.date() && styles.selectedDayText]}>
+          <Text style={[styles.dayText, date.isSame(currentDate, 'day') && styles.selectedDayText]}>
             {i}
           </Text>
         </TouchableOpacity>
@@ -147,5 +162,20 @@ const styles = StyleSheet.create({
   },
   selectedDayText: {
     color: '#ffffff',
+  },
+  doneDayButton: {
+    backgroundColor: '#c8e6c9', // Light green for done days
+  },
+  restDayButton: {
+    backgroundColor: '#cfe8fc', // Light blue for rest days
+  },
+  doneDayText: {
+    color: '#388e3c', // Dark green text for done days
+  },
+  restDayText: {
+    color: '#1976d2', // Dark blue text for rest days
+  },
+  notDoneDayButton: {
+    backgroundColor: '#ffcdd2', // Light red for not done days
   },
 })
