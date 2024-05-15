@@ -1,9 +1,20 @@
 import { View, Text, SafeAreaView, Button } from 'react-native'
 import React from 'react'
 import LineGraph from '../components/LineGraph'
+import moment from 'moment'
 
 export default function PersonalRecordView({ navigation, route }) {
   const { userPersonalRecord } = route.params
+
+  const data = Object.values(userPersonalRecord.marks)
+    .map((mark) => {
+      return {
+        date: moment(mark.date).toISOString(),
+        value: mark.mark,
+      }
+    })
+    .sort((a, b) => moment(a.date).diff(moment(b.date)))
+  console.log(data)
 
   return (
     <SafeAreaView>
@@ -18,7 +29,7 @@ export default function PersonalRecordView({ navigation, route }) {
       ))}
 
       <View className="border items-center">
-        <LineGraph data={userPersonalRecord.marks} />
+        <LineGraph data={data} />
       </View>
     </SafeAreaView>
   )
