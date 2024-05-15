@@ -2,20 +2,22 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import moment from 'moment'
 
-export default Calendar = ({ onDayPress, data }) => {
+export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
   const [currentDate, setCurrentDate] = useState(moment())
-
-  const handlePrevMonth = () => {
-    setCurrentDate(currentDate.clone().subtract(1, 'month'))
-  }
-
-  const handleNextMonth = () => {
-    setCurrentDate(currentDate.clone().add(1, 'month'))
-  }
 
   const handleDayPress = (date) => {
     setCurrentDate(date)
     onDayPress(date)
+  }
+
+  const handlePrevMonth = () => {
+    setCurrentDate(currentDate.clone().subtract(1, 'month'))
+    onPrevMonth(currentDate.clone().subtract(1, 'month'))
+  }
+
+  const handleNextMonth = () => {
+    setCurrentDate(currentDate.clone().add(1, 'month'))
+    onNextMonth(currentDate.clone().add(1, 'month'))
   }
 
   const renderCalendar = () => {

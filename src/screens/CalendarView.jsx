@@ -21,6 +21,14 @@ export default function CalendarView() {
     // Aquí puedes realizar cualquier otra acción con la fecha seleccionada
   }
 
+  const handlePrevMonth = () => {
+    setCurrentDate(currentDate.clone().subtract(1, 'month'))
+  }
+
+  const handleNextMonth = () => {
+    setCurrentDate(currentDate.clone().add(1, 'month'))
+  }
+
   useEffect(() => {
     dispatch(fetchUserAllTrainingDaysData(userData.email))
   }, [])
@@ -28,7 +36,12 @@ export default function CalendarView() {
   return (
     <SafeAreaView>
       <Text>Calendar</Text>
-      <Calendar onDayPress={handleDayPress} data={userAllTrainingDaysData} />
+      <Calendar
+        onDayPress={handleDayPress}
+        onPrevMonth={handlePrevMonth}
+        onNextMonth={handleNextMonth}
+        data={userAllTrainingDaysData}
+      />
       <Text>
         {JSON.stringify(
           userAllTrainingDaysData.find(
