@@ -45,6 +45,7 @@ export default function CreateTraining({ navigation }) {
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
     visible: false,
     dayIndex: null,
+    groupSelected: 'Bicep',
   })
 
   const validationSchema = yup
@@ -342,7 +343,7 @@ export default function CreateTraining({ navigation }) {
               />
               <Modal
                 animationType="slide"
-                transparent={false}
+                transparent={true}
                 visible={selectExerciseModalShow.visible}
                 onRequestClose={() =>
                   setSelectExerciseModalShow({
@@ -363,47 +364,30 @@ export default function CreateTraining({ navigation }) {
                       }
                     />
 
-                    <Text className="text-3xl font-bold">Bicep</Text>
+                    <Pressable
+                      onPress={() =>
+                        setSelectExerciseModalShow({
+                          ...selectExerciseModalShow,
+                          groupSelected: 'Bicep',
+                        })
+                      }
+                    >
+                      <Text className="text-3xl font-bold">Bicep</Text>
+                    </Pressable>
+                    <Pressable
+                      onPress={() =>
+                        setSelectExerciseModalShow({
+                          ...selectExerciseModalShow,
+                          groupSelected: 'Chest',
+                        })
+                      }
+                    >
+                      <Text className="text-3xl font-bold">Chest</Text>
+                    </Pressable>
                     {gainData?.trainingExercises
-                      ?.filter((exercise) => exercise.groupName === 'Bicep')
-                      ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
-                      .map((exercise, exerciseIndex) => {
-                        const exerciseExists = userTrainingData.days[
-                          selectExerciseModalShow.dayIndex
-                        ]?.groups?.some((group) =>
-                          group.exercises.some(
-                            (existingExercise) =>
-                              existingExercise.exerciseName === exercise.exerciseName
-                          )
-                        )
-                        return (
-                          <View
-                            key={exerciseIndex}
-                            className={`bg-white m-2 p-2 rounded-md shadow-sm ${
-                              exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
-                            }`}
-                          >
-                            <Pressable
-                              onPress={() => {
-                                if (!exerciseExists) {
-                                  handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
-                                  setSelectExerciseModalShow({
-                                    ...selectExerciseModalShow,
-                                    visible: false,
-                                  })
-                                }
-                              }}
-                              disabled={exerciseExists}
-                            >
-                              <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
-                            </Pressable>
-                          </View>
-                        )
-                      })}
-
-                    <Text className="text-3xl font-bold">Chest</Text>
-                    {gainData?.trainingExercises
-                      ?.filter((exercise) => exercise.groupName === 'Chest')
+                      ?.filter(
+                        (exercise) => exercise.groupName === selectExerciseModalShow.groupSelected
+                      )
                       ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
                       .map((exercise, exerciseIndex) => {
                         const exerciseExists = userTrainingData.days[

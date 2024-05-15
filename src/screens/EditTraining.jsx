@@ -26,6 +26,7 @@ export default function EditTraining({ navigation, route }) {
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
     visible: false,
     dayIndex: null,
+    groupSelected: 'Bicep',
   })
 
   useEffect(() => {
@@ -182,7 +183,7 @@ export default function EditTraining({ navigation, route }) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Button onPress={navigation.goBack} title="Back" />
+        <Button onPress={() => navigation.navigate('MyTrainings')} title="Back" />
         <Button title="save" onPress={handleSaveTraining} />
         <View>
           <Text className="text-4xl font-bold">{userTrainingData.trainingName}</Text>
@@ -290,7 +291,7 @@ export default function EditTraining({ navigation, route }) {
                 />
                 <Modal
                   animationType="slide"
-                  transparent={false}
+                  transparent={true}
                   visible={selectExerciseModalShow.visible}
                   onRequestClose={() =>
                     setSelectExerciseModalShow({
@@ -311,49 +312,30 @@ export default function EditTraining({ navigation, route }) {
                         }
                       />
 
-                      <Text className="text-3xl font-bold">Bicep</Text>
-                      {gainData.trainingExercises
-                        ?.filter((exercise) => exercise.groupName === 'Bicep')
-                        ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
-                        .map((exercise, exerciseIndex) => {
-                          const exerciseExists = userTrainingData.days[
-                            selectExerciseModalShow.dayIndex
-                          ]?.groups?.some((group) =>
-                            group.exercises.some(
-                              (existingExercise) =>
-                                existingExercise.exerciseName === exercise.exerciseName
-                            )
-                          )
-                          return (
-                            <View
-                              key={exerciseIndex}
-                              className={`bg-white m-2 p-2 rounded-md shadow-sm ${
-                                exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
-                              }`}
-                            >
-                              <Pressable
-                                onPress={() => {
-                                  if (!exerciseExists) {
-                                    handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
-                                    setSelectExerciseModalShow({
-                                      ...selectExerciseModalShow,
-                                      visible: false,
-                                    })
-                                  }
-                                }}
-                                disabled={exerciseExists}
-                              >
-                                <Text className="text-2xl font-medium">
-                                  {exercise.exerciseName}
-                                </Text>
-                              </Pressable>
-                            </View>
-                          )
-                        })}
-
-                      <Text className="text-3xl font-bold">Chest</Text>
-                      {gainData.trainingExercises
-                        ?.filter((exercise) => exercise.groupName === 'Chest')
+                      <Pressable
+                        onPress={() =>
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            groupSelected: 'Bicep',
+                          })
+                        }
+                      >
+                        <Text className="text-3xl font-bold">Bicep</Text>
+                      </Pressable>
+                      <Pressable
+                        onPress={() =>
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            groupSelected: 'Chest',
+                          })
+                        }
+                      >
+                        <Text className="text-3xl font-bold">Chest</Text>
+                      </Pressable>
+                      {gainData?.trainingExercises
+                        ?.filter(
+                          (exercise) => exercise.groupName === selectExerciseModalShow.groupSelected
+                        )
                         ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
                         .map((exercise, exerciseIndex) => {
                           const exerciseExists = userTrainingData.days[

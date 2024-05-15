@@ -13,12 +13,13 @@ export default function Profile({ navigation }) {
     <SafeAreaView>
       <AppBar />
       <Image source={{ uri: userData.profilePic }} className="w-48 h-48" />
+      <Button title="Edit Profile" onPress={() => navigation.navigate('EditProfile')} />
+      <Button title="Configuration" onPress={() => navigation.navigate('Configuration')} />
       <Text className="text-2xl font-bold">
         {userData?.name} {userData?.lastName}
       </Text>
       <Text>Experience Points: {userData.userXp}</Text>
-      <Button title="Edit Profile" onPress={() => navigation.navigate('EditProfile')} />
-      <Button title="Configuration" onPress={() => navigation.navigate('Configuration')} />
+
       <Text>STATS: </Text>
       <Text>Total Exercises Number: {userData.userStats.userTotalExercisesNumber}</Text>
       <Text>Total Sets Number: {userData.userStats.userTotalSetsNumber}</Text>
