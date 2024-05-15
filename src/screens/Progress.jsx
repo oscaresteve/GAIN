@@ -74,16 +74,10 @@ export default function Progress({ navigation }) {
         </View>
 
         <Text>Personal Records</Text>
-        {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => {
-          return (
-            <View key={index} className="bg-white my-1 p-2 rounded-md shadow-sm">
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('PersonalRecordView', {
-                    userPersonalRecord: userPersonalRecord,
-                  })
-                }}
-              >
+        <ScrollView>
+          {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => {
+            return (
+              <View key={index} className="bg-white my-1 p-2 rounded-md shadow-sm">
                 <Text>{userPersonalRecord.exercise.exerciseName}</Text>
                 <TextInput
                   inputMode="decimal"
@@ -116,11 +110,18 @@ export default function Progress({ navigation }) {
                     ).marks[moment(new Date()).format('YYYY-MM-DD')]
                   }
                 />
-              </Pressable>
-            </View>
-          )
-        })}
-
+                <Button
+                  title="View"
+                  onPress={() => {
+                    navigation.navigate('PersonalRecordView', {
+                      userPersonalRecord: userPersonalRecord,
+                    })
+                  }}
+                />
+              </View>
+            )
+          })}
+        </ScrollView>
         <Button title="Add Record" onPress={() => setSelectExerciseModalShow(true)} />
         <Modal
           animationType="slide"

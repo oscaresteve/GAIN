@@ -1,8 +1,10 @@
 import { View, Text, SafeAreaView, Button } from 'react-native'
 import React from 'react'
+import LineGraph from '../components/LineGraph'
 
 export default function PersonalRecordView({ navigation, route }) {
   const { userPersonalRecord } = route.params
+
   return (
     <SafeAreaView>
       <Button title="Go Back" onPress={() => navigation.goBack()} />
@@ -14,6 +16,10 @@ export default function PersonalRecordView({ navigation, route }) {
           <Text>Peso: {mark.mark}</Text>
         </View>
       ))}
+
+      <View className="border items-center">
+        <LineGraph data={userPersonalRecord.marks} />
+      </View>
     </SafeAreaView>
   )
 }
