@@ -18,7 +18,6 @@ import {
 } from '../Redux/userSlice'
 import { selectGainData, fetchGainData } from '../Redux/gainSlice'
 import moment from 'moment'
-import LineGraph from '../components/LineGraph'
 
 export default function Progress({ navigation }) {
   const userData = useSelector(selectUserData)
@@ -55,16 +54,6 @@ export default function Progress({ navigation }) {
       <View>
         <Text>Progreso del peso</Text>
         <View className="bg-white my-1 p-2 rounded-md shadow-sm">
-          <LineGraph
-            data={Object.values(userData.userProgress.bodyWeightProgress)
-              .map((d) => {
-                return {
-                  date: moment(d.date).toISOString(),
-                  value: d.bodyWeight,
-                }
-              })
-              .sort((a, b) => moment(a.date).diff(moment(b.date)))}
-          />
           <TextInput
             inputMode="decimal"
             value={bodyWeightValue}
