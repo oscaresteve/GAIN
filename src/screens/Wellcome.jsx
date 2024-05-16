@@ -3,10 +3,16 @@ import React from 'react'
 
 export default function Wellcome({ navigation }) {
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
-      <View className="bg-gray-300 rounded-lg p-5 w-80">
-        <Text className="text-4xl font-bold text-center">Wellcome</Text>
-        <Text className="text-xl text-center">Mensaje de Bienvenida</Text>
+    <SafeAreaView className="grow bg-white">
+      <View className="grow">
+        <Text className="text-5xl font-custom text-center">Wellcome</Text>
+        <Text className="text-lg font-custom text-center">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit in diam nonumy eirmod tempor
+          incididunt ut labore et dolore mag et dolore mag et dolore mag et dolore mag et dolore mag
+          et d molestie
+        </Text>
+      </View>
+      <View className="bg-gray-200 mb-10">
         <Pressable
           title="Log In"
           onPress={() => navigation.navigate('LogIn')}
@@ -14,7 +20,6 @@ export default function Wellcome({ navigation }) {
         >
           <Text className="text-lg font-bold">Inicia Sesion</Text>
         </Pressable>
-
         <Pressable
           onPress={() => navigation.navigate('Register')}
           className="bg-gray-400 justify-center items-center p-3 rounded-lg m-1"
