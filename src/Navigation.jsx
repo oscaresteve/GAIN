@@ -71,7 +71,7 @@ export default function Navigation() {
           options={{
             headerShown: false,
             gestureEnabled: false,
-            animationEnabled: false,
+            animationEnabled: true,
           }}
         />
         <Stack.Screen
@@ -79,8 +79,8 @@ export default function Navigation() {
           component={Register}
           options={{
             headerShown: false,
-            gestureEnabled: false,
-            animationEnabled: false,
+            gestureEnabled: true,
+            animationEnabled: true,
           }}
         />
         <Stack.Screen

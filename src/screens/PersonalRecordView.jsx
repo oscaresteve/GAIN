@@ -14,7 +14,6 @@ export default function PersonalRecordView({ navigation, route }) {
       }
     })
     .sort((a, b) => moment(a.date).diff(moment(b.date)))
-  console.log(data)
 
   return (
     <SafeAreaView>

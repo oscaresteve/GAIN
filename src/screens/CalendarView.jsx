@@ -13,11 +13,9 @@ export default function CalendarView() {
 
   const [currentDate, setCurrentDate] = useState(moment())
 
-  console.log(JSON.stringify(userAllTrainingDaysData))
 
   const handleDayPress = (selectedDate) => {
     setCurrentDate(selectedDate)
-    console.log('Fecha seleccionada:', selectedDate)
     // Aquí puedes realizar cualquier otra acción con la fecha seleccionada
   }
 

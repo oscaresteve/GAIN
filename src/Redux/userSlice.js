@@ -184,7 +184,6 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         newUserData.userStats.userTotalExercisesNumber += 1
 
         increaseXp(15)
-        console.log('Exercise done!')
       }
 
       if (
@@ -201,7 +200,6 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         newUserData.userStats.userTotalTrainingTime += totalTime
 
         increaseXp(150)
-        console.log('Day done!')
       }
       dispatch(saveUserData(email, newUserData))
       dispatch(saveUserTrainingDayData(email, newUserTrainingDayData))

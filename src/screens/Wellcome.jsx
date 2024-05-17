@@ -1,31 +1,32 @@
-import { View, Text, Pressable, SafeAreaView } from 'react-native'
+import { View, Text, Pressable, SafeAreaView, Image } from 'react-native'
 import React from 'react'
+import PressableView from '../components/PressableView'
 
 export default function Wellcome({ navigation }) {
   return (
-    <SafeAreaView className="grow bg-white">
-      <View className="grow">
-        <Text className="text-5xl font-custom text-center">Wellcome</Text>
-        <Text className="text-lg font-custom text-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit in diam nonumy eirmod tempor
-          incididunt ut labore et dolore mag et dolore mag et dolore mag et dolore mag et dolore mag
-          et d molestie
-        </Text>
+    <SafeAreaView className="grow bg-smoke-1 dark:bg-night-1">
+      <View className="grow items-center">
+        <View className="grow items-center ">
+          <Image
+            source={require('../../assets/logos/gain-logo.png')}
+            className="h-52 w-52 mt-20 mb-20 "
+          />
+          <View className="mx-5">
+            <Text className="text-5xl font-custom text-center text-black dark:text-white">
+              ¡Wellcome!
+            </Text>
+            <Text className="text-lg font-custom text-center my-2 text-black dark:text-white">
+              Start progressing every day. Each step takes you closer to your best version.
+            </Text>
+          </View>
+        </View>
       </View>
-      <View className="bg-gray-200 mb-10">
-        <Pressable
-          title="Log In"
-          onPress={() => navigation.navigate('LogIn')}
-          className="bg-gray-400 justify-center items-center p-3 rounded-lg m-1"
-        >
-          <Text className="text-lg font-bold">Inicia Sesion</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => navigation.navigate('Register')}
-          className="bg-gray-400 justify-center items-center p-3 rounded-lg m-1"
-        >
-          <Text className="text-lg font-bold">Crea tu cuenta</Text>
-        </Pressable>
+      <View className="items-center mb-20 grow">
+        <PressableView>
+          <Pressable onPress={() => navigation.navigate('LogIn')}>
+            <Text className="text-3xl font-custom text-primary">¡Get Started!</Text>
+          </Pressable>
+        </PressableView>
       </View>
     </SafeAreaView>
   )

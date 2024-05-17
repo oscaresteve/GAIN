@@ -1,12 +1,14 @@
-import { Text, TextInput, SafeAreaView, Alert, Pressable, View } from 'react-native'
+import { Text, TextInput, SafeAreaView, Alert, Pressable, View, Image } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { logInUser } from '../database/Database'
-
 import { useDispatch } from 'react-redux'
 import { fetchUserData } from '../Redux/userSlice'
+import PressableView from '../components/PressableView'
+import KeyboardView from '../components/KeyboardView'
+import YupError from '../components/YupError'
 
 export default function LogIn({ navigation }) {
   const dispatch = useDispatch()
@@ -60,65 +62,75 @@ export default function LogIn({ navigation }) {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-200 justify-center items-center">
-      <View className="bg-gray-300 rounded-lg p-5 w-80">
-        <Text className="text-4xl font-bold text-center">Inicia Sesión</Text>
-
-        <Controller
-          name="email"
-          control={control}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <TextInput
-              placeholder="Correo"
-              inputMode="email"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              className="bg-gray-100 p-2 m-1 rounded-lg"
+    <SafeAreaView className="grow bg-smoke-1 dark:bg-night-1">
+      <KeyboardView>
+        <View className="m-2 grow justify-center">
+          <View className="items-start">
+            <Image source={require('../../assets/logos/gain-logo.png')} className="m-2 h-14 w-14" />
+          </View>
+          <View className="my-2">
+            <Controller
+              name="email"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder="Correo"
+                  inputMode="email"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
+                />
+              )}
             />
-          )}
-        />
-        {errors.email && <Text className="text-red-500 text-xs">{errors.email.message}</Text>}
+            {errors.email && <YupError error={errors.email} />}
 
-        <Controller
-          name="password"
-          control={control}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <TextInput
-              placeholder="Contraseña"
-              inputMode="text"
-              secureTextEntry={true}
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              className="bg-gray-100 p-2 m-1 rounded-lg"
+            <Controller
+              name="password"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder="Contraseña"
+                  inputMode="text"
+                  secureTextEntry={true}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
+                />
+              )}
             />
-          )}
-        />
-        {errors.password && <Text className="text-red-500 text-xs">{errors.password.message}</Text>}
-        <Pressable
-          onPress={handleSubmit(handleLogIn)}
-          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
-        >
-          <Text className="text-md font-bold">Hecho</Text>
-        </Pressable>
-        <Pressable
-          onPress={handleLoginOscar}
-          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
-        >
+            {errors.password && <YupError error={errors.password} />}
+          </View>
+          <PressableView>
+            <Pressable
+              onPress={handleSubmit(handleLogIn)}
+              className="items-center justify-center rounded-xl bg-primary-1 p-2"
+            >
+              <Text className="text-md font-custom text-xl font-bold text-smoke-1 dark:text-night-1">
+                Sign In
+              </Text>
+            </Pressable>
+          </PressableView>
+          <PressableView>
+            <Pressable
+              onPress={() => navigation.navigate('Register')}
+              className="my-5 items-center"
+            >
+              <Text className="text-md font-custom text-primary-2">
+                ¿New here? ¡Create your account!
+              </Text>
+            </Pressable>
+          </PressableView>
+        </View>
+      </KeyboardView>
+
+      <View>
+        <Pressable onPress={handleLoginOscar}>
           <Text className="text-md font-bold">Login As Oscar</Text>
         </Pressable>
-        <Pressable
-          onPress={handleLoginTest}
-          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
-        >
+        <Pressable onPress={handleLoginTest}>
           <Text className="text-md font-bold">Login As Test</Text>
-        </Pressable>
-        <Pressable
-          onPress={navigation.goBack}
-          className="justify-center items-center bg-gray-400 p-3 rounded-lg m-1"
-        >
-          <Text className="text-md font-bold">Atrás</Text>
         </Pressable>
       </View>
     </SafeAreaView>
