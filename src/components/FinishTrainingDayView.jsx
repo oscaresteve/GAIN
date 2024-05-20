@@ -1,16 +1,14 @@
 import { View, Text, Button } from 'react-native'
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-  selectUserTrainingDayData,
-  saveUserTrainingDayData,
-  selectUserData,
-} from '../Redux/userSlice'
+import { useDispatch } from 'react-redux'
+import { saveUserTrainingDayData, selectUserData } from '../Redux/userSlice'
 
-export default function FinishTrainingView({ tomorrowTrainingDayData }) {
+export default function FinishTrainingView({
+  userData,
+  userTrainingDayData,
+  tomorrowTrainingDayData,
+}) {
   const dispatch = useDispatch()
-  const userData = useSelector(selectUserData)
-  const userTrainingDayData = useSelector(selectUserTrainingDayData)
 
   const handleSetFeedback = (type, amount) => {
     const newUserTrainingDayData = JSON.parse(JSON.stringify(userTrainingDayData))

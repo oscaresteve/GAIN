@@ -9,6 +9,7 @@ import { fetchUserData } from '../Redux/userSlice'
 import PressableView from '../components/PressableView'
 import KeyboardView from '../components/KeyboardView'
 import YupError from '../components/YupError'
+import Divider from '../components/Divider'
 
 export default function LogIn({ navigation }) {
   const dispatch = useDispatch()
@@ -102,12 +103,13 @@ export default function LogIn({ navigation }) {
             />
             {errors.password && <YupError error={errors.password} />}
           </View>
+          <Divider />
           <PressableView>
             <Pressable
               onPress={handleSubmit(handleLogIn)}
-              className="items-center justify-center rounded-xl bg-primary-1 p-2"
+              className="my-4 items-center justify-center rounded-xl bg-primary-1 p-2"
             >
-              <Text className="text-md font-custom text-xl font-bold text-smoke-1 dark:text-night-1">
+              <Text className="font-custom text-xl font-bold text-smoke-1 dark:text-night-1">
                 Sign In
               </Text>
             </Pressable>
@@ -115,7 +117,7 @@ export default function LogIn({ navigation }) {
           <PressableView>
             <Pressable
               onPress={() => navigation.navigate('Register')}
-              className="my-5 items-center"
+              className="my-2 items-center"
             >
               <Text className="text-md font-custom text-primary-2">
                 ¿New here? ¡Create your account!

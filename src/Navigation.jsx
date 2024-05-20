@@ -16,13 +16,22 @@ import EditProfile from './screens/EditProfile'
 import Progress from './screens/Progress'
 import CalendarView from './screens/CalendarView'
 import PersonalRecordView from './screens/PersonalRecordView'
+import { StyleSheet } from 'react-native'
+import { BlurView } from 'expo-blur'
+import AppBar from './components/AppBar'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const TabGroup = () => {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarStyle: { position: 'absolute', borderTopWidth: 0 },
+        tabBarBackground: () => <BlurView intensity={100} style={StyleSheet.absoluteFill} />,
+      }}
+    >
       <Tab.Screen
         name="CalendarView"
         component={CalendarView}

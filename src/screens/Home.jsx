@@ -13,6 +13,7 @@ import {
   selectUserAllTrainingsData,
 } from '../Redux/userSlice'
 import RestDayTrainingView from '../components/RestDayTrainingView'
+
 export default function Home() {
   const dispatch = useDispatch()
   const userTrainingDayData = useSelector(selectUserTrainingDayData)
@@ -21,10 +22,9 @@ export default function Home() {
   const [view, setView] = useState(null)
 
   const primaryTrainingData = userAllTrainingsData?.find(
-    (userTrainingData) => userTrainingData.primary === true
+    (userTrainingData) => userTrainingData.primary === true,
   )
-
-  const nextDayIndex = +userTrainingDayData.day === 6 ? 0 : +userTrainingDayData.day + 1
+  const nextDayIndex = +userTrainingDayData?.day === 6 ? 0 : +userTrainingDayData?.day + 1
   const tomorrowTrainingDayData = primaryTrainingData?.days.find((day) => +day.day === nextDayIndex)
 
   useEffect(() => {
@@ -38,20 +38,26 @@ export default function Home() {
     if (userTrainingDayData?.restDay) {
       setView(<RestDayTrainingView tomorrowTrainingDayData={tomorrowTrainingDayData} />)
     } else {
-      if (userTrainingDayData?.timeEnded) {
-        setView(<FinishTrainingView tomorrowTrainingDayData={tomorrowTrainingDayData} />)
+      if (userTrainingDayData?.done) {
+        setView(
+          <FinishTrainingView
+            userData={userData}
+            tomorrowTrainingDayData={tomorrowTrainingDayData}
+            userTrainingDayData={userTrainingDayData}
+          />,
+        )
       } else if (userTrainingDayData?.timeStarted) {
-        setView(<TrainingDayView />)
+        setView(<TrainingDayView userData={userData} userTrainingDayData={userTrainingDayData} />)
       } else {
-        setView(<StartTrainingView />)
+        setView(<StartTrainingView userData={userData} userTrainingDayData={userTrainingDayData} />)
       }
     }
   }, [userTrainingDayData])
 
   return (
-    <SafeAreaView className="flex-1">
+    <View className="grow bg-smoke-1 dark:bg-night-1">
+      {view}
       <AppBar />
-      <View>{view}</View>
-    </SafeAreaView>
+    </View>
   )
 }

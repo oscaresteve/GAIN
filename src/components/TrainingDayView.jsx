@@ -1,12 +1,14 @@
-import { View, Text, Pressable, ScrollView, Button } from 'react-native'
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { selectUserData, selectUserTrainingDayData, setSetDone } from '../Redux/userSlice'
+import { View, Text, Pressable, ScrollView } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { setSetDone } from '../Redux/userSlice'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
+import { useAppBarHeight } from './AppBar'
+import AnimatedSetCard from './AnimatedSetCard'
+import Divider from './Divider'
 
-export default function TrainingDayView() {
+export default function TrainingDayView({ userData, userTrainingDayData }) {
   const dispatch = useDispatch()
-  const userData = useSelector(selectUserData)
-  const userTrainingDayData = useSelector(selectUserTrainingDayData)
 
   const handleSetDone = (groupIndex, exerciseIndex, setIndex) => {
     dispatch(setSetDone(userData?.email, groupIndex, exerciseIndex, setIndex))
@@ -14,43 +16,63 @@ export default function TrainingDayView() {
 
   return (
     <ScrollView>
-      <View className="flex-1 pb-10">
+      <View
+        className="mx-2 grow justify-center"
+        style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
+      >
         {userTrainingDayData?.groups?.map((group, groupIndex) => (
-          <View key={groupIndex} className="mx-2">
-            <Text className="text-3xl font-bold">{group.groupName}</Text>
+          <View key={groupIndex} className="my-2">
+            <Text className="my-2 font-custom text-4xl font-bold dark:text-white">
+              {group.groupName}
+            </Text>
             {group.exercises?.map((exercise, exerciseIndex) => (
-              <View key={exerciseIndex} className="bg-white my-1 p-2 rounded-md shadow-sm">
-                <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
-                {exercise.sets?.map((set, setIndex) => (
-                  <View
-                    key={setIndex}
-                    className={`flex-row justify-between items-center my-1 p-2 shadow-sm rounded-md  ${
-                      set.details.done ? 'bg-green-300' : 'bg-gray-50'
-                    }`}
-                  >
-                    <View className="flex-row items-center">
-                      <View className="w-10">
-                        <Text className="text-lg">{set.setNumber}</Text>
+              <View key={exerciseIndex} className="mx-2">
+                <Text className="font-custom text-2xl dark:text-white">
+                  {exercise.exerciseName}
+                </Text>
+                <View className="my-2">
+                  {exercise.sets?.map((set, setIndex) => {
+                    const enabled =
+                      !set.details.done &&
+                      (setIndex === 0 || exercise.sets[setIndex - 1].details.done)
+                    return (
+                      <View key={setIndex}>
+                        <AnimatedSetCard
+                          enabled={enabled}
+                          onSwipe={() => handleSetDone(groupIndex, exerciseIndex, setIndex)}
+                        >
+                          <View
+                            className={`my-1 h-14 flex-row rounded-xl border-smoke-3 py-2 shadow-sm ${
+                              set.details.done ? 'bg-green-300' : 'bg-smoke-2 dark:bg-night-2'
+                            }`}
+                          >
+                            <View className="w-12 items-center justify-center">
+                              <Text className="text-md font-custom dark:text-white">
+                                {set.setNumber}
+                              </Text>
+                            </View>
+                            <Divider direction="vertical" />
+                            <View className="mx-4 grow flex-row">
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-custom text-lg dark:text-white">
+                                  {set.details.reps} reps
+                                </Text>
+                              </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Divider />
+                              </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-custom text-lg dark:text-white">
+                                  {set.details.weight} kg
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </AnimatedSetCard>
                       </View>
-                      <View className="w-24">
-                        <Text className="text-lg">{set.details.reps} reps</Text>
-                      </View>
-                      <View className="w-24">
-                        <Text className="text-lg">{set.details.weight} kg</Text>
-                      </View>
-                    </View>
-                    <Pressable
-                      onPress={() => handleSetDone(groupIndex, exerciseIndex, setIndex)}
-                      disabled={
-                        set.details.done ||
-                        (setIndex !== 0 && !exercise.sets[setIndex - 1].details.done)
-                      }
-                      className="flex-end items-center"
-                    >
-                      <Text className="text-lg font-bold mx-2">Done</Text>
-                    </Pressable>
-                  </View>
-                ))}
+                    )
+                  })}
+                </View>
               </View>
             ))}
           </View>

@@ -65,7 +65,7 @@ export const fetchUserTrainingDayData = (email) => {
         dispatch(setUserTrainingDayData(userTrainingDayDataSnap))
       } else {
         const userTrainingPrimaryData = userAllTrainingsData?.find(
-          (userTrainingData) => userTrainingData.primary === true
+          (userTrainingData) => userTrainingData.primary === true,
         )
         if (userTrainingPrimaryData) {
           await newUserTrainingDay(email, userTrainingPrimaryData)
@@ -188,7 +188,7 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
 
       if (
         newUserTrainingDayData.groups.every((group) =>
-          group.exercises.every((exercise) => exercise.sets.every((set) => set.details.done))
+          group.exercises.every((exercise) => exercise.sets.every((set) => set.details.done)),
         )
       ) {
         newUserTrainingDayData.done = true
@@ -209,15 +209,14 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
   }
 }
 
-export const startUserTrainingDay = () => {
+export const startUserTrainingDay = (email) => {
   return async (dispatch, getState) => {
     try {
       const state = getState()
-      const userData = state.user.userData
       const userTrainingDayData = state.user.userTrainingDayData
       const newUserTrainingDayData = JSON.parse(JSON.stringify(userTrainingDayData))
       newUserTrainingDayData.timeStarted = new Date().getTime()
-      dispatch(saveUserTrainingDayData(userData.email, newUserTrainingDayData))
+      dispatch(saveUserTrainingDayData(email, newUserTrainingDayData))
     } catch (error) {
       console.error(error)
     }
