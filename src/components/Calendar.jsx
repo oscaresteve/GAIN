@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import moment from 'moment'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { runOnJS } from 'react-native-reanimated'
+import CustomIcon from './CustomIcon'
+import PressableView from './PressableView'
+import Divider from './Divider'
 
 export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
   const [currentDate, setCurrentDate] = useState(moment())
@@ -34,150 +39,111 @@ export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
       }
     }
 
-    // Agregar días en blanco al principio del mes
-    for (let i = 0; i < startingDay; i++) {
-      daysArray.push(
-        <View key={`blank-start-${i}`} style={styles.dayButton}>
-          <Text></Text>
+    const Day = ({ dayNumber = '', date, status, isSelected, buttonDisabled = false }) => {
+      const getCurrentDay = () => {
+        if (date && date.isSame(moment(), 'day')) {
+          return 'border-2 border-smoke-3 dark:border-night-3'
+        } else {
+          return ''
+        }
+      }
+
+      const getStatusDot = () => {
+        if (status === 'done') return <CustomIcon name="circle" size={5} color={'green'} />
+        if (status === 'notDone') return <CustomIcon name="circle" size={5} color={'red'} />
+        if (status === 'restDay') return <CustomIcon name="circle" size={5} color={'blue'} />
+        return <CustomIcon name="circle" size={10} color={'transparent'} />
+      }
+
+      const getIsSelected = () => {
+        if (isSelected) return 'bg-smoke-3 dark:bg-night-3'
+        return ''
+      }
+
+      return (
+        <View className="w-[14.28%] p-2">
+          <PressableView>
+            <Pressable
+              onPress={() => handleDayPress(date)}
+              disabled={buttonDisabled}
+              className={`aspect-square items-center justify-center rounded-xl ${getIsSelected()} ${getCurrentDay()}`}
+            >
+              <Text className="font-custom text-xl dark:text-white">{dayNumber}</Text>
+            </Pressable>
+          </PressableView>
+          <View className="items-center p-1">{getStatusDot()}</View>
         </View>
       )
     }
 
-    // Agregar días del mes
+    for (let i = 0; i < startingDay; i++) {
+      daysArray.push(<Day key={`blank-start-${i}`} buttonDisabled={true}></Day>)
+    }
+
     for (let i = 1; i <= daysCount; i++) {
       const date = moment(`${currentYear}-${currentMonth}-${i}`, 'YYYY-MM-DD')
-      const dateStaus = getDateStatus(date)
+      const dateStatus = getDateStatus(date)
       daysArray.push(
-        <TouchableOpacity
+        <Day
           key={i}
-          onPress={() => handleDayPress(date)}
-          style={[
-            styles.dayButton,
-            dateStaus === 'done' && styles.doneDayButton,
-            dateStaus === 'notDone' && styles.notDoneDayButton,
-            dateStaus === 'restDay' && styles.restDayButton,
-            date.isSame(currentDate, 'day') && styles.selectedDayButton,
-          ]}
-        >
-          <Text style={[styles.dayText, date.isSame(currentDate, 'day') && styles.selectedDayText]}>
-            {i}
-          </Text>
-        </TouchableOpacity>
+          status={dateStatus}
+          dayNumber={i}
+          date={date}
+          isSelected={date.isSame(currentDate, 'day')}
+        ></Day>,
       )
     }
 
-    // Calcular cuántos días en blanco agregar al final para completar 6 filas
     const totalDays = startingDay + daysCount
     const remainingDays = 42 - totalDays
 
-    // Agregar días en blanco al final del mes
     for (let i = 1; i <= remainingDays; i++) {
-      daysArray.push(
-        <View key={`blank-end-${i}`} style={styles.dayButton}>
-          <Text></Text>
-        </View>
-      )
+      daysArray.push(<Day key={`blank-end-${i}`} buttonDisabled={true}></Day>)
     }
 
+    const swipeMonthGesture = Gesture.Pan()
+      .minDistance(100)
+      .onEnd((event) => {
+        if (event.translationX < 0) {
+          runOnJS(handleNextMonth)()
+        } else if (event.translationX > 0) {
+          runOnJS(handlePrevMonth)()
+        }
+      })
+
     return (
-      <View style={styles.calendarContainer}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handlePrevMonth}>
-            <Text style={styles.navigationText}>{'<'}</Text>
-          </TouchableOpacity>
-          <Text style={styles.headerText}>
-            {currentDate.format('MMMM')} {currentDate.format('YYYY')}
-          </Text>
-          <TouchableOpacity onPress={handleNextMonth}>
-            <Text style={styles.navigationText}>{'>'}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.weekDaysContainer}>
-          {moment.weekdaysShort().map((day, index) => (
-            <Text key={index} style={styles.weekDayText}>
-              {day}
+      <GestureDetector gesture={swipeMonthGesture}>
+        <View className="rounded-3xl bg-smoke-2 p-2 dark:bg-night-2">
+          <View className="my-2 flex-row items-center justify-between px-10">
+            <PressableView>
+              <Pressable onPress={handlePrevMonth}>
+                <CustomIcon name={'navigate-before'} size={40} color={'black'} />
+              </Pressable>
+            </PressableView>
+            <Text className="font-custom text-xl dark:text-white">
+              {currentDate.format('MMMM')} {currentDate.format('YYYY')}
             </Text>
-          ))}
+            <PressableView>
+              <Pressable onPress={handleNextMonth}>
+                <CustomIcon name={'navigate-next'} size={40} color={'black'} />
+              </Pressable>
+            </PressableView>
+          </View>
+          <Divider height={2} width="95%" />
+          <View className="mt-2 flex-row">
+            {moment.weekdaysShort().map((day, index) => (
+              <View className="flex-1 items-center justify-center">
+                <Text key={index} className="font-custon text-md dark:text-white">
+                  {day}
+                </Text>
+              </View>
+            ))}
+          </View>
+          <View className="flex-row flex-wrap">{daysArray}</View>
         </View>
-        <View style={styles.daysContainer}>{daysArray}</View>
-      </View>
+      </GestureDetector>
     )
   }
 
   return <View>{renderCalendar()}</View>
 }
-
-const styles = StyleSheet.create({
-  calendarContainer: {
-    backgroundColor: '#ffffff',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  navigationText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  weekDaysContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  weekDayText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    width: '14.28%', // Equal width for each day (7 days in a week)
-    textAlign: 'center',
-  },
-  daysContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  dayButton: {
-    width: '14.28%', // Equal width for each day (7 days in a week)
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 100,
-    marginVertical: 5,
-    backgroundColor: '#f0f0f0',
-  },
-  selectedDayButton: {
-    backgroundColor: '#007bff',
-  },
-  dayText: {
-    fontSize: 16,
-    color: '#000000',
-  },
-  selectedDayText: {
-    color: '#ffffff',
-  },
-  doneDayButton: {
-    backgroundColor: '#c8e6c9', // Light green for done days
-  },
-  restDayButton: {
-    backgroundColor: '#cfe8fc', // Light blue for rest days
-  },
-  doneDayText: {
-    color: '#388e3c', // Dark green text for done days
-  },
-  restDayText: {
-    color: '#1976d2', // Dark blue text for rest days
-  },
-  notDoneDayButton: {
-    backgroundColor: '#ffcdd2', // Light red for not done days
-  },
-})

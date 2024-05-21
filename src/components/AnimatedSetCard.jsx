@@ -27,8 +27,7 @@ export default function AnimatedSetCard({ children, onSwipe, enabled }) {
     })
     .onEnd(() => {
       if (fullGesture.value) {
-        /* runOnJS(onSwipe)() */
-        console.log('descomentar')
+        runOnJS(onSwipe)()
       }
       xPosition.value = withTiming(0, { duration: 100, easing: Easing.out(Easing.cubic) })
       fullGesture.value = false

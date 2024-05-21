@@ -20,28 +20,34 @@ export default function StartTrainingView({ userData, userTrainingDayData }) {
         </Pressable>
       </View>
       <BlurView className="grow justify-center" intensity={100}>
-        {userTrainingDayData.groups.map((group, groupIndex) => (
-          <View key={groupIndex} className="m-4">
-            <Text className="font-custom text-xl text-opacity-80 dark:text-white">
-              {group.groupName}
-            </Text>
-            {group.exercises.map((exercise, exerciseIndex) => {
-              const setsCount = exercise.sets.length
-              const repsCount = exercise.sets.map((set) => set.details.reps).join(', ')
-              return (
-                <View key={exerciseIndex} className="flex-row bg-red-300">
-                  <Text className="flex-1 font-custom text-lg dark:text-white">
-                    {exercise.exerciseName}
-                  </Text>
-                  <Text className="flex-1 font-custom text-lg dark:text-white">
-                    {setsCount} x {repsCount}
-                  </Text>
-                </View>
-              )
-            })}
-          </View>
-        ))}
-        <View className="mb-16 items-center">
+        <View className="mx-4">
+          <Text className="my-2 font-custom text-2xl dark:text-white">Training Resume:</Text>
+          <Divider height={3} />
+          {userTrainingDayData?.groups.map((group, groupIndex) => (
+            <View key={groupIndex} className="ml-2">
+              <Text className="my-1 font-custom text-xl dark:text-white">{group.groupName}</Text>
+              <View className="mb-4">
+                {group.exercises.map((exercise, exerciseIndex) => {
+                  const setsCount = exercise.sets.length
+                  const repsCount = exercise.sets.map((set) => set.details.reps).join(', ')
+                  return (
+                    <View key={exerciseIndex} className="ml-2">
+                      <Text className="font-custom text-lg dark:text-white">
+                        {exercise.exerciseName}
+                      </Text>
+                      <Text className="ml-2 font-custom text-lg dark:text-white">
+                        {setsCount}
+                        {' x '}
+                        {repsCount}
+                      </Text>
+                    </View>
+                  )
+                })}
+              </View>
+            </View>
+          ))}
+        </View>
+        <View className="items-center">
           <PressableView>
             <Pressable
               onPress={handleStartTrainingDay}

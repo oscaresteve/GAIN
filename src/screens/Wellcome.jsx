@@ -24,7 +24,7 @@ export default function Wellcome({ navigation }) {
       <View className="items-center mb-20 grow">
         <PressableView>
           <Pressable onPress={() => navigation.navigate('LogIn')}>
-            <Text className="text-3xl font-custom text-primary">¡Get Started!</Text>
+            <Text className="text-3xl font-custom text-primary-1">¡Get Started!</Text>
           </Pressable>
         </PressableView>
       </View>
