@@ -18,7 +18,7 @@ import CalendarView from './screens/CalendarView'
 import PersonalRecordView from './screens/PersonalRecordView'
 import { StyleSheet } from 'react-native'
 import { BlurView } from 'expo-blur'
-import AppBar from './components/AppBar'
+import TrainingDayView from './screens/TrainingDayView'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -29,7 +29,13 @@ const TabGroup = () => {
       initialRouteName="Home"
       screenOptions={{
         tabBarStyle: { position: 'absolute', borderTopWidth: 0 },
-        tabBarBackground: () => <BlurView intensity={100} style={StyleSheet.absoluteFill} />,
+        tabBarBackground: () => (
+          <BlurView
+            intensity={100}
+            className="border-t border-t-smoke-3 dark:border-t-night-3"
+            style={StyleSheet.absoluteFill}
+          />
+        ),
       }}
     >
       <Tab.Screen
@@ -153,6 +159,15 @@ export default function Navigation() {
             headerShown: false,
             gestureEnabled: false,
             animationEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="TrainingDayView"
+          component={TrainingDayView}
+          options={{
+            headerShown: false,
+            gestureEnabled: true,
+            animationEnabled: true,
           }}
         />
       </Stack.Navigator>

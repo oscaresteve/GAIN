@@ -52,15 +52,15 @@ export default function Training({ navigation, route }) {
                   <Text className="text-2xl font-bold">{group.groupName}</Text>
 
                   {group.exercises?.map((exercise, exerciseIndex) => (
-                    <View key={exerciseIndex} className="bg-white my-1 p-2 rounded-md shadow-sm">
+                    <View key={exerciseIndex} className="my-1 rounded-md bg-white p-2 shadow-sm">
                       <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
 
                       {exercise.sets?.map((set, setIndex) => (
                         <View
                           key={setIndex}
-                          className="flex-row justify-between items-center my-1 p-2 shadow-sm rounded-md bg-gray-200"
+                          className="my-1 flex-row items-center justify-between rounded-md bg-gray-200 p-2 shadow-sm"
                         >
-                          <View className="flex-row items-center justify-around flex-grow">
+                          <View className="flex-grow flex-row items-center justify-around">
                             <View className="">
                               <Text className="text-lg">{set.setNumber}</Text>
                             </View>
@@ -77,7 +77,7 @@ export default function Training({ navigation, route }) {
                       <TextInput
                         value={exercise.exerciseNotes}
                         editable={false}
-                        className="bg-gray-100 p-2 m-1 rounded-lg"
+                        className="m-1 rounded-lg bg-gray-100 p-2"
                       />
                     </View>
                   ))}

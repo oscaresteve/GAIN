@@ -9,6 +9,7 @@ import Animated, {
   interpolate,
   Easing,
 } from 'react-native-reanimated'
+import CustomIcon from './CustomIcon'
 
 export default function AnimatedSetCard({ children, onSwipe, enabled }) {
   const xPosition = useSharedValue(0)
@@ -54,9 +55,9 @@ export default function AnimatedSetCard({ children, onSwipe, enabled }) {
       <View>
         <Animated.View
           style={[animatedStyleViewUnder]}
-          className="absolute my-1 h-14 w-full flex-row items-center justify-between rounded-xl bg-green-300 p-3"
+          className="absolute my-1 pl-4 h-14 w-full flex-row items-center justify-start rounded-xl bg-green-500"
         >
-          <Text className="font-custom text-lg dark:text-white">Done</Text>
+          <CustomIcon name={'check-circle-outline'} size={40} color={1} />
         </Animated.View>
         <Animated.View style={[animatedStyle]}>{children}</Animated.View>
       </View>

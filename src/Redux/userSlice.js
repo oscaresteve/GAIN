@@ -137,101 +137,59 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
   return async (dispatch, getState) => {
     try {
       const state = getState()
-      const userData = state.user.userData
-      const newUserData = JSON.parse(JSON.stringify(userData))
-      const newUserTrainingDayData = JSON.parse(JSON.stringify(state.user.userTrainingDayData))
+      const userData = JSON.parse(JSON.stringify(state.user.userData))
+      const userTrainingDayData = JSON.parse(JSON.stringify(state.user.userTrainingDayData))
 
       const increaseXp = (amount) => {
-        if (newUserData.userXp) {
-          newUserData.userXp = newUserData.userXp + amount
-        } else {
-          newUserData.userXp = amount
-        }
-        if (newUserTrainingDayData.xpObtained) {
-          newUserTrainingDayData.xpObtained = newUserTrainingDayData.xpObtained + amount
-        } else {
-          newUserTrainingDayData.xpObtained = amount
-        }
+        userData.userXp = (userData.userXp || 0) + amount
+        userTrainingDayData.xpObtained = (userTrainingDayData.xpObtained || 0) + amount
       }
 
-      const reps =
-        newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[setIndex].details
-          .reps
-      const weight =
-        newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[setIndex].details
-          .weight
+      const setDetails =
+        userTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[setIndex].details
+      const { reps, weight } = setDetails
 
-      newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets[
-        setIndex
-      ].details.done = true
+      setDetails.done = true
 
-      newUserTrainingDayData.dayStats.totalSetsNumber += 1
-      newUserData.userStats.userTotalSetsNumber += 1
-      newUserTrainingDayData.dayStats.totalRepsNumber += reps
-      newUserData.userStats.userTotalRepsNumber += reps
-      newUserTrainingDayData.dayStats.totalWeightNumber += reps * weight
-      newUserData.userStats.userTotalWeightNumber += reps * weight
+      userTrainingDayData.dayStats.totalSetsNumber += 1
+      userTrainingDayData.dayStats.totalRepsNumber += reps
+      userTrainingDayData.dayStats.totalWeightNumber += reps * weight
+
+      userData.userStats.userTotalSetsNumber += 1
+      userData.userStats.userTotalRepsNumber += reps
+      userData.userStats.userTotalWeightNumber += reps * weight
 
       increaseXp(20)
 
-      if (
-        newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].sets.length - 1 ===
-        setIndex
-      ) {
-        newUserTrainingDayData.groups[groupIndex].exercises[exerciseIndex].done = true
-
-        newUserTrainingDayData.dayStats.totalExercisesNumber += 1
-        newUserData.userStats.userTotalExercisesNumber += 1
-
+      const exercise = userTrainingDayData.groups[groupIndex].exercises[exerciseIndex]
+      if (exercise.sets.every((set) => set.details.done)) {
+        exercise.done = true
+        userTrainingDayData.dayStats.totalExercisesNumber += 1
+        userData.userStats.userTotalExercisesNumber += 1
         increaseXp(15)
       }
 
-      if (
-        newUserTrainingDayData.groups.every((group) =>
-          group.exercises.every((exercise) => exercise.sets.every((set) => set.details.done)),
-        )
-      ) {
-        newUserTrainingDayData.done = true
+      const allExercisesDone = userTrainingDayData.groups.every((group) =>
+        group.exercises.every((exercise) => exercise.sets.every((set) => set.details.done)),
+      )
+      if (allExercisesDone) {
+        userTrainingDayData.done = true
+        userTrainingDayData.timeEnded = new Date().getTime()
+        const totalTime =
+          userTrainingDayData.timeEnded - (userTrainingDayData.timeStarted || new Date().getTime())
 
-        newUserTrainingDayData.timeEnded = new Date().getTime()
-        const totalTime = newUserTrainingDayData.timeEnded - newUserTrainingDayData.timeStarted
-
-        newUserTrainingDayData.dayStats.totalTrainingTime = totalTime
-        newUserData.userStats.userTotalTrainingTime += totalTime
+        userTrainingDayData.dayStats.totalTrainingTime = totalTime
+        userData.userStats.userTotalTrainingTime += totalTime
 
         increaseXp(150)
       }
-      dispatch(saveUserData(email, newUserData))
-      dispatch(saveUserTrainingDayData(email, newUserTrainingDayData))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
 
-export const startUserTrainingDay = (email) => {
-  return async (dispatch, getState) => {
-    try {
-      const state = getState()
-      const userTrainingDayData = state.user.userTrainingDayData
-      const newUserTrainingDayData = JSON.parse(JSON.stringify(userTrainingDayData))
-      newUserTrainingDayData.timeStarted = new Date().getTime()
-      dispatch(saveUserTrainingDayData(email, newUserTrainingDayData))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
+      if (!userTrainingDayData.timeStarted) {
+        userTrainingDayData.timeStarted = new Date().getTime()
+      }
 
-export const endUserTrainingDay = () => {
-  return async (dispatch, getState) => {
-    try {
-      const state = getState()
-      const userData = state.user.userData
-      const userTrainingDayData = state.user.userTrainingDayData
-      const newUserTrainingDayData = JSON.parse(JSON.stringify(userTrainingDayData))
-      newUserTrainingDayData.timeEnded = new Date().getTime()
-      dispatch(saveUserTrainingDayData(userData.email, newUserTrainingDayData))
+      dispatch(saveUserData(email, userData))
+      dispatch(saveUserTrainingDayData(email, userTrainingDayData))
     } catch (error) {
       console.error(error)
     }

@@ -7,7 +7,13 @@ import CustomIcon from './CustomIcon'
 import PressableView from './PressableView'
 import Divider from './Divider'
 
-export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
+export default Calendar = ({
+  onDayPress,
+  onPrevMonth,
+  onNextMonth,
+  userTrainingDayData,
+  userAllTrainingDaysData,
+}) => {
   const [currentDate, setCurrentDate] = useState(moment())
 
   const handleDayPress = (date) => {
@@ -33,19 +39,27 @@ export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
     let daysArray = []
 
     const getDateStatus = (date) => {
-      const foundDay = data.find((item) => item.date === date.format('YYYY-MM-DD'))
+      const foundDay =
+        date.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')
+          ? userTrainingDayData
+          : userAllTrainingDaysData.find((item) => item.date === date.format('YYYY-MM-DD'))
       if (foundDay) {
         return foundDay?.restDay ? 'restDay' : foundDay?.done ? 'done' : 'notDone'
       }
     }
 
     const Day = ({ dayNumber = '', date, status, isSelected, buttonDisabled = false }) => {
-      const getCurrentDay = () => {
+      const getIsCurrentDay = () => {
         if (date && date.isSame(moment(), 'day')) {
           return 'border-2 border-smoke-3 dark:border-night-3'
         } else {
           return ''
         }
+      }
+
+      const getIsSelected = () => {
+        if (isSelected) return 'bg-smoke-3 dark:bg-night-3'
+        return ''
       }
 
       const getStatusDot = () => {
@@ -55,18 +69,13 @@ export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
         return <CustomIcon name="circle" size={10} color={'transparent'} />
       }
 
-      const getIsSelected = () => {
-        if (isSelected) return 'bg-smoke-3 dark:bg-night-3'
-        return ''
-      }
-
       return (
         <View className="w-[14.28%] p-2">
           <PressableView>
             <Pressable
               onPress={() => handleDayPress(date)}
               disabled={buttonDisabled}
-              className={`aspect-square items-center justify-center rounded-xl ${getIsSelected()} ${getCurrentDay()}`}
+              className={`aspect-square items-center justify-center rounded-xl ${getIsSelected()} ${getIsCurrentDay()}`}
             >
               <Text className="font-custom text-xl dark:text-white">{dayNumber}</Text>
             </Pressable>
@@ -132,10 +141,8 @@ export default Calendar = ({ onDayPress, onPrevMonth, onNextMonth, data }) => {
           <Divider height={2} width="95%" />
           <View className="mt-2 flex-row">
             {moment.weekdaysShort().map((day, index) => (
-              <View className="flex-1 items-center justify-center">
-                <Text key={index} className="font-custon text-md dark:text-white">
-                  {day}
-                </Text>
+              <View key={index} className="flex-1 items-center justify-center">
+                <Text className="font-custon text-md dark:text-white">{day}</Text>
               </View>
             ))}
           </View>

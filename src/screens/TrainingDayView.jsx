@@ -1,39 +1,17 @@
-import { View, Pressable, Button, ScrollView, Text } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, Button, ScrollView, Text, Pressable } from 'react-native'
+import React, { useRef, useState } from 'react'
 import AppBar from '../components/AppBar'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-  selectUserTrainingDayData,
-  selectUserData,
-  fetchUserTrainingDayData,
-  fetchUserAllTrainingsData,
-  saveUserTrainingDayData,
-  setSetDone,
-} from '../Redux/userSlice'
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
-import { useAppBarHeight } from '../components/AppBar'
-import AnimatedSetCard from '../components/AnimatedSetCard'
+import moment from 'moment'
 import PressableView from '../components/PressableView'
+
+import { useAppBarHeight } from '../components/AppBar'
 import CustomIcon from '../components/CustomIcon'
 
-export default function Home() {
-  const dispatch = useDispatch()
-  const userTrainingDayData = useSelector(selectUserTrainingDayData)
-  const userData = useSelector(selectUserData)
+export default function TrainingDayView({ navigation, route }) {
+  const { userTrainingDayData } = route.params
 
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
-
-  useEffect(() => {
-    if (userData) {
-      dispatch(fetchUserTrainingDayData(userData?.email))
-      dispatch(fetchUserAllTrainingsData(userData?.email))
-    }
-  }, [userData])
-
-  const handleSetDone = (groupIndex, exerciseIndex, setIndex) => {
-    dispatch(setSetDone(userData?.email, groupIndex, exerciseIndex, setIndex))
-  }
 
   const handleScroll = (event) => {
     const offsetY = event.nativeEvent.contentOffset.y
@@ -77,42 +55,37 @@ export default function Home() {
                   </Text>
                   <View className="my-2">
                     {exercise.sets?.map((set, setIndex) => {
-                      const enabled =
-                        !set.details.done &&
-                        (setIndex === 0 || exercise.sets[setIndex - 1].details.done)
                       return (
                         <View key={setIndex}>
-                          <AnimatedSetCard
-                            enabled={enabled}
-                            onSwipe={() => handleSetDone(groupIndex, exerciseIndex, setIndex)}
+                          <View
+                            className={`my-1 h-14 flex-row rounded-xl border border-smoke-3 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2 ${
+                              set.details.done
+                                ? 'border-2 border-green-500'
+                                : 'border-2 border-red-500'
+                            }`}
                           >
-                            <View
-                              className={`my-1 h-14 flex-row rounded-xl bg-smoke-2 py-2 shadow-sm dark:bg-night-2 
-                              ${set.details.done && 'border-2 border-green-500'} ${enabled && 'border-2 border-smoke-3 dark:border-night-3'}`}
-                            >
-                              <View className="w-12 items-center justify-center">
-                                <Text className="text-md font-custom dark:text-white">
-                                  {set.setNumber}
+                            <View className="w-12 items-center justify-center">
+                              <Text className="text-md font-custom dark:text-white">
+                                {set.setNumber}
+                              </Text>
+                            </View>
+                            <Divider direction="vertical" height={2} />
+                            <View className="mx-4 grow flex-row">
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-custom text-lg dark:text-white">
+                                  {set.details.reps} reps
                                 </Text>
                               </View>
-                              <Divider direction="vertical" height={2} />
-                              <View className="mx-4 grow flex-row">
-                                <View className="flex-1 items-center justify-center">
-                                  <Text className="font-custom text-lg dark:text-white">
-                                    {set.details.reps} reps
-                                  </Text>
-                                </View>
-                                <View className="flex-1 items-center justify-center">
-                                  <Divider height={2} />
-                                </View>
-                                <View className="flex-1 items-center justify-center">
-                                  <Text className="font-custom text-lg dark:text-white">
-                                    {set.details.weight} kg
-                                  </Text>
-                                </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Divider height={2} />
+                              </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-custom text-lg dark:text-white">
+                                  {set.details.weight} kg
+                                </Text>
                               </View>
                             </View>
-                          </AnimatedSetCard>
+                          </View>
                         </View>
                       )
                     })}
@@ -222,15 +195,25 @@ export default function Home() {
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
       <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
-        <View
-          className="grow justify-center px-2"
-          style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
-        >
+        <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <TrainingDay />
         </View>
       </ScrollView>
       <ScrollToTop />
-      <AppBar />
+      <AppBar
+        label={moment(userTrainingDayData.date, 'YYYY-MM-DD').format('Do MMM YYYY')}
+        icon={
+          <PressableView>
+            <Pressable
+              onPress={() => {
+                navigation.goBack()
+              }}
+            >
+              <CustomIcon name={'keyboard-arrow-left'} size={40} color={'white'} />
+            </Pressable>
+          </PressableView>
+        }
+      />
     </View>
   )
 }

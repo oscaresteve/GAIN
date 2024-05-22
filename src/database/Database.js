@@ -135,7 +135,7 @@ export const setUserTraining = async (email, userTrainingData) => {
   try {
     const docRef = doc(
       collection(database, 'users', email, 'userTrainings'),
-      userTrainingData.trainingName
+      userTrainingData.trainingName,
     )
     await setDoc(docRef, userTrainingData)
     if ((await getDoc(docRef)).exists()) {
@@ -152,7 +152,7 @@ export const getUserTrainingDay = async (email) => {
   try {
     const docRef = doc(
       collection(database, 'users', email, 'userTrainingDays'),
-      moment(new Date()).format('YYYY-MM-DD')
+      moment(new Date()).format('YYYY-MM-DD'),
     )
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
@@ -169,7 +169,7 @@ export const setUserTrainingDay = async (email, userTrainingDayData) => {
   try {
     const docRef = doc(
       collection(database, 'users', email, 'userTrainingDays'),
-      moment(new Date()).format('YYYY-MM-DD')
+      moment(new Date()).format('YYYY-MM-DD'),
     )
     await setDoc(docRef, userTrainingDayData)
   } catch (error) {
@@ -182,10 +182,10 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
     if (userTrainingData) {
       const docRef = doc(
         collection(database, 'users', email, 'userTrainingDays'),
-        moment(new Date()).format('YYYY-MM-DD')
+        moment(new Date()).format('YYYY-MM-DD'),
       )
       const dayData = userTrainingData?.days.find(
-        (day) => day.day === moment(new Date()).format('d')
+        (day) => day.day === moment(new Date()).format('d'),
       )
       const newDayData = JSON.parse(JSON.stringify(dayData))
       newDayData.date = moment(new Date()).format('YYYY-MM-DD')
@@ -197,15 +197,11 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
         newDayData.timeStarted = false
         newDayData.timeEnded = false
         newDayData.dayStats = {
-          totalTrainingTime: null,
-          totalExercisesNumber: null,
-          totalSetsNumber: null,
-          totalRepsNumber: null,
-          totalWeightNumber: null,
-        }
-        newDayData.feedback = {
-          motivation: null,
-          energy: null,
+          totalTrainingTime: 0,
+          totalExercisesNumber: 0,
+          totalSetsNumber: 0,
+          totalRepsNumber: 0,
+          totalWeightNumber: 0,
         }
       } else {
         newDayData.restDay = true

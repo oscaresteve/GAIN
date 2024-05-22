@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, Pressable, ScrollView } from 'react-native'
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import { View, Text, Pressable, ScrollView } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchUserAllTrainingDaysData } from '../Redux/userSlice'
@@ -12,8 +12,10 @@ import Calendar from '../components/Calendar'
 import AppBar, { useAppBarHeight } from '../components/AppBar'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import CustomIcon from '../components/CustomIcon'
+import Divider from '../components/Divider'
+import PressableView from '../components/PressableView'
 
-export default function CalendarView() {
+export default function CalendarView({ navigation }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
   const userAllTrainingDaysData = useSelector(selectUserAllTrainingDaysData)
@@ -26,6 +28,7 @@ export default function CalendarView() {
           (trainingDayData) => moment(currentDate).format('YYYY-MM-DD') === trainingDayData.date,
         )
   const scrollViewRef = useRef()
+  const [showScrollToTop, setShowScrollToTop] = useState(false)
 
   useEffect(() => {
     dispatch(fetchUserAllTrainingDaysData(userData.email))
@@ -33,7 +36,7 @@ export default function CalendarView() {
 
   const handleDayPress = (selectedDate) => {
     setCurrentDate(selectedDate)
-    handleScroll()
+    scrollViewRef.current.scrollTo({ x: 0, y: 500, animated: true })
   }
 
   const handlePrevMonth = () => {
@@ -44,26 +47,44 @@ export default function CalendarView() {
     setCurrentDate(currentDate.clone().add(1, 'month'))
   }
 
-  const handleScroll = () => {
-    scrollViewRef.current.scrollTo({ x: 0, y: 500, animated: true })
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    if (offsetY > 0 && !showScrollToTop) {
+      setShowScrollToTop(true)
+    } else if (offsetY === 0 && showScrollToTop) {
+      setShowScrollToTop(false)
+    }
+  }
+
+  const ScrollToTop = () => {
+    if (showScrollToTop) {
+      return (
+        <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
+          <PressableView>
+            <Pressable
+              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+              className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
+            >
+              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+            </Pressable>
+          </PressableView>
+        </View>
+      )
+    }
   }
 
   const DayStatus = () => {
-    const foundDay = userAllTrainingDaysData.find(
-      (item) => item.date === currentDate.format('YYYY-MM-DD'),
-    )
-
-    const status = foundDay?.restDay ? 'restDay' : foundDay?.done ? 'done' : 'notDone'
+    const status = currentDateData?.restDay ? 'restDay' : currentDateData?.done ? 'done' : 'notDone'
     let color
     let message
 
-    if (foundDay) {
+    if (currentDateData) {
       if (status === 'done') {
         color = 'green'
-        message = 'Training Done'
+        message = 'Training Finished'
       } else if (status === 'notDone') {
         color = 'red'
-        message = 'Training Not Done'
+        message = 'Training Not Finished'
       } else if (status === 'restDay') {
         color = 'blue'
         message = 'Rest Day'
@@ -78,8 +99,8 @@ export default function CalendarView() {
 
     return (
       <View className="flex-row items-center">
-        <CustomIcon name="circle" size={20} color={color} />
-        <Text className="ml-2 font-custom text-2xl" style={{ color }}>
+        <CustomIcon name="circle" size={10} color={color} />
+        <Text className="ml-2 font-custom text-xl" style={{ color }}>
           {message}
         </Text>
       </View>
@@ -102,27 +123,71 @@ export default function CalendarView() {
         : null
 
       return (
-        <View className="flex-row items-center rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-          <Text className="font-custom text-xl dark:text-white">Body Weight: </Text>
-          <Text className="font-custom text-xl dark:text-white">
-            {bodyWeightMark.bodyWeight} Kg
-          </Text>
-          {difference !== null && (
-            <Text
-              className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
-            >
-              ({difference >= 0 ? '+' : '-'} {Math.abs(difference)})
+        <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+          <View className="m-1">
+            <Text className="font-custom text-xl dark:text-white">Body Weight</Text>
+          </View>
+          <Divider height={2} width="100%" />
+          <View className="m-1 flex-row items-center">
+            <Text className="font-custom text-xl dark:text-white">
+              {bodyWeightMark.bodyWeight} Kg
             </Text>
-          )}
+            {difference !== null && (
+              <Text
+                className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+              >
+                ({difference >= 0 ? '+' : '-'} {Math.abs(difference)})
+              </Text>
+            )}
+          </View>
         </View>
       )
     }
-    return null
+  }
+
+  const PersonalRecordMark = ({ userPersonalRecord }) => {
+    const personalRecordMark = userPersonalRecord.marks[moment(currentDate).format('YYYY-MM-DD')]
+    if (personalRecordMark) {
+      const sortedDates = Object.keys(userPersonalRecord.marks).sort((a, b) =>
+        moment(a).diff(moment(b)),
+      )
+      const currentIndex = sortedDates.findIndex(
+        (date) => date === moment(currentDate).format('YYYY-MM-DD'),
+      )
+      const previousPersonalRecordMark = userPersonalRecord.marks[sortedDates[currentIndex - 1]]
+
+      const difference = previousPersonalRecordMark
+        ? personalRecordMark.mark - previousPersonalRecordMark.mark
+        : null
+
+      return (
+        <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+          <View className="m-1">
+            <Text className="font-custom text-xl dark:text-white">
+              {userPersonalRecord.exercise.exerciseName}
+            </Text>
+          </View>
+          <Divider height={2} width="100%" />
+          <View className="m-1 flex-row items-center">
+            <Text className="font-custom text-xl dark:text-white">
+              {personalRecordMark.mark} Kg
+            </Text>
+            {difference !== null && (
+              <Text
+                className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+              >
+                ({difference >= 0 ? '+' : '-'} {Math.abs(difference)})
+              </Text>
+            )}
+          </View>
+        </View>
+      )
+    }
   }
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView ref={scrollViewRef}>
+      <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
         <View
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
@@ -132,70 +197,52 @@ export default function CalendarView() {
               onDayPress={handleDayPress}
               onPrevMonth={handlePrevMonth}
               onNextMonth={handleNextMonth}
-              data={userAllTrainingDaysData}
+              userTrainingDayData={userTrainingDayData}
+              userAllTrainingDaysData={userAllTrainingDaysData}
             />
 
-            <View className="mt-5">
+            <View className="mt-12">
               <Text className="font-custom text-4xl dark:text-white">
                 {moment(currentDate).format('Do MMM YYYY')}
               </Text>
 
               <DayStatus />
 
-              <View className="mx-4">
-                <Text className="my-2 font-custom text-2xl dark:text-white">Training Resume:</Text>
-                <Divider height={3} />
-                {currentDateData?.groups.map((group, groupIndex) => (
-                  <View key={groupIndex} className="ml-2">
-                    <Text className="my-1 font-custom text-xl dark:text-white">
-                      {group.groupName}
-                    </Text>
-                    <View className="mb-4">
-                      {group.exercises.map((exercise, exerciseIndex) => {
-                        const setsCount = exercise.sets.length
-                        const repsCount = exercise.sets.map((set) => set.details.reps).join(', ')
-                        return (
-                          <View key={exerciseIndex} className="ml-2">
-                            <Text className="font-custom text-lg dark:text-white">
-                              {exercise.exerciseName}
-                            </Text>
-                            <Text className="ml-2 font-custom text-lg dark:text-white">
-                              {setsCount}
-                              {' x '}
-                              {repsCount}
-                            </Text>
-                          </View>
-                        )
-                      })}
-                    </View>
+              {currentDateData && (
+                <View>
+                  <PressableView>
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('TrainingDayView', {
+                          userTrainingDayData: currentDateData,
+                        })
+                      }
+                      className="my-4 items-center justify-center rounded-xl border border-primary-1 p-2"
+                    >
+                      <Text className="font-custom text-xl font-bold text-primary-1">
+                        View Training
+                      </Text>
+                    </Pressable>
+                  </PressableView>
+                  <View className="my-2 items-center">
+                    <Text className="font-custom text-xl dark:text-white">Day Progress</Text>
                   </View>
-                ))}
-              </View>
-              <Text className="font-custom text-xl dark:text-white">Feedback:</Text>
+                  <Divider height={2} />
 
-              <BodyWeightMark />
-
-              <Text className="font-custom text-xl dark:text-white">Records:</Text>
-              {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
-                <View key={index}>
-                  <Text className="font-custom dark:text-white">
-                    {userPersonalRecord.exercise.exerciseName}
-                    {JSON.stringify(
-                      userPersonalRecord.marks[moment(currentDate).format('YYYY-MM-DD')],
-                    )}
-                  </Text>
+                  <View className="m-2">
+                    <BodyWeightMark />
+                    {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
+                      <PersonalRecordMark key={index} userPersonalRecord={userPersonalRecord} />
+                    ))}
+                  </View>
                 </View>
-              ))}
-
-              <Text className="font-custom text-xl dark:text-white">Stats:</Text>
-              <Text className="font-custom text-xl dark:text-white">
-                {JSON.stringify(currentDateData)}
-              </Text>
+              )}
             </View>
           </ScrollView>
         </View>
       </ScrollView>
-      <AppBar />
+      <ScrollToTop />
+      <AppBar label={'Calendar'} />
     </View>
   )
 }
