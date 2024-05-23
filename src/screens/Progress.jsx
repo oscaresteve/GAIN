@@ -23,6 +23,8 @@ import CustomIcon from '../components/CustomIcon'
 import AppBar from '../components/AppBar'
 import { useAppBarHeight } from '../components/AppBar'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
+import Divider from '../components/Divider'
+import LineGraph from '../components/LineGraph'
 
 export default function Progress({ navigation }) {
   const userData = useSelector(selectUserData)
@@ -81,6 +83,14 @@ export default function Progress({ navigation }) {
       )
     }
   }
+  const data = Object.values(userData.userProgress.bodyWeightProgress)
+    .map((mark) => {
+      return {
+        date: moment(mark.date).toISOString(),
+        value: mark.bodyWeight,
+      }
+    })
+    .sort((a, b) => moment(a.date).diff(moment(b.date)))
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
@@ -89,8 +99,10 @@ export default function Progress({ navigation }) {
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
-          <Text>Progreso del peso</Text>
-          <View className="my-1 rounded-md bg-white p-2 shadow-sm">
+          <Text className="my-2 font-custom text-2xl dark:text-white">Body Weight</Text>
+          <Divider height={2} />
+          <View className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+            <LineGraph data={data} width={350} height={150} />
             <TextInput
               inputMode="decimal"
               value={bodyWeightValue}
@@ -113,9 +125,24 @@ export default function Progress({ navigation }) {
           <Text>Personal Records</Text>
 
           {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => {
+            const data = Object.values(userPersonalRecord.marks)
+              .map((mark) => {
+                return {
+                  date: moment(mark.date).toISOString(),
+                  value: mark.mark,
+                }
+              })
+              .sort((a, b) => moment(a.date).diff(moment(b.date)))
             return (
-              <View key={index} className="my-1 rounded-md bg-white p-2 shadow-sm">
-                <Text>{userPersonalRecord.exercise.exerciseName}</Text>
+              <View key={index} className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+                <Text className="m-2 font-custom text-xl dark:text-white">
+                  {userPersonalRecord.exercise.exerciseName}
+                </Text>
+                <Divider height={2} />
+                <View>
+                  <LineGraph data={data} width={350} height={150} />
+                </View>
+
                 <TextInput
                   inputMode="decimal"
                   value={recordValues[index]}
@@ -182,7 +209,7 @@ export default function Progress({ navigation }) {
                     return (
                       <View
                         key={exerciseIndex}
-                        className={`m-2 rounded-md bg-white p-2 shadow-sm ${
+                        className={`m-2 rounded-md bg-white p-2 ${
                           exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
                         }`}
                       >
@@ -213,7 +240,7 @@ export default function Progress({ navigation }) {
                     return (
                       <View
                         key={exerciseIndex}
-                        className={`m-2 rounded-md bg-white p-2 shadow-sm ${
+                        className={`m-2 rounded-md bg-white p-2 ${
                           exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
                         }`}
                       >

@@ -115,10 +115,7 @@ export default function LogIn({ navigation }) {
             </Pressable>
           </PressableView>
           <PressableView>
-            <Pressable
-              onPress={() => navigation.navigate('Register')}
-              className="my-2 items-center"
-            >
+            <Pressable onPress={() => navigation.navigate('Register')} className="items-center">
               <Text className="text-md font-custom text-primary-2">
                 ¿New here? ¡Create your account!
               </Text>
