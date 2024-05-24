@@ -64,11 +64,13 @@ export default function Training({ navigation, route }) {
                             <View className="">
                               <Text className="text-lg">{set.setNumber}</Text>
                             </View>
+                            <DifficultyBar value={set.details.reps} maxValue={12} />
                             <View className="">
                               <Text className="text-lg">{set.details.reps} reps</Text>
                             </View>
                             <View className="">
                               <Text className="text-lg">{set.details.weight} kg</Text>
+                              <DifficultyBar value={set.details.weight} maxValue={100} />
                             </View>
                           </View>
                         </View>

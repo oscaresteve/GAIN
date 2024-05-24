@@ -6,6 +6,7 @@ import PressableView from '../components/PressableView'
 
 import { useAppBarHeight } from '../components/AppBar'
 import CustomIcon from '../components/CustomIcon'
+import DifficultyBar from '../components/DifficultyBar'
 
 export default function TrainingDayView({ navigation, route }) {
   const { userTrainingDayData } = route.params
@@ -75,6 +76,7 @@ export default function TrainingDayView({ navigation, route }) {
                                 <Text className="font-custom text-lg dark:text-white">
                                   {set.details.reps} reps
                                 </Text>
+                                <DifficultyBar value={set.details.reps} maxValue={12} />
                               </View>
                               <View className="flex-1 items-center justify-center">
                                 <Divider height={2} />
@@ -83,6 +85,7 @@ export default function TrainingDayView({ navigation, route }) {
                                 <Text className="font-custom text-lg dark:text-white">
                                   {set.details.weight} kg
                                 </Text>
+                                <DifficultyBar value={set.details.weight} maxValue={100} />
                               </View>
                             </View>
                           </View>
