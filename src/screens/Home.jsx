@@ -62,7 +62,7 @@ export default function Home() {
   }
 
   const TrainingDay = () => {
-    if (!userTrainingDayData.restDay) {
+    if (userTrainingDayData.groups.length > 0) {
       return (
         <View>
           {userTrainingDayData?.groups?.map((group, groupIndex) => (
@@ -124,7 +124,7 @@ export default function Home() {
           <TrainingStats />
         </View>
       )
-    } else if (userTrainingDayData.restDay) {
+    } else {
       return (
         <View>
           <Text className="font-custom text-3xl dark:text-white">REST DAY</Text>
@@ -221,7 +221,16 @@ export default function Home() {
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: useBottomTabBarHeight(),
+          right: 0,
+        }}
+      >
         <View
           className="grow justify-center px-2"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}

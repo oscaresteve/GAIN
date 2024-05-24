@@ -44,7 +44,7 @@ export default Calendar = ({
           ? userTrainingDayData
           : userAllTrainingDaysData.find((item) => item.date === date.format('YYYY-MM-DD'))
       if (foundDay) {
-        return foundDay?.restDay ? 'restDay' : foundDay?.done ? 'done' : 'notDone'
+        return foundDay?.done ? 'done' : 'notDone'
       }
     }
 
@@ -65,7 +65,6 @@ export default Calendar = ({
       const getStatusDot = () => {
         if (status === 'done') return <CustomIcon name="circle" size={5} color={'green'} />
         if (status === 'notDone') return <CustomIcon name="circle" size={5} color={'red'} />
-        if (status === 'restDay') return <CustomIcon name="circle" size={5} color={'blue'} />
         return <CustomIcon name="circle" size={10} color={'transparent'} />
       }
 
@@ -111,7 +110,7 @@ export default Calendar = ({
     }
 
     const swipeMonthGesture = Gesture.Pan()
-      .minDistance(100)
+      .minDistance(50)
       .onEnd((event) => {
         if (event.translationX < 0) {
           runOnJS(handleNextMonth)()

@@ -15,10 +15,11 @@ import EditTraining from './screens/EditTraining'
 import EditProfile from './screens/EditProfile'
 import Progress from './screens/Progress'
 import CalendarView from './screens/CalendarView'
-import PersonalRecordView from './screens/PersonalRecordView'
+import ProgressView from './screens/ProgressView'
 import { StyleSheet } from 'react-native'
 import { BlurView } from 'expo-blur'
 import TrainingDayView from './screens/TrainingDayView'
+import ExerciseInfo from './screens/ExerciseInfo'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -153,17 +154,26 @@ export default function Navigation() {
           }}
         />
         <Stack.Screen
-          name="PersonalRecordView"
-          component={PersonalRecordView}
+          name="ProgressView"
+          component={ProgressView}
           options={{
             headerShown: false,
-            gestureEnabled: false,
-            animationEnabled: false,
+            gestureEnabled: true,
+            animationEnabled: true,
           }}
         />
         <Stack.Screen
           name="TrainingDayView"
           component={TrainingDayView}
+          options={{
+            headerShown: false,
+            gestureEnabled: true,
+            animationEnabled: true,
+          }}
+        />
+        <Stack.Screen
+          name="ExerciseInfo"
+          component={ExerciseInfo}
           options={{
             headerShown: false,
             gestureEnabled: true,

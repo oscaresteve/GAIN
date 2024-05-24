@@ -20,6 +20,9 @@ import {
   saveUserTrainingData,
 } from '../Redux/userSlice'
 import moment from 'moment'
+import Divider from '../components/Divider'
+import PressableView from '../components/PressableView'
+import { ExerciseCard } from '../components/ExerciseCard'
 
 export default function CreateTraining({ navigation }) {
   const dispatch = useDispatch()
@@ -75,7 +78,7 @@ export default function CreateTraining({ navigation }) {
     setUserTrainingData((prevData) => {
       const newUserTrainingData = { ...prevData }
       const existingGroup = newUserTrainingData.days[dayIndex]?.groups.find(
-        (group) => group.groupName === exercise.groupName
+        (group) => group.groupName === exercise.groupName,
       )
 
       if (existingGroup) {
@@ -152,7 +155,7 @@ export default function CreateTraining({ navigation }) {
       const newUserTrainingData = { ...prevData }
       newUserTrainingData.days[dayIndex].groups[groupIndex].exercises[exerciseIndex].sets.splice(
         setIndex,
-        1
+        1,
       )
       return newUserTrainingData
     })
@@ -226,6 +229,16 @@ export default function CreateTraining({ navigation }) {
     navigation.navigate('MyTrainings')
   }
 
+  const handleModalScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    if (offsetY < -150) {
+      setSelectExerciseModalShow({
+        ...selectExerciseModalShow,
+        visible: false,
+      })
+    }
+  }
+
   return (
     <SafeAreaView className="flex-1">
       <Button onPress={navigation.goBack} title="Back" />
@@ -244,7 +257,7 @@ export default function CreateTraining({ navigation }) {
               handleTrainingNameChange(value)
             }}
             onBlur={onBlur}
-            className="text-3xl ml-2"
+            className="ml-2 text-3xl"
           />
         )}
       />
@@ -258,7 +271,7 @@ export default function CreateTraining({ navigation }) {
                 <View key={groupIndex}>
                   <Text className="text-2xl font-bold">{group.groupName}</Text>
                   {group.exercises?.map((exercise, exerciseIndex) => (
-                    <View key={exerciseIndex} className="bg-white my-1 p-2 rounded-md shadow-sm">
+                    <View key={exerciseIndex} className="my-1 rounded-md bg-white p-2 shadow-sm">
                       <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
                       <Button
                         title="Delete Exercise"
@@ -266,8 +279,8 @@ export default function CreateTraining({ navigation }) {
                       />
                       {exercise.sets?.map((set, setIndex) => (
                         <View key={setIndex}>
-                          <View className="flex-row items-center justify-between my-1 p-2 shadow-sm rounded-md bg-gray-200">
-                            <View className="flex-row items-center justify-around flex-grow">
+                          <View className="my-1 flex-row items-center justify-between rounded-md bg-gray-200 p-2 shadow-sm">
+                            <View className="flex-grow flex-row items-center justify-around">
                               <View className="">
                                 <Text className="text-lg">{set.setNumber}</Text>
                               </View>
@@ -325,7 +338,7 @@ export default function CreateTraining({ navigation }) {
                         onChangeText={(text) =>
                           handleSetExerciseNotes(text, dayIndex, groupIndex, exerciseIndex)
                         }
-                        className="bg-gray-100 p-2 m-1 rounded-lg"
+                        className="m-1 rounded-lg bg-gray-100 p-2"
                       />
                     </View>
                   ))}
@@ -352,41 +365,35 @@ export default function CreateTraining({ navigation }) {
                   })
                 }
               >
-                <ScrollView>
-                  <View className="bg-gray-200 rounded-3xl mt-16 p-2">
-                    <Button
-                      title="Close"
-                      onPress={() =>
-                        setSelectExerciseModalShow({
-                          ...selectExerciseModalShow,
-                          visible: false,
-                        })
-                      }
-                    />
+                <ScrollView onScroll={handleModalScroll} showsVerticalScrollIndicator={false}>
+                  <View className="mt-24 rounded-3xl bg-smoke-1 p-4 dark:bg-night-1">
+                    <Divider height={4} width={50} />
 
-                    <Pressable
-                      onPress={() =>
-                        setSelectExerciseModalShow({
-                          ...selectExerciseModalShow,
-                          groupSelected: 'Bicep',
-                        })
-                      }
-                    >
-                      <Text className="text-3xl font-bold">Bicep</Text>
-                    </Pressable>
-                    <Pressable
-                      onPress={() =>
-                        setSelectExerciseModalShow({
-                          ...selectExerciseModalShow,
-                          groupSelected: 'Chest',
-                        })
-                      }
-                    >
-                      <Text className="text-3xl font-bold">Chest</Text>
-                    </Pressable>
+                    <View className="my-4 flex-row flex-wrap justify-start ">
+                      {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map(
+                        (group, index) => (
+                          <PressableView key={index}>
+                            <Pressable
+                              onPress={() =>
+                                setSelectExerciseModalShow({
+                                  ...selectExerciseModalShow,
+                                  groupSelected: group,
+                                })
+                              }
+                              className="m-1"
+                            >
+                              <Text className="font-custom text-3xl dark:text-white">{group}</Text>
+                              <View
+                                className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
+                              ></View>
+                            </Pressable>
+                          </PressableView>
+                        ),
+                      )}
+                    </View>
                     {gainData?.trainingExercises
                       ?.filter(
-                        (exercise) => exercise.groupName === selectExerciseModalShow.groupSelected
+                        (exercise) => exercise.groupName === selectExerciseModalShow.groupSelected,
                       )
                       ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
                       .map((exercise, exerciseIndex) => {
@@ -395,31 +402,23 @@ export default function CreateTraining({ navigation }) {
                         ]?.groups?.some((group) =>
                           group.exercises.some(
                             (existingExercise) =>
-                              existingExercise.exerciseName === exercise.exerciseName
-                          )
+                              existingExercise.exerciseName === exercise.exerciseName,
+                          ),
                         )
+
                         return (
-                          <View
+                          <ExerciseCard
                             key={exerciseIndex}
-                            className={`bg-white m-2 p-2 rounded-md shadow-sm ${
-                              exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
-                            }`}
-                          >
-                            <Pressable
-                              onPress={() => {
-                                if (!exerciseExists) {
-                                  handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
-                                  setSelectExerciseModalShow({
-                                    ...selectExerciseModalShow,
-                                    visible: false,
-                                  })
-                                }
-                              }}
-                              disabled={exerciseExists}
-                            >
-                              <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
-                            </Pressable>
-                          </View>
+                            exercise={exercise}
+                            exerciseExists={exerciseExists}
+                            onAdd={() => {
+                              handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
+                              setSelectExerciseModalShow({
+                                ...selectExerciseModalShow,
+                                visible: false,
+                              })
+                            }}
+                          />
                         )
                       })}
                   </View>

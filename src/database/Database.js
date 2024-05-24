@@ -192,7 +192,6 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
       newDayData.trainingName = userTrainingData.trainingName
 
       if (newDayData.groups.length > 0) {
-        newDayData.restDay = false
         newDayData.done = false
         newDayData.timeStarted = false
         newDayData.timeEnded = false
@@ -203,11 +202,7 @@ export const newUserTrainingDay = async (email, userTrainingData) => {
           totalRepsNumber: 0,
           totalWeightNumber: 0,
         }
-      } else {
-        newDayData.restDay = true
-        newDayData.done = true
       }
-
       await setDoc(docRef, newDayData)
     }
   } catch (error) {

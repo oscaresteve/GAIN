@@ -25,6 +25,8 @@ import { useAppBarHeight } from '../components/AppBar'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import Divider from '../components/Divider'
 import LineGraph from '../components/LineGraph'
+import KeyboardView from '../components/KeyboardView'
+import { ExerciseCard } from '../components/ExerciseCard'
 
 export default function Progress({ navigation }) {
   const userData = useSelector(selectUserData)
@@ -32,7 +34,11 @@ export default function Progress({ navigation }) {
   const dispatch = useDispatch()
   const [bodyWeightValue, setBodyWeightValue] = useState(null)
   const [recordValues, setRecordValues] = useState([])
-  const [selectExerciseModalShow, setSelectExerciseModalShow] = useState(false)
+  const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
+    visible: false,
+    groupSelected: 'Bicep',
+  })
+  console.log(selectExerciseModalShow.groupSelected)
 
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
@@ -83,7 +89,28 @@ export default function Progress({ navigation }) {
       )
     }
   }
-  const data = Object.values(userData.userProgress.bodyWeightProgress)
+
+  const AddButton = () => {
+    return (
+      <View className="absolute bottom-0 right-0" style={{ marginBottom: useBottomTabBarHeight() }}>
+        <PressableView>
+          <Pressable
+            onPress={() =>
+              setSelectExerciseModalShow({
+                ...selectExerciseModalShow,
+                visible: true,
+              })
+            }
+            className="m-4 h-16 w-16 items-center justify-center rounded-xl bg-smoke-3 dark:bg-night-3"
+          >
+            <CustomIcon name={'add'} size={50} color={'white'} />
+          </Pressable>
+        </PressableView>
+      </View>
+    )
+  }
+
+  const bodyWeightData = Object.values(userData.userProgress.bodyWeightProgress)
     .map((mark) => {
       return {
         date: moment(mark.date).toISOString(),
@@ -92,114 +119,204 @@ export default function Progress({ navigation }) {
     })
     .sort((a, b) => moment(a.date).diff(moment(b.date)))
 
+  const bodyWeightDisabled =
+    userData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')]
+
+  const handleModalScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    if (offsetY < -150) {
+      setSelectExerciseModalShow({
+        ...selectExerciseModalShow,
+        visible: false,
+      })
+    }
+  }
+
+  const BodyWeight = () => {
+    return (
+      <View className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+        <Pressable
+          onPress={() => {
+            navigation.navigate('ProgressView', {
+              data: bodyWeightData,
+              name: 'BodyWeight',
+            })
+          }}
+        >
+          <LineGraph data={bodyWeightData} />
+        </Pressable>
+        <View className="my-4 flex-row">
+          <View className="w-32 flex-row justify-end rounded-lg border-2 border-smoke-3 p-2 dark:border-night-3">
+            <TextInput
+              inputMode="decimal"
+              value={bodyWeightValue}
+              onChangeText={(bodyWeightValue) => setBodyWeightValue(bodyWeightValue)}
+              editable={
+                !userData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')]
+              }
+              maxLength={6}
+              textAlign="right"
+              enterKeyHint="done"
+              className="grow font-custom text-xl dark:text-white"
+            />
+            <Text className="text-md ml-1 font-custom dark:text-white">Kg</Text>
+          </View>
+          <PressableView>
+            <Pressable
+              onPress={handleSaveBodyWeightValueProgress}
+              disabled={bodyWeightDisabled}
+              className={`ml-4 grow items-center justify-center rounded-lg ${bodyWeightDisabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
+            >
+              <Text className="mx-3 font-custom text-xl font-bold text-smoke-2 dark:text-night-2 ">
+                Save
+              </Text>
+            </Pressable>
+          </PressableView>
+        </View>
+      </View>
+    )
+  }
+
+  const PersonalRecord = ({ userPersonalRecord, index }) => {
+    const personalRecordData = Object.values(userPersonalRecord.marks)
+      .map((mark) => {
+        return {
+          date: moment(mark.date).toISOString(),
+          value: mark.mark,
+        }
+      })
+      .sort((a, b) => moment(a.date).diff(moment(b.date)))
+
+    const disabled = userData.userProgress.userPersonalRecords.find(
+      (personalRecord) =>
+        personalRecord.exercise.exerciseName === userPersonalRecord.exercise.exerciseName,
+    ).marks[moment(new Date()).format('YYYY-MM-DD')]
+
+    return (
+      <View className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+        <Text className="m-2 font-custom text-xl dark:text-white">
+          {userPersonalRecord.exercise.exerciseName}
+        </Text>
+        <Divider height={2} />
+        <Pressable
+          onPress={() => {
+            navigation.navigate('ProgressView', {
+              data: personalRecordData,
+              name: userPersonalRecord.exercise.exerciseName,
+            })
+          }}
+        >
+          <LineGraph data={personalRecordData} />
+        </Pressable>
+        <View className="my-4 flex-row">
+          <View className="w-32 flex-row justify-end rounded-lg border-2 border-smoke-3 p-2 dark:border-night-3">
+            <TextInput
+              inputMode="decimal"
+              value={recordValues[index]}
+              onChangeText={(newValue) => {
+                const newValues = [...recordValues]
+                newValues[index] = newValue
+                setRecordValues(newValues)
+              }}
+              editable={
+                !userData.userProgress.userPersonalRecords.find(
+                  (personalRecord) =>
+                    personalRecord.exercise.exerciseName ===
+                    userPersonalRecord.exercise.exerciseName,
+                ).marks[moment(new Date()).format('YYYY-MM-DD')]
+              }
+              maxLength={6}
+              textAlign="right"
+              enterKeyHint="done"
+              className="grow font-custom text-xl dark:text-white"
+            />
+            <Text className="text-md ml-1 font-custom dark:text-white">Kg</Text>
+          </View>
+          <PressableView>
+            <Pressable
+              onPress={() =>
+                handleSavePersonalRecord(userPersonalRecord.exercise, recordValues[index])
+              }
+              disabled={disabled}
+              className={`ml-4 grow items-center justify-center rounded-lg ${disabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
+            >
+              <Text className="mx-3 font-custom text-xl font-bold text-smoke-2 dark:text-night-2 ">
+                Save
+              </Text>
+            </Pressable>
+          </PressableView>
+        </View>
+      </View>
+    )
+  }
+
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: useBottomTabBarHeight(),
+          right: 0,
+        }}
+      >
         <View
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
           <Text className="my-2 font-custom text-2xl dark:text-white">Body Weight</Text>
           <Divider height={2} />
-          <View className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-            <LineGraph data={data} width={350} height={150} />
-            <TextInput
-              inputMode="decimal"
-              value={bodyWeightValue}
-              onChangeText={(bodyWeightValue) => setBodyWeightValue(bodyWeightValue)}
-              enterKeyHint="done"
-              editable={
-                !userData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')]
-              }
-              className="m-1 rounded-lg bg-gray-200 p-2"
-            />
-            <Button
-              title="save peso"
-              onPress={handleSaveBodyWeightValueProgress}
-              disabled={
-                userData.userProgress.bodyWeightProgress[moment(new Date()).format('YYYY-MM-DD')]
-              }
-            />
-          </View>
 
-          <Text>Personal Records</Text>
+          <BodyWeight />
 
-          {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => {
-            const data = Object.values(userPersonalRecord.marks)
-              .map((mark) => {
-                return {
-                  date: moment(mark.date).toISOString(),
-                  value: mark.mark,
-                }
-              })
-              .sort((a, b) => moment(a.date).diff(moment(b.date)))
-            return (
-              <View key={index} className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-                <Text className="m-2 font-custom text-xl dark:text-white">
-                  {userPersonalRecord.exercise.exerciseName}
-                </Text>
-                <Divider height={2} />
-                <View>
-                  <LineGraph data={data} width={350} height={150} />
-                </View>
+          <Text className="my-2 font-custom text-2xl dark:text-white">Personal Records</Text>
+          <Divider height={2} />
 
-                <TextInput
-                  inputMode="decimal"
-                  value={recordValues[index]}
-                  onChangeText={(newValue) => {
-                    const newValues = [...recordValues]
-                    newValues[index] = newValue
-                    setRecordValues(newValues)
-                  }}
-                  editable={
-                    !userData.userProgress.userPersonalRecords.find(
-                      (personalRecord) =>
-                        personalRecord.exercise.exerciseName ===
-                        userPersonalRecord.exercise.exerciseName,
-                    ).marks[moment(new Date()).format('YYYY-MM-DD')]
-                  }
-                  enterKeyHint="done"
-                  className="m-1 rounded-lg bg-gray-200 p-2"
-                />
-                <Button
-                  title="save record"
-                  onPress={() =>
-                    handleSavePersonalRecord(userPersonalRecord.exercise, recordValues[index])
-                  }
-                  disabled={
-                    userData.userProgress.userPersonalRecords.find(
-                      (personalRecord) =>
-                        personalRecord.exercise.exerciseName ===
-                        userPersonalRecord.exercise.exerciseName,
-                    ).marks[moment(new Date()).format('YYYY-MM-DD')]
-                  }
-                />
-                <Button
-                  title="View"
-                  onPress={() => {
-                    navigation.navigate('PersonalRecordView', {
-                      userPersonalRecord: userPersonalRecord,
-                    })
-                  }}
-                />
-              </View>
-            )
-          })}
+          {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
+            <PersonalRecord key={index} userPersonalRecord={userPersonalRecord} index={index} />
+          ))}
 
-          <Button title="Add Record" onPress={() => setSelectExerciseModalShow(true)} />
           <Modal
             animationType="slide"
-            transparent={false}
-            visible={selectExerciseModalShow}
-            onRequestClose={() => setSelectExerciseModalShow(false)}
+            transparent={true}
+            visible={selectExerciseModalShow.visible}
+            onRequestClose={() =>
+              setSelectExerciseModalShow({
+                ...selectExerciseModalShow,
+                visible: false,
+              })
+            }
           >
-            <ScrollView>
-              <View className="mt-16 rounded-3xl bg-gray-200 p-2">
-                <Button title="Close" onPress={() => setSelectExerciseModalShow(false)} />
+            <ScrollView onScroll={handleModalScroll} showsVerticalScrollIndicator={false}>
+              <View className="mt-24 rounded-3xl bg-smoke-1 p-4 dark:bg-night-1">
+                <Divider height={4} width={50} />
 
-                <Text className="text-3xl font-bold">Bicep</Text>
+                <View className="my-4 flex-row flex-wrap justify-start ">
+                  {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map((group, index) => (
+                    <PressableView key={index}>
+                      <Pressable
+                        onPress={() =>
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            groupSelected: group,
+                          })
+                        }
+                        className="m-1"
+                      >
+                        <Text className="font-custom text-3xl dark:text-white">{group}</Text>
+                        <View
+                          className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
+                        ></View>
+                      </Pressable>
+                    </PressableView>
+                  ))}
+                </View>
                 {gainData?.trainingExercises
-                  ?.filter((exercise) => exercise.groupName === 'Bicep')
+                  ?.filter(
+                    (exercise) => exercise.groupName === selectExerciseModalShow.groupSelected,
+                  )
                   ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
                   .map((exercise, exerciseIndex) => {
                     const exerciseExists = userData.userProgress.userPersonalRecords.some(
@@ -207,55 +324,25 @@ export default function Progress({ navigation }) {
                         userPersonalRecord.exercise.exerciseName === exercise.exerciseName,
                     )
                     return (
-                      <View
+                      <ExerciseCard
                         key={exerciseIndex}
-                        className={`m-2 rounded-md bg-white p-2 ${
-                          exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
-                        }`}
-                      >
-                        <Pressable
-                          onPress={() => {
-                            if (!exerciseExists) {
-                              handleNewPersonalRecord(exercise)
-                              setSelectExerciseModalShow(false)
-                            }
-                          }}
-                          disabled={exerciseExists}
-                        >
-                          <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
-                        </Pressable>
-                      </View>
-                    )
-                  })}
-
-                <Text className="text-3xl font-bold">Chest</Text>
-                {gainData?.trainingExercises
-                  ?.filter((exercise) => exercise.groupName === 'Chest')
-                  ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
-                  .map((exercise, exerciseIndex) => {
-                    const exerciseExists = userData.userProgress.userPersonalRecords.some(
-                      (userPersonalRecord) =>
-                        userPersonalRecord.exercise.exerciseName === exercise.exerciseName,
-                    )
-                    return (
-                      <View
-                        key={exerciseIndex}
-                        className={`m-2 rounded-md bg-white p-2 ${
-                          exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
-                        }`}
-                      >
-                        <Pressable
-                          onPress={() => {
-                            if (!exerciseExists) {
-                              handleNewPersonalRecord(exercise)
-                              setSelectExerciseModalShow(false)
-                            }
-                          }}
-                          disabled={exerciseExists}
-                        >
-                          <Text className="text-2xl font-medium">{exercise.exerciseName}</Text>
-                        </Pressable>
-                      </View>
+                        exercise={exercise}
+                        exerciseExists={exerciseExists}
+                        onAdd={() => {
+                          handleNewPersonalRecord(exercise)
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            visible: false,
+                          })
+                        }}
+                        onInfo={() => {
+                          navigation.navigate('ExerciseInfo', { exercise: exercise })
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            visible: false,
+                          })
+                        }}
+                      />
                     )
                   })}
               </View>
@@ -264,6 +351,7 @@ export default function Progress({ navigation }) {
         </View>
       </ScrollView>
       <ScrollToTop />
+      <AddButton />
       <AppBar label="Progress" />
     </View>
   )

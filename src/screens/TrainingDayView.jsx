@@ -40,7 +40,7 @@ export default function TrainingDayView({ navigation, route }) {
   }
 
   const TrainingDay = () => {
-    if (!userTrainingDayData.restDay) {
+    if (userTrainingDayData.groups.length > 0) {
       return (
         <View>
           {userTrainingDayData?.groups?.map((group, groupIndex) => (
@@ -97,7 +97,7 @@ export default function TrainingDayView({ navigation, route }) {
           <TrainingStats />
         </View>
       )
-    } else if (userTrainingDayData.restDay) {
+    } else {
       return (
         <View>
           <Text className="font-custom text-3xl dark:text-white">REST DAY</Text>

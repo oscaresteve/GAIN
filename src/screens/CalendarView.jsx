@@ -85,16 +85,10 @@ export default function CalendarView({ navigation }) {
       } else if (status === 'notDone') {
         color = 'red'
         message = 'Training Not Finished'
-      } else if (status === 'restDay') {
-        color = 'blue'
-        message = 'Rest Day'
-      } else {
-        color = 'grey'
-        message = 'No Training Day'
       }
     } else {
       color = 'gray'
-      message = 'No Training Day'
+      message = 'Rest Day'
     }
 
     return (
@@ -111,6 +105,15 @@ export default function CalendarView({ navigation }) {
     const bodyWeightProgress = userData.userProgress.bodyWeightProgress
     const bodyWeightMark = bodyWeightProgress[moment(currentDate).format('YYYY-MM-DD')]
 
+    const bodyWeightData = Object.values(userData.userProgress.bodyWeightProgress)
+      .map((mark) => {
+        return {
+          date: moment(mark.date).toISOString(),
+          value: mark.bodyWeight,
+        }
+      })
+      .sort((a, b) => moment(a.date).diff(moment(b.date)))
+
     if (bodyWeightMark) {
       const sortedDates = Object.keys(bodyWeightProgress).sort((a, b) => moment(a).diff(moment(b)))
       const currentIndex = sortedDates.findIndex(
@@ -123,29 +126,55 @@ export default function CalendarView({ navigation }) {
         : null
 
       return (
-        <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-          <View className="m-1">
-            <Text className="font-custom text-xl dark:text-white">Body Weight</Text>
-          </View>
-          <Divider height={2} width="100%" />
-          <View className="m-1 flex-row items-center">
-            <Text className="font-custom text-xl dark:text-white">
-              {bodyWeightMark.bodyWeight} Kg
-            </Text>
-            {difference !== null && (
-              <Text
-                className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
-              >
-                ({difference >= 0 ? '+' : '-'} {Math.abs(difference)})
-              </Text>
-            )}
-          </View>
-        </View>
+        <PressableView>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('ProgressView', {
+                data: bodyWeightData,
+                name: 'BodyWeight',
+              })
+            }}
+          >
+            <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+              <View className="m-1">
+                <Text className="font-custom text-xl dark:text-white">Body Weight</Text>
+              </View>
+              <Divider height={2} width="100%" />
+              <View className="m-1 flex-row items-center">
+                <Text className="font-custom text-xl dark:text-white">
+                  {bodyWeightMark.bodyWeight} Kg
+                </Text>
+                {difference !== null && difference !== 0 && (
+                  <Text
+                    className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                  >
+                    (
+                    {difference >= 0 ? (
+                      <CustomIcon name={'trending-up'} size={15} color={'white'} />
+                    ) : (
+                      <CustomIcon name={'trending-down'} size={15} color={'white'} />
+                    )}{' '}
+                    {Math.abs(difference)})
+                  </Text>
+                )}
+              </View>
+            </View>
+          </Pressable>
+        </PressableView>
       )
     }
   }
 
   const PersonalRecordMark = ({ userPersonalRecord }) => {
+    const personalRecordData = Object.values(userPersonalRecord.marks)
+      .map((mark) => {
+        return {
+          date: moment(mark.date).toISOString(),
+          value: mark.mark,
+        }
+      })
+      .sort((a, b) => moment(a.date).diff(moment(b.date)))
+
     const personalRecordMark = userPersonalRecord.marks[moment(currentDate).format('YYYY-MM-DD')]
     if (personalRecordMark) {
       const sortedDates = Object.keys(userPersonalRecord.marks).sort((a, b) =>
@@ -161,84 +190,105 @@ export default function CalendarView({ navigation }) {
         : null
 
       return (
-        <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-          <View className="m-1">
-            <Text className="font-custom text-xl dark:text-white">
-              {userPersonalRecord.exercise.exerciseName}
-            </Text>
-          </View>
-          <Divider height={2} width="100%" />
-          <View className="m-1 flex-row items-center">
-            <Text className="font-custom text-xl dark:text-white">
-              {personalRecordMark.mark} Kg
-            </Text>
-            {difference !== null && (
-              <Text
-                className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
-              >
-                ({difference >= 0 ? '+' : '-'} {Math.abs(difference)})
-              </Text>
-            )}
-          </View>
-        </View>
+        <PressableView>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('ProgressView', {
+                data: personalRecordData,
+                name: userPersonalRecord.exercise.exerciseName,
+              })
+            }}
+          >
+            <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+              <View className="m-1">
+                <Text className="font-custom text-xl dark:text-white">
+                  {userPersonalRecord.exercise.exerciseName}
+                </Text>
+              </View>
+              <Divider height={2} width="100%" />
+              <View className="m-1 flex-row items-center">
+                <Text className="font-custom text-xl dark:text-white">
+                  {personalRecordMark.mark} Kg
+                </Text>
+                {difference !== null && difference !== 0 && (
+                  <Text
+                    className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                  >
+                    (
+                    {difference >= 0 ? (
+                      <CustomIcon name={'trending-up'} size={15} color={'white'} />
+                    ) : (
+                      <CustomIcon name={'trending-down'} size={15} color={'white'} />
+                    )}{' '}
+                    {Math.abs(difference)})
+                  </Text>
+                )}
+              </View>
+            </View>
+          </Pressable>
+        </PressableView>
       )
     }
   }
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: useBottomTabBarHeight(),
+          right: 0,
+        }}
+      >
         <View
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
-          <ScrollView>
-            <Calendar
-              onDayPress={handleDayPress}
-              onPrevMonth={handlePrevMonth}
-              onNextMonth={handleNextMonth}
-              userTrainingDayData={userTrainingDayData}
-              userAllTrainingDaysData={userAllTrainingDaysData}
-            />
+          <Calendar
+            onDayPress={handleDayPress}
+            onPrevMonth={handlePrevMonth}
+            onNextMonth={handleNextMonth}
+            userTrainingDayData={userTrainingDayData}
+            userAllTrainingDaysData={userAllTrainingDaysData}
+          />
 
-            <View className="mt-12">
-              <Text className="font-custom text-4xl dark:text-white">
-                {moment(currentDate).format('Do MMM YYYY')}
-              </Text>
+          <View className="mt-12">
+            <Text className="font-custom text-4xl dark:text-white">
+              {moment(currentDate).format('Do MMM YYYY')}
+            </Text>
 
-              <DayStatus />
+            <DayStatus />
 
-              {currentDateData && (
-                <View>
-                  <PressableView>
-                    <Pressable
-                      onPress={() =>
-                        navigation.navigate('TrainingDayView', {
-                          userTrainingDayData: currentDateData,
-                        })
-                      }
-                      className="my-4 items-center justify-center rounded-xl border border-primary-1 p-2"
-                    >
-                      <Text className="font-custom text-xl font-bold text-primary-1">
-                        View Training
-                      </Text>
-                    </Pressable>
-                  </PressableView>
-                  <View className="my-2 items-center">
-                    <Text className="font-custom text-xl dark:text-white">Day Progress</Text>
-                  </View>
-                  <Divider height={2} />
-
-                  <View className="m-2">
-                    <BodyWeightMark />
-                    {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
-                      <PersonalRecordMark key={index} userPersonalRecord={userPersonalRecord} />
-                    ))}
-                  </View>
-                </View>
-              )}
+            {currentDateData && (
+              <PressableView>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('TrainingDayView', {
+                      userTrainingDayData: currentDateData,
+                    })
+                  }
+                  className="my-4 items-center justify-center rounded-xl border border-primary-1 p-2"
+                >
+                  <Text className="font-custom text-xl font-bold text-primary-1">
+                    View Training
+                  </Text>
+                </Pressable>
+              </PressableView>
+            )}
+            <View className="my-2 items-center">
+              <Text className="font-custom text-xl dark:text-white">Day Progress</Text>
             </View>
-          </ScrollView>
+            <Divider height={2} />
+            <View className="m-2">
+              <BodyWeightMark />
+              {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
+                <PersonalRecordMark key={index} userPersonalRecord={userPersonalRecord} />
+              ))}
+            </View>
+          </View>
         </View>
       </ScrollView>
       <ScrollToTop />
