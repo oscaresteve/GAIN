@@ -113,7 +113,7 @@ export default function Training({ navigation, route }) {
                             <View className="my-2">
                               {exercise.sets?.map((set, setIndex) => (
                                 <View key={setIndex}>
-                                  <View className="my-1 h-14 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
+                                  <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
                                     <View className="w-12 items-center justify-center">
                                       <Text className="text-md font-custom dark:text-white">
                                         {set.setNumber}

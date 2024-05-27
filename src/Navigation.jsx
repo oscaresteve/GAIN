@@ -71,7 +71,7 @@ const TabGroup = () => {
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator>
         <Stack.Screen
           name="Wellcome"
           component={Wellcome}
@@ -131,8 +131,8 @@ export default function Navigation() {
           component={EditTraining}
           options={{
             headerShown: false,
-            gestureEnabled: false,
-            animationEnabled: false,
+            gestureEnabled: true,
+            animationEnabled: true,
           }}
         />
         <Stack.Screen
