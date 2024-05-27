@@ -13,20 +13,7 @@ export default function ExerciseInfo({ navigation, route }) {
       <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
         <Text className="font-custom text-2xl dark:text-white">{exercise.exerciseName}</Text>
       </View>
-      <AppBar
-        label={exercise.exerciseName}
-        icon={
-          <PressableView>
-            <Pressable
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <CustomIcon name={'keyboard-arrow-left'} size={40} color={'white'} />
-            </Pressable>
-          </PressableView>
-        }
-      />
+      <AppBar label={exercise.exerciseName} backButton={true} navigation={navigation} />
     </View>
   )
 }

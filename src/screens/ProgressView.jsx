@@ -6,6 +6,7 @@ import { useAppBarHeight } from '../components/AppBar'
 import PressableView from '../components/PressableView'
 import CustomIcon from '../components/CustomIcon'
 import LineGraph from '../components/LineGraph'
+import Divider from '../components/Divider'
 
 export default function ProgressView({ navigation, route }) {
   const { data, name } = route.params
@@ -69,7 +70,7 @@ export default function ProgressView({ navigation, route }) {
                 {name} progress in {moment().month(month).format('MMMM')}
               </Text>
             </View>
-            <Divider height={2} />
+            <Divider />
             <View className="my-4 p-2">
               {filteredData.reverse().map((item, itemIndex) => {
                 const previousItem = filteredData[itemIndex + 1]
@@ -83,7 +84,7 @@ export default function ProgressView({ navigation, route }) {
                         {moment(item.date).format('Do MMMM')}
                       </Text>
                     </View>
-                    <Divider height={2} width="100%" />
+                    <Divider />
                     <View className="m-1 flex-row items-center">
                       <Text className="font-custom text-xl dark:text-white">{item.value} Kg</Text>
                       {difference !== null && difference !== 0 && (
@@ -109,20 +110,7 @@ export default function ProgressView({ navigation, route }) {
           </View>
         </View>
       </ScrollView>
-      <AppBar
-        label={name}
-        icon={
-          <PressableView>
-            <Pressable
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <CustomIcon name={'keyboard-arrow-left'} size={40} color={'white'} />
-            </Pressable>
-          </PressableView>
-        }
-      />
+      <AppBar label={name} backButton={true} navigation={navigation} />
       <ScrollToTop />
     </View>
   )

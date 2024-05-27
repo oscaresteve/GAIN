@@ -135,11 +135,11 @@ export default function CalendarView({ navigation }) {
               })
             }}
           >
-            <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+            <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
               <View className="m-1">
                 <Text className="font-custom text-xl dark:text-white">Body Weight</Text>
               </View>
-              <Divider height={2} width="100%" />
+              <Divider />
               <View className="m-1 flex-row items-center">
                 <Text className="font-custom text-xl dark:text-white">
                   {bodyWeightMark.bodyWeight} Kg
@@ -199,13 +199,13 @@ export default function CalendarView({ navigation }) {
               })
             }}
           >
-            <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+            <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
               <View className="m-1">
                 <Text className="font-custom text-xl dark:text-white">
                   {userPersonalRecord.exercise.exerciseName}
                 </Text>
               </View>
-              <Divider height={2} width="100%" />
+              <Divider />
               <View className="m-1 flex-row items-center">
                 <Text className="font-custom text-xl dark:text-white">
                   {personalRecordMark.mark} Kg
@@ -281,7 +281,7 @@ export default function CalendarView({ navigation }) {
             <View className="my-2 items-center">
               <Text className="font-custom text-xl dark:text-white">Day Progress</Text>
             </View>
-            <Divider height={2} />
+            <Divider />
             <View className="m-2">
               <BodyWeightMark />
               {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (

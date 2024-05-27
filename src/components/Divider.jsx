@@ -2,10 +2,10 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
 export default Divider = ({
-  height = 1,
+  height = 2,
   direction = 'horizontal',
   bg = 'bg-smoke-3 dark:bg-night-3',
-  width = '95%',
+  width = '100%',
 }) => {
   if (direction === 'horizontal') {
     return (

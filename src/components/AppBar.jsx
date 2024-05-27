@@ -1,7 +1,9 @@
-import { View, Text, Image, SafeAreaView } from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import moment from 'moment'
 import { BlurView } from 'expo-blur'
+import PressableView from './PressableView'
+import CustomIcon from './CustomIcon'
 
 const height = 110
 
@@ -9,7 +11,7 @@ export const useAppBarHeight = () => {
   return height
 }
 
-export default function AppBar({ label, icon }) {
+export default function AppBar({ label, backButton, navigation }) {
   const currentDate = new Date()
   const Label = () => {
     if (label) {
@@ -23,8 +25,18 @@ export default function AppBar({ label, icon }) {
     }
   }
   const Icon = () => {
-    if (icon) {
-      return <View>{icon}</View>
+    if (backButton) {
+      return (
+        <PressableView>
+          <Pressable
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <CustomIcon name={'keyboard-arrow-left'} size={40} color={'white'} />
+          </Pressable>
+        </PressableView>
+      )
     } else {
       return (
         <View>
@@ -33,6 +45,7 @@ export default function AppBar({ label, icon }) {
       )
     }
   }
+
   return (
     <BlurView
       intensity={100}

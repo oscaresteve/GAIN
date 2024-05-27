@@ -15,8 +15,9 @@ import { useAppBarHeight } from '../components/AppBar'
 import AnimatedSetCard from '../components/AnimatedSetCard'
 import PressableView from '../components/PressableView'
 import CustomIcon from '../components/CustomIcon'
+import DifficultyBar from '../components/DifficultyBar'
 
-export default function Home() {
+export default function Home({ navigation }) {
   const dispatch = useDispatch()
   const userTrainingDayData = useSelector(selectUserTrainingDayData)
   const userData = useSelector(selectUserData)
@@ -51,7 +52,7 @@ export default function Home() {
           <PressableView>
             <Pressable
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
+              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
               <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
             </Pressable>
@@ -66,15 +67,31 @@ export default function Home() {
       return (
         <View>
           {userTrainingDayData?.groups?.map((group, groupIndex) => (
-            <View key={groupIndex} className="my-2">
+            <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
               <Text className="my-2 font-custom text-4xl font-bold dark:text-white">
                 {group.groupName}
               </Text>
               {group.exercises?.map((exercise, exerciseIndex) => (
                 <View key={exerciseIndex} className="mx-2">
-                  <Text className="font-custom text-2xl dark:text-white">
-                    {exercise.exerciseName}
-                  </Text>
+                  <View className="my-2">
+                    <PressableView>
+                      <Pressable
+                        onPress={() => {
+                          navigation.navigate('ExerciseInfo', { exercise: exercise })
+                        }}
+                      >
+                        <Text className="font-custom text-2xl dark:text-white">
+                          {exercise.exerciseName}
+                        </Text>
+                      </Pressable>
+                    </PressableView>
+                    {exercise.exerciseNotes && (
+                      <Text className="font-custom text-xl opacity-50 dark:text-white">
+                        Note: {exercise.exerciseNotes}
+                      </Text>
+                    )}
+                  </View>
+                  <Divider />
                   <View className="my-2">
                     {exercise.sets?.map((set, setIndex) => {
                       const enabled =
@@ -95,20 +112,22 @@ export default function Home() {
                                   {set.setNumber}
                                 </Text>
                               </View>
-                              <Divider direction="vertical" height={2} />
+                              <Divider direction="vertical" />
                               <View className="mx-4 grow flex-row">
                                 <View className="flex-1 items-center justify-center">
                                   <Text className="font-custom text-lg dark:text-white">
                                     {set.details.reps} reps
                                   </Text>
+                                  <DifficultyBar value={set.details.reps} maxValue={12} />
                                 </View>
                                 <View className="flex-1 items-center justify-center">
-                                  <Divider height={2} />
+                                  <Divider />
                                 </View>
                                 <View className="flex-1 items-center justify-center">
                                   <Text className="font-custom text-lg dark:text-white">
                                     {set.details.weight} kg
                                   </Text>
+                                  <DifficultyBar value={set.details.weight} maxValue={100} />
                                 </View>
                               </View>
                             </View>
@@ -152,7 +171,7 @@ export default function Home() {
           <Text className="my-2 font-custom text-2xl dark:text-white">Training Stats</Text>
         </View>
 
-        <Divider height={2} />
+        <Divider />
 
         <View className="m-4">
           <View className="m-1 flex-row items-center justify-end">
@@ -201,7 +220,9 @@ export default function Home() {
               <Divider height={1} width={'80%'} />
             </View>
             <Text className="font-custom text-xl dark:text-white">
-              {msToTime(userTrainingDayData.dayStats.totalTrainingTime)}
+              {userTrainingDayData.dayStats.totalTrainingTime
+                ? msToTime(userTrainingDayData.dayStats.totalTrainingTime)
+                : 'Not Finished'}
             </Text>
           </View>
 

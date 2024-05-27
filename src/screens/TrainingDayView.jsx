@@ -30,7 +30,7 @@ export default function TrainingDayView({ navigation, route }) {
           <PressableView>
             <Pressable
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
+              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
               <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
             </Pressable>
@@ -51,9 +51,25 @@ export default function TrainingDayView({ navigation, route }) {
               </Text>
               {group.exercises?.map((exercise, exerciseIndex) => (
                 <View key={exerciseIndex} className="mx-2">
-                  <Text className="font-custom text-2xl dark:text-white">
-                    {exercise.exerciseName}
-                  </Text>
+                  <View className="my-2">
+                    <PressableView>
+                      <Pressable
+                        onPress={() => {
+                          navigation.navigate('ExerciseInfo', { exercise: exercise })
+                        }}
+                      >
+                        <Text className="font-custom text-2xl dark:text-white">
+                          {exercise.exerciseName}
+                        </Text>
+                      </Pressable>
+                    </PressableView>
+                    {exercise.exerciseNotes && (
+                      <Text className="font-custom text-xl opacity-50 dark:text-white">
+                        Note: {exercise.exerciseNotes}
+                      </Text>
+                    )}
+                  </View>
+                  <Divider />
                   <View className="my-2">
                     {exercise.sets?.map((set, setIndex) => {
                       return (
@@ -70,7 +86,7 @@ export default function TrainingDayView({ navigation, route }) {
                                 {set.setNumber}
                               </Text>
                             </View>
-                            <Divider direction="vertical" height={2} />
+                            <Divider direction="vertical" />
                             <View className="mx-4 grow flex-row">
                               <View className="flex-1 items-center justify-center">
                                 <Text className="font-custom text-lg dark:text-white">
@@ -79,7 +95,7 @@ export default function TrainingDayView({ navigation, route }) {
                                 <DifficultyBar value={set.details.reps} maxValue={12} />
                               </View>
                               <View className="flex-1 items-center justify-center">
-                                <Divider height={2} />
+                                <Divider />
                               </View>
                               <View className="flex-1 items-center justify-center">
                                 <Text className="font-custom text-lg dark:text-white">
@@ -128,7 +144,7 @@ export default function TrainingDayView({ navigation, route }) {
           <Text className="my-2 font-custom text-2xl dark:text-white">Training Stats</Text>
         </View>
 
-        <Divider height={2} />
+        <Divider />
 
         <View className="m-4">
           <View className="m-1 flex-row items-center justify-end">
@@ -205,17 +221,8 @@ export default function TrainingDayView({ navigation, route }) {
       <ScrollToTop />
       <AppBar
         label={moment(userTrainingDayData.date, 'YYYY-MM-DD').format('Do MMM YYYY')}
-        icon={
-          <PressableView>
-            <Pressable
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <CustomIcon name={'keyboard-arrow-left'} size={40} color={'white'} />
-            </Pressable>
-          </PressableView>
-        }
+        backButton={true}
+        navigation={navigation}
       />
     </View>
   )

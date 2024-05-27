@@ -30,8 +30,6 @@ export default function DifficultyBar({ value = 1, maxValue = 10, height = 5, wi
 const styles = StyleSheet.create({
   backgroundBar: {
     borderRadius: 4,
-  },
-  foregroundBar: {
-    borderRadius: 4,
+    overflow: 'hidden',
   },
 })

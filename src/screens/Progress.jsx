@@ -80,7 +80,7 @@ export default function Progress({ navigation }) {
           <PressableView>
             <Pressable
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
+              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
               <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
             </Pressable>
@@ -101,7 +101,7 @@ export default function Progress({ navigation }) {
                 visible: true,
               })
             }
-            className="m-4 h-16 w-16 items-center justify-center rounded-xl bg-smoke-3 dark:bg-night-3"
+            className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
           >
             <CustomIcon name={'add'} size={50} color={'white'} />
           </Pressable>
@@ -134,7 +134,7 @@ export default function Progress({ navigation }) {
 
   const BodyWeight = () => {
     return (
-      <View className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+      <View className="my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
         <Pressable
           onPress={() => {
             navigation.navigate('ProgressView', {
@@ -193,11 +193,11 @@ export default function Progress({ navigation }) {
     ).marks[moment(new Date()).format('YYYY-MM-DD')]
 
     return (
-      <View className="my-2 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+      <View className="my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
         <Text className="m-2 font-custom text-xl dark:text-white">
           {userPersonalRecord.exercise.exerciseName}
         </Text>
-        <Divider height={2} />
+        <Divider />
         <Pressable
           onPress={() => {
             navigation.navigate('ProgressView', {
@@ -267,12 +267,12 @@ export default function Progress({ navigation }) {
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
           <Text className="my-2 font-custom text-2xl dark:text-white">Body Weight</Text>
-          <Divider height={2} />
+          <Divider />
 
           <BodyWeight />
 
           <Text className="my-2 font-custom text-2xl dark:text-white">Personal Records</Text>
-          <Divider height={2} />
+          <Divider />
 
           {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
             <PersonalRecord key={index} userPersonalRecord={userPersonalRecord} index={index} />

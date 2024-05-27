@@ -1,5 +1,5 @@
-import { View, SafeAreaView, Text, Pressable, ScrollView } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, Pressable } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import AppBar from '../components/AppBar'
 import TrainingCard from '../components/TrainingCard'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,11 +8,60 @@ import {
   selectUserAllTrainingsData,
   fetchUserAllTrainingsData,
 } from '../Redux/userSlice'
+import { useAppBarHeight } from '../components/AppBar'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
+import PressableView from '../components/PressableView'
+import CustomIcon from '../components/CustomIcon'
+import MasonryList from '@react-native-seoul/masonry-list'
 
 export default function MyTrainings({ navigation }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
   const userAllTrainingsData = useSelector(selectUserAllTrainingsData)
+  const scrollViewRef = useRef()
+  const [showScrollToTop, setShowScrollToTop] = useState(false)
+
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    if (offsetY > 0 && !showScrollToTop) {
+      setShowScrollToTop(true)
+    } else if (offsetY === 0 && showScrollToTop) {
+      setShowScrollToTop(false)
+    }
+  }
+
+  const ScrollToTop = () => {
+    if (showScrollToTop) {
+      return (
+        <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
+          <PressableView>
+            <Pressable
+              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
+            >
+              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+            </Pressable>
+          </PressableView>
+        </View>
+      )
+    }
+    return null
+  }
+
+  const AddButton = () => {
+    return (
+      <View className="absolute bottom-0 right-0" style={{ marginBottom: useBottomTabBarHeight() }}>
+        <PressableView>
+          <Pressable
+            onPress={() => navigation.navigate('CreateTraining')}
+            className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
+          >
+            <CustomIcon name={'add'} size={50} color={'white'} />
+          </Pressable>
+        </PressableView>
+      </View>
+    )
+  }
 
   useEffect(() => {
     if (userData) {
@@ -21,28 +70,31 @@ export default function MyTrainings({ navigation }) {
   }, [userData])
 
   return (
-    <SafeAreaView className="flex-1">
-      <AppBar />
-      <View>
-        <ScrollView>
-          <View className="pb-10 pt-2">
-            {userAllTrainingsData?.map((userTrainingData, index) => (
-              <TrainingCard
-                key={index}
-                userTrainingData={userTrainingData}
-                navigation={navigation}
-              />
-            ))}
-            <View className="mx-4 mb-2 p-2 bg-white rounded-md shadow-sm">
-              <Pressable onPress={() => navigation.navigate('CreateTraining')}>
-                <View className="p-1 bg-gray-50 rounded-md shadow-sm">
-                  <Text className="text-xl font-bold">Create new Training</Text>
-                </View>
-              </Pressable>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+    <View className="grow bg-smoke-1 dark:bg-night-1">
+      <MasonryList
+        innerRef={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: useBottomTabBarHeight(),
+          right: 0,
+        }}
+        contentContainerStyle={{
+          paddingBottom: useBottomTabBarHeight() + 8,
+          paddingTop: useAppBarHeight() + 8,
+          padding: 8,
+        }}
+        data={userAllTrainingsData}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+        renderItem={({ item, index }) => (
+          <TrainingCard key={index} userTrainingData={item} navigation={navigation} />
+        )}
+      />
+      <ScrollToTop />
+      <AddButton />
+      <AppBar label={'My Trainings'} />
+    </View>
   )
 }

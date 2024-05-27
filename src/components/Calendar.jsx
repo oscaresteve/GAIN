@@ -121,7 +121,7 @@ export default Calendar = ({
 
     return (
       <GestureDetector gesture={swipeMonthGesture}>
-        <View className="rounded-3xl bg-smoke-2 p-2 dark:bg-night-2">
+        <View className="rounded-3xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
           <View className="my-2 flex-row items-center justify-between px-10">
             <PressableView>
               <Pressable onPress={handlePrevMonth}>
@@ -137,7 +137,7 @@ export default Calendar = ({
               </Pressable>
             </PressableView>
           </View>
-          <Divider height={2} width="95%" />
+          <Divider />
           <View className="mt-2 flex-row">
             {moment.weekdaysShort().map((day, index) => (
               <View key={index} className="flex-1 items-center justify-center">
