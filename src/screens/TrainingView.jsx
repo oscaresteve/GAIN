@@ -18,6 +18,8 @@ export default function Training({ navigation, route }) {
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
 
+  const [selectedDayIndex, setSelectedDayIndex] = useState('0')
+
   const handleDeleteTraining = () => {
     dispatch(deleteUserTrainingData(userData.email, userTrainingData.trainingName))
     navigation.goBack()
@@ -64,92 +66,103 @@ export default function Training({ navigation, route }) {
     <View className="grow bg-smoke-1 dark:bg-night-1">
       <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
-          <Button title="Edit" onPress={handleEditTraining} />
-          <Button
-            title="Delete"
-            onPress={handleDeleteTraining}
-            disabled={userTrainingData.primary ? true : false}
-          />
-          <Button
-            title="Make primary"
-            onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
-            disabled={userTrainingData.primary ? true : false}
-          />
+          <View className="flex-row">
+            <PressableView>
+              <Pressable onPress={handleEditTraining}>
+                <CustomIcon name="edit" size={30} color={'white'} />
+              </Pressable>
+            </PressableView>
+            <PressableView>
+              <Pressable onPress={handleDeleteTraining}>
+                <CustomIcon name="delete" size={30} color={'white'} />
+              </Pressable>
+            </PressableView>
+            <PressableView>
+              <Pressable
+                onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
+                disabled={userTrainingData.primary ? true : false}
+              >
+                <CustomIcon name="star" size={30} color={'white'} />
+              </Pressable>
+            </PressableView>
+          </View>
+
+          <View className="flex-row justify-around">
+            {moment.weekdaysShort().map((weekday, index) => (
+              <PressableView key={index}>
+                <Pressable
+                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                  className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
+                >
+                  <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
+                </Pressable>
+              </PressableView>
+            ))}
+          </View>
           <View>
-            {userTrainingData.days?.map(
-              (day, dayIndex) =>
-                day.groups.length > 0 && (
-                  <View key={dayIndex} className="my-2">
-                    <Text className="my-2 font-custom text-4xl font-bold dark:text-white">
-                      {moment(day.day, 'd').format('dddd')}
-                    </Text>
-
-                    {day.groups?.map((group, groupIndex) => (
-                      <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
-                        <Text className="font-custom text-4xl font-bold dark:text-white">
-                          {group.groupName}
+            {userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
+              <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
+                <Text className="font-custom text-4xl font-bold dark:text-white">
+                  {group.groupName}
+                </Text>
+                {group.exercises?.map((exercise, exerciseIndex) => (
+                  <View key={exerciseIndex} className="mx-2">
+                    <View className="my-2">
+                      <PressableView>
+                        <Pressable
+                          onPress={() => {
+                            navigation.navigate('ExerciseInfo', { exercise: exercise })
+                          }}
+                        >
+                          <Text className="font-custom text-2xl dark:text-white">
+                            {exercise.exerciseName}
+                          </Text>
+                        </Pressable>
+                      </PressableView>
+                      {exercise.exerciseNotes && (
+                        <Text className="font-custom text-xl opacity-50 dark:text-white">
+                          Note: {exercise.exerciseNotes}
                         </Text>
-                        {group.exercises?.map((exercise, exerciseIndex) => (
-                          <View key={exerciseIndex} className="mx-2">
-                            <View className="my-2">
-                              <PressableView>
-                                <Pressable
-                                  onPress={() => {
-                                    navigation.navigate('ExerciseInfo', { exercise: exercise })
-                                  }}
-                                >
-                                  <Text className="font-custom text-2xl dark:text-white">
-                                    {exercise.exerciseName}
-                                  </Text>
-                                </Pressable>
-                              </PressableView>
-                              {exercise.exerciseNotes && (
-                                <Text className="font-custom text-xl opacity-50 dark:text-white">
-                                  Note: {exercise.exerciseNotes}
-                                </Text>
-                              )}
+                      )}
+                    </View>
+                    <Divider />
+                    <View className="my-2">
+                      {exercise.sets?.map((set, setIndex) => (
+                        <View key={setIndex}>
+                          <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
+                            <View className="w-12 items-center justify-center">
+                              <Text className="text-md font-custom dark:text-white">
+                                {set.setNumber}
+                              </Text>
                             </View>
-                            <Divider />
-                            <View className="my-2">
-                              {exercise.sets?.map((set, setIndex) => (
-                                <View key={setIndex}>
-                                  <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
-                                    <View className="w-12 items-center justify-center">
-                                      <Text className="text-md font-custom dark:text-white">
-                                        {set.setNumber}
-                                      </Text>
-                                    </View>
-                                    <Divider direction="vertical" />
-                                    <View className="mx-4 grow flex-row">
-                                      <View className="flex-1 items-center justify-center">
-                                        <Text className="font-custom text-lg dark:text-white">
-                                          {set.details.reps} reps
-                                        </Text>
-                                        <DifficultyBar value={set.details.reps} maxValue={12} />
-                                      </View>
+                            <Divider direction="vertical" />
+                            <View className="mx-4 grow flex-row">
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-custom text-lg dark:text-white">
+                                  {set.details.reps} reps
+                                </Text>
+                                <DifficultyBar value={set.details.reps} maxValue={12} />
+                              </View>
 
-                                      <View className="flex-1 items-center justify-center">
-                                        <Divider />
-                                      </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Divider />
+                              </View>
 
-                                      <View className="flex-1 items-center justify-center">
-                                        <Text className="font-custom text-lg dark:text-white">
-                                          {set.details.weight} kg
-                                        </Text>
-                                        <DifficultyBar value={set.details.weight} maxValue={100} />
-                                      </View>
-                                    </View>
-                                  </View>
-                                </View>
-                              ))}
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-custom text-lg dark:text-white">
+                                  {set.details.weight} kg
+                                </Text>
+                                <DifficultyBar value={set.details.weight} maxValue={100} />
+                              </View>
                             </View>
                           </View>
-                        ))}
-                      </View>
-                    ))}
+                        </View>
+                      ))}
+                    </View>
                   </View>
-                ),
-            )}
+                ))}
+              </View>
+            ))}
           </View>
         </View>
       </ScrollView>

@@ -18,6 +18,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import PressableView from '../components/PressableView'
 import CustomIcon from '../components/CustomIcon'
 import DifficultyBar from '../components/DifficultyBar'
+import { ExerciseCard } from '../components/ExerciseCard'
 
 export default function EditTraining({ navigation, route }) {
   const dispatch = useDispatch()
@@ -33,6 +34,8 @@ export default function EditTraining({ navigation, route }) {
     dayIndex: null,
     groupSelected: 'Bicep',
   })
+
+  const [selectedDayIndex, setSelectedDayIndex] = useState('0')
 
   useEffect(() => {
     dispatch(fetchGainData())
@@ -202,6 +205,16 @@ export default function EditTraining({ navigation, route }) {
     }
   }
 
+  const handleModalScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    if (offsetY < -150) {
+      setSelectExerciseModalShow({
+        ...selectExerciseModalShow,
+        visible: false,
+      })
+    }
+  }
+
   const ScrollToTop = () => {
     if (showScrollToTop) {
       return (
@@ -219,308 +232,304 @@ export default function EditTraining({ navigation, route }) {
     }
   }
 
+  const AddButton = () => {
+    return (
+      <View className="absolute bottom-0 right-0 mb-10">
+        <PressableView>
+          <Pressable
+            onPress={() =>
+              setSelectExerciseModalShow({
+                ...selectExerciseModalShow,
+                visible: true,
+                dayIndex: selectedDayIndex,
+              })
+            }
+            className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
+          >
+            <CustomIcon name={'add'} size={50} color={'white'} />
+          </Pressable>
+        </PressableView>
+      </View>
+    )
+  }
+
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
       <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <Button title="save" onPress={handleSaveTraining} />
+          <View className="flex-row justify-around">
+            {moment.weekdaysShort().map((weekday, index) => (
+              <PressableView key={index}>
+                <Pressable
+                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                  className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
+                >
+                  <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
+                </Pressable>
+              </PressableView>
+            ))}
+          </View>
           <View>
-            {userTrainingData.days?.map((day, dayIndex) => (
-              <View key={dayIndex} className="my-2">
+            {userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
+              <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
                 <Text className="font-custom text-4xl font-bold dark:text-white">
-                  {moment(day.day, 'd').format('dddd')}
+                  {group.groupName}
                 </Text>
-                {day.groups?.map((group, groupIndex) => (
-                  <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
-                    <Text className="font-custom text-4xl font-bold dark:text-white">
-                      {group.groupName}
-                    </Text>
-                    {group.exercises?.map((exercise, exerciseIndex) => (
-                      <View key={exerciseIndex} className="mx-2">
-                        <View className="my-2">
-                          <PressableView>
-                            <Pressable
-                              onPress={() => {
-                                navigation.navigate('ExerciseInfo', { exercise: exercise })
-                              }}
-                            >
-                              <Text className="font-custom text-2xl dark:text-white">
-                                {exercise.exerciseName}
+                {group.exercises?.map((exercise, exerciseIndex) => (
+                  <View key={exerciseIndex} className="mx-2">
+                    <View className="my-2">
+                      <PressableView>
+                        <Pressable
+                          onPress={() => {
+                            navigation.navigate('ExerciseInfo', { exercise: exercise })
+                          }}
+                        >
+                          <Text className="font-custom text-2xl dark:text-white">
+                            {exercise.exerciseName}
+                          </Text>
+                        </Pressable>
+                      </PressableView>
+                      {exercise.exerciseNotes && (
+                        <TextInput
+                          value={exercise.exerciseNotes}
+                          placeholder="Add exercise Notes"
+                          onChangeText={(text) =>
+                            handleSetExerciseNotes(
+                              text,
+                              selectedDayIndex,
+                              groupIndex,
+                              exerciseIndex,
+                            )
+                          }
+                          className="font-custom text-xl opacity-50 dark:text-white"
+                        />
+                      )}
+                    </View>
+                    <Divider />
+                    <View className="my-2">
+                      {exercise.sets?.map((set, setIndex) => (
+                        <View
+                          key={setIndex}
+                          className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2"
+                        >
+                          <View className="w-12 items-center justify-center">
+                            <Text className="text-md font-custom dark:text-white">
+                              {set.setNumber}
+                            </Text>
+                          </View>
+                          <Divider direction="vertical" />
+                          <View className="mx-4 grow flex-row">
+                            <View className="flex-1 items-center justify-center">
+                              <PressableView>
+                                <Pressable
+                                  onPress={() =>
+                                    handleIncrementReps(
+                                      selectedDayIndex,
+                                      groupIndex,
+                                      exerciseIndex,
+                                      setIndex,
+                                    )
+                                  }
+                                >
+                                  <CustomIcon name="keyboard-arrow-up" size={40} color={'white'} />
+                                </Pressable>
+                              </PressableView>
+                              <Text className="font-custom text-lg dark:text-white">
+                                {set.details.reps} reps
                               </Text>
-                            </Pressable>
-                          </PressableView>
-                          {exercise.exerciseNotes && (
-                            <TextInput
-                              value={exercise.exerciseNotes}
-                              placeholder="Add exercise Notes"
-                              onChangeText={(text) =>
-                                handleSetExerciseNotes(text, dayIndex, groupIndex, exerciseIndex)
-                              }
-                              className="font-custom text-xl opacity-50 dark:text-white"
-                            />
-                          )}
-                        </View>
-                        <Divider />
-                        {exercise.sets?.map((set, setIndex) => (
-                          <View key={setIndex}>
-                            <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
-                              <View className="w-12 items-center justify-center">
-                                <Text className="text-md font-custom dark:text-white">
-                                  {set.setNumber}
-                                </Text>
-                              </View>
-                              <Divider direction="vertical" />
-                              <View className="mx-4 grow flex-row">
-                                <View className="flex-1 items-center justify-center">
-                                  <PressableView>
-                                    <Pressable
-                                      onPress={() =>
-                                        handleIncrementReps(
-                                          dayIndex,
-                                          groupIndex,
-                                          exerciseIndex,
-                                          setIndex,
-                                        )
-                                      }
-                                    >
-                                      <CustomIcon
-                                        name="keyboard-arrow-up"
-                                        size={40}
-                                        color={'white'}
-                                      />
-                                    </Pressable>
-                                  </PressableView>
-                                  <Text className="font-custom text-lg dark:text-white">
-                                    {set.details.reps} reps
-                                  </Text>
-                                  <DifficultyBar value={set.details.reps} maxValue={12} />
-                                  <PressableView>
-                                    <Pressable
-                                      onPress={() =>
-                                        handleDecrementReps(
-                                          dayIndex,
-                                          groupIndex,
-                                          exerciseIndex,
-                                          setIndex,
-                                        )
-                                      }
-                                    >
-                                      <CustomIcon
-                                        name="keyboard-arrow-down"
-                                        size={40}
-                                        color={'white'}
-                                      />
-                                    </Pressable>
-                                  </PressableView>
-                                </View>
+                              <DifficultyBar value={set.details.reps} maxValue={12} />
+                              <PressableView>
+                                <Pressable
+                                  onPress={() =>
+                                    handleDecrementReps(
+                                      selectedDayIndex,
+                                      groupIndex,
+                                      exerciseIndex,
+                                      setIndex,
+                                    )
+                                  }
+                                >
+                                  <CustomIcon
+                                    name="keyboard-arrow-down"
+                                    size={40}
+                                    color={'white'}
+                                  />
+                                </Pressable>
+                              </PressableView>
+                            </View>
 
-                                <View className="flex-1 items-center justify-center">
-                                  <Divider />
-                                </View>
+                            <View className="flex-1 items-center justify-center">
+                              <Divider />
+                            </View>
 
-                                <View className="flex-1 items-center justify-center">
-                                  <PressableView>
-                                    <Pressable
-                                      onPress={() =>
-                                        handleIncrementWeight(
-                                          dayIndex,
-                                          groupIndex,
-                                          exerciseIndex,
-                                          setIndex,
-                                        )
-                                      }
-                                    >
-                                      <CustomIcon
-                                        name="keyboard-arrow-up"
-                                        size={40}
-                                        color={'white'}
-                                      />
-                                    </Pressable>
-                                  </PressableView>
-                                  <Text className="font-custom text-lg dark:text-white">
-                                    {set.details.weight} kg
-                                  </Text>
-                                  <DifficultyBar value={set.details.weight} maxValue={100} />
-                                  <PressableView>
-                                    <Pressable
-                                      onPress={() =>
-                                        handleDecrementWeight(
-                                          dayIndex,
-                                          groupIndex,
-                                          exerciseIndex,
-                                          setIndex,
-                                        )
-                                      }
-                                    >
-                                      <CustomIcon
-                                        name="keyboard-arrow-down"
-                                        size={40}
-                                        color={'white'}
-                                      />
-                                    </Pressable>
-                                  </PressableView>
-                                </View>
-                                <View className="items-center justify-center">
-                                  <PressableView>
-                                    <Pressable
-                                      onPress={() =>
-                                        handleDeleteSet(
-                                          dayIndex,
-                                          groupIndex,
-                                          exerciseIndex,
-                                          setIndex,
-                                        )
-                                      }
-                                      disabled={exercise.sets.length === 1}
-                                    >
-                                      <CustomIcon name="delete" size={30} color={'white'} />
-                                    </Pressable>
-                                  </PressableView>
-                                </View>
-                              </View>
+                            <View className="flex-1 items-center justify-center">
+                              <PressableView>
+                                <Pressable
+                                  onPress={() =>
+                                    handleIncrementWeight(
+                                      selectedDayIndex,
+                                      groupIndex,
+                                      exerciseIndex,
+                                      setIndex,
+                                    )
+                                  }
+                                >
+                                  <CustomIcon name="keyboard-arrow-up" size={40} color={'white'} />
+                                </Pressable>
+                              </PressableView>
+                              <Text className="font-custom text-lg dark:text-white">
+                                {set.details.weight} kg
+                              </Text>
+                              <DifficultyBar value={set.details.weight} maxValue={100} />
+                              <PressableView>
+                                <Pressable
+                                  onPress={() =>
+                                    handleDecrementWeight(
+                                      selectedDayIndex,
+                                      groupIndex,
+                                      exerciseIndex,
+                                      setIndex,
+                                    )
+                                  }
+                                >
+                                  <CustomIcon
+                                    name="keyboard-arrow-down"
+                                    size={40}
+                                    color={'white'}
+                                  />
+                                </Pressable>
+                              </PressableView>
+                            </View>
+                            <View className="items-center justify-center">
+                              <PressableView>
+                                <Pressable
+                                  onPress={() =>
+                                    handleDeleteSet(
+                                      selectedDayIndex,
+                                      groupIndex,
+                                      exerciseIndex,
+                                      setIndex,
+                                    )
+                                  }
+                                  disabled={exercise.sets.length === 1}
+                                >
+                                  <CustomIcon name="delete" size={30} color={'white'} />
+                                </Pressable>
+                              </PressableView>
                             </View>
                           </View>
-                        ))}
-
-                        <PressableView>
-                          <Pressable
-                            onPress={() => handleAddSet(dayIndex, groupIndex, exerciseIndex)}
-                            className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2"
-                          >
-                            <View className="w-12 items-center justify-center">
-                              <Text className="text-md font-custom dark:text-white">
-                                {exercise.sets.length + 1}
-                              </Text>
-                            </View>
-                            <Divider direction="vertical" />
-                            <View className="mx-4 grow flex-row items-center justify-center">
-                              <CustomIcon name="add" size={60} color={'white'} />
-                            </View>
-                          </Pressable>
-                        </PressableView>
-                        <PressableView>
-                          <Pressable
-                            onPress={() =>
-                              handleDeleteExercise(dayIndex, groupIndex, exerciseIndex)
-                            }
-                          >
-                            <Text className="font-custom text-xl dark:text-white">
-                              Delete Exercise
+                        </View>
+                      ))}
+                      <PressableView>
+                        <Pressable
+                          onPress={() => handleAddSet(selectedDayIndex, groupIndex, exerciseIndex)}
+                          className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2"
+                        >
+                          <View className="w-12 items-center justify-center">
+                            <Text className="text-md font-custom dark:text-white">
+                              {exercise.sets.length + 1}
                             </Text>
-                          </Pressable>
-                        </PressableView>
-                      </View>
-                    ))}
+                          </View>
+                          <Divider direction="vertical" />
+                          <View className="mx-4 grow flex-row items-center justify-center">
+                            <CustomIcon name="add" size={60} color={'white'} />
+                          </View>
+                        </Pressable>
+                      </PressableView>
+                    </View>
+
+                    <PressableView>
+                      <Pressable
+                        onPress={() =>
+                          handleDeleteExercise(selectedDayIndex, groupIndex, exerciseIndex)
+                        }
+                        className="items-center"
+                      >
+                        <Text className="font-custom text-xl dark:text-white">Delete Exercise</Text>
+                      </Pressable>
+                    </PressableView>
                   </View>
                 ))}
-                <PressableView>
-                  <Pressable
-                    onPress={() =>
-                      setSelectExerciseModalShow({
-                        ...selectExerciseModalShow,
-                        visible: true,
-                        dayIndex: dayIndex,
-                      })
-                    }
-                  >
-                    <Text className="font-custom text-xl dark:text-white">Add Exercise</Text>
-                  </Pressable>
-                </PressableView>
-
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={selectExerciseModalShow.visible}
-                  onRequestClose={() =>
-                    setSelectExerciseModalShow({
-                      ...selectExerciseModalShow,
-                      visible: false,
-                    })
-                  }
-                >
-                  <ScrollView>
-                    <View className="mt-16 rounded-3xl bg-gray-200 p-2">
-                      <Button
-                        title="Close"
-                        onPress={() =>
-                          setSelectExerciseModalShow({
-                            ...selectExerciseModalShow,
-                            visible: false,
-                          })
-                        }
-                      />
-
-                      <Pressable
-                        onPress={() =>
-                          setSelectExerciseModalShow({
-                            ...selectExerciseModalShow,
-                            groupSelected: 'Bicep',
-                          })
-                        }
-                      >
-                        <Text className="text-3xl font-bold">Bicep</Text>
-                      </Pressable>
-                      <Pressable
-                        onPress={() =>
-                          setSelectExerciseModalShow({
-                            ...selectExerciseModalShow,
-                            groupSelected: 'Chest',
-                          })
-                        }
-                      >
-                        <Text className="text-3xl font-bold">Chest</Text>
-                      </Pressable>
-                      {gainData?.trainingExercises
-                        ?.filter(
-                          (exercise) =>
-                            exercise.groupName === selectExerciseModalShow.groupSelected,
-                        )
-                        ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
-                        .map((exercise, exerciseIndex) => {
-                          const exerciseExists = userTrainingData.days[
-                            selectExerciseModalShow.dayIndex
-                          ]?.groups?.some((group) =>
-                            group.exercises.some(
-                              (existingExercise) =>
-                                existingExercise.exerciseName === exercise.exerciseName,
-                            ),
-                          )
-                          return (
-                            <View
-                              key={exerciseIndex}
-                              className={`m-2 rounded-md bg-white p-2 shadow-sm ${
-                                exerciseExists ? 'bg-gray-300' : 'bg-gray-100'
-                              }`}
-                            >
-                              <Pressable
-                                onPress={() => {
-                                  if (!exerciseExists) {
-                                    handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
-                                    setSelectExerciseModalShow({
-                                      ...selectExerciseModalShow,
-                                      visible: false,
-                                    })
-                                  }
-                                }}
-                                disabled={exerciseExists}
-                              >
-                                <Text className="text-2xl font-medium">
-                                  {exercise.exerciseName}
-                                </Text>
-                              </Pressable>
-                            </View>
-                          )
-                        })}
-                    </View>
-                  </ScrollView>
-                </Modal>
               </View>
             ))}
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={selectExerciseModalShow.visible}
+              onRequestClose={() =>
+                setSelectExerciseModalShow({
+                  ...selectExerciseModalShow,
+                  visible: false,
+                })
+              }
+            >
+              <ScrollView onScroll={handleModalScroll} showsVerticalScrollIndicator={false}>
+                <View className="mt-24 rounded-3xl bg-smoke-1 p-4 dark:bg-night-1">
+                  <Divider height={4} width={50} />
+
+                  <View className="my-4 flex-row flex-wrap justify-start ">
+                    {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map(
+                      (group, index) => (
+                        <PressableView key={index}>
+                          <Pressable
+                            onPress={() =>
+                              setSelectExerciseModalShow({
+                                ...selectExerciseModalShow,
+                                groupSelected: group,
+                              })
+                            }
+                            className="m-1"
+                          >
+                            <Text className="font-custom text-3xl dark:text-white">{group}</Text>
+                            <View
+                              className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
+                            ></View>
+                          </Pressable>
+                        </PressableView>
+                      ),
+                    )}
+                  </View>
+                  {gainData?.trainingExercises
+                    ?.filter(
+                      (exercise) => exercise.groupName === selectExerciseModalShow.groupSelected,
+                    )
+                    ?.sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
+                    .map((exercise, exerciseIndex) => {
+                      const exerciseExists = userTrainingData.days[
+                        selectExerciseModalShow.dayIndex
+                      ]?.groups?.some((group) =>
+                        group.exercises.some(
+                          (existingExercise) =>
+                            existingExercise.exerciseName === exercise.exerciseName,
+                        ),
+                      )
+
+                      return (
+                        <ExerciseCard
+                          key={exerciseIndex}
+                          exercise={exercise}
+                          exerciseExists={exerciseExists}
+                          onAdd={() => {
+                            handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
+                            setSelectExerciseModalShow({
+                              ...selectExerciseModalShow,
+                              visible: false,
+                            })
+                          }}
+                        />
+                      )
+                    })}
+                </View>
+              </ScrollView>
+            </Modal>
           </View>
         </View>
       </ScrollView>
       <AppBar label={userTrainingData.trainingName} backButton={true} navigation={navigation} />
       <ScrollToTop />
+      <AddButton />
     </View>
   )
 }
