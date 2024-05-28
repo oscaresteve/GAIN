@@ -8,7 +8,7 @@ export default function PressableView({
   children,
   duration = 50,
   transform = 0.95,
-  opacity = 0.8,
+  opacity = 0.3,
 }) {
   const pressed = useSharedValue(false)
 

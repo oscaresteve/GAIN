@@ -13,12 +13,12 @@ export default function TrainingCard({ navigation, userTrainingData }) {
             userTrainingData: userTrainingData,
           })
         }}
-        className={`m-1 rounded-xl border bg-smoke-2 p-2 dark:bg-night-2 ${userTrainingData.primary ? 'border-primary-1' : 'border-night-3'}`}
+        className={`m-1 rounded-xl border bg-smoke-2 p-2 dark:bg-night-2 ${userTrainingData.primary ? 'border-primary-1' : 'border-smoke-3 dark:border-night-3'}`}
       >
         <Text className="m-1 font-custom text-xl dark:text-white">
           {userTrainingData.trainingName}
         </Text>
-        <Divider/>
+        <Divider />
         <View className="m-2">
           {userTrainingData.days?.map(
             (day, dayIndex) =>

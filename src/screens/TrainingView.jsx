@@ -66,40 +66,25 @@ export default function Training({ navigation, route }) {
     <View className="grow bg-smoke-1 dark:bg-night-1">
       <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
-          <View className="flex-row">
-            <PressableView>
-              <Pressable onPress={handleEditTraining}>
-                <CustomIcon name="edit" size={30} color={'white'} />
-              </Pressable>
-            </PressableView>
-            <PressableView>
-              <Pressable onPress={handleDeleteTraining}>
-                <CustomIcon name="delete" size={30} color={'white'} />
-              </Pressable>
-            </PressableView>
-            <PressableView>
-              <Pressable
-                onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
-                disabled={userTrainingData.primary ? true : false}
-              >
-                <CustomIcon name="star" size={30} color={'white'} />
-              </Pressable>
-            </PressableView>
+          <View className="my-2">
+            <Text className="ml-2 font-custom text-3xl dark:text-white">
+              {userTrainingData.trainingName}
+            </Text>
           </View>
-
-          <View className="flex-row justify-around">
-            {moment.weekdaysShort().map((weekday, index) => (
-              <PressableView key={index}>
-                <Pressable
-                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
-                  className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
-                >
-                  <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
-                </Pressable>
-              </PressableView>
-            ))}
-          </View>
-          <View>
+          <Divider />
+          <View className="my-2">
+            <View className="flex-row justify-around">
+              {moment.weekdaysShort().map((weekday, index) => (
+                <PressableView key={index}>
+                  <Pressable
+                    onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                    className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
+                  >
+                    <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
+                  </Pressable>
+                </PressableView>
+              ))}
+            </View>
             {userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
               <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
                 <Text className="font-custom text-4xl font-bold dark:text-white">
@@ -121,7 +106,7 @@ export default function Training({ navigation, route }) {
                       </PressableView>
                       {exercise.exerciseNotes && (
                         <Text className="font-custom text-xl opacity-50 dark:text-white">
-                          Note: {exercise.exerciseNotes}
+                          {exercise.exerciseNotes}
                         </Text>
                       )}
                     </View>
@@ -164,9 +149,35 @@ export default function Training({ navigation, route }) {
               </View>
             ))}
           </View>
+          <View className="flex-row justify-around p-2">
+            <PressableView>
+              <Pressable onPress={handleDeleteTraining}>
+                <Text className="font-custom text-xl dark:text-white">Delete</Text>
+              </Pressable>
+            </PressableView>
+            <PressableView>
+              <Pressable
+                onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
+                disabled={userTrainingData.primary ? true : false}
+              >
+                <Text className="font-custom text-xl dark:text-white">Make primary</Text>
+              </Pressable>
+            </PressableView>
+          </View>
         </View>
       </ScrollView>
-      <AppBar label={userTrainingData.trainingName} backButton={true} navigation={navigation} />
+      <AppBar
+        label={'Training'}
+        backButton={true}
+        navigation={navigation}
+        buttons={
+          <PressableView>
+            <Pressable onPress={handleEditTraining}>
+              <Text className="font-custom text-2xl text-primary-1">Edit</Text>
+            </Pressable>
+          </PressableView>
+        }
+      />
       <ScrollToTop />
     </View>
   )

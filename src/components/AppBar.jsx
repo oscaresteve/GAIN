@@ -11,7 +11,7 @@ export const useAppBarHeight = () => {
   return height
 }
 
-export default function AppBar({ label, backButton, navigation }) {
+export default function AppBar({ label, backButton, navigation, buttons }) {
   const currentDate = new Date()
   const Label = () => {
     if (label) {
@@ -52,9 +52,12 @@ export default function AppBar({ label, backButton, navigation }) {
       className="absolute w-full justify-end border-b border-b-smoke-3 p-4 dark:border-b-night-3"
       style={{ height: height }}
     >
-      <View className="flex-row items-center">
-        <Icon />
-        <Label />
+      <View className="flex-row">
+        <View className="grow flex-row items-center">
+          <Icon />
+          <Label />
+        </View>
+        <View className="flex-row items-center">{buttons}</View>
       </View>
     </BlurView>
   )

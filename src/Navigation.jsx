@@ -122,8 +122,8 @@ export default function Navigation() {
           component={CreateTraining}
           options={{
             headerShown: false,
-            gestureEnabled: false,
-            animationEnabled: false,
+            gestureEnabled: true,
+            animationEnabled: true,
           }}
         />
         <Stack.Screen

@@ -257,20 +257,25 @@ export default function EditTraining({ navigation, route }) {
     <View className="grow bg-smoke-1 dark:bg-night-1">
       <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
-          <Button title="save" onPress={handleSaveTraining} />
-          <View className="flex-row justify-around">
-            {moment.weekdaysShort().map((weekday, index) => (
-              <PressableView key={index}>
-                <Pressable
-                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
-                  className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
-                >
-                  <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
-                </Pressable>
-              </PressableView>
-            ))}
+          <View className="my-2">
+            <Text className="ml-2 font-custom text-3xl dark:text-white">
+              {userTrainingData.trainingName}
+            </Text>
           </View>
-          <View>
+          <Divider />
+          <View calssName="my-2">
+            <View className="flex-row justify-around">
+              {moment.weekdaysShort().map((weekday, index) => (
+                <PressableView key={index}>
+                  <Pressable
+                    onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                    className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
+                  >
+                    <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
+                  </Pressable>
+                </PressableView>
+              ))}
+            </View>
             {userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
               <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
                 <Text className="font-custom text-4xl font-bold dark:text-white">
@@ -290,21 +295,14 @@ export default function EditTraining({ navigation, route }) {
                           </Text>
                         </Pressable>
                       </PressableView>
-                      {exercise.exerciseNotes && (
-                        <TextInput
-                          value={exercise.exerciseNotes}
-                          placeholder="Add exercise Notes"
-                          onChangeText={(text) =>
-                            handleSetExerciseNotes(
-                              text,
-                              selectedDayIndex,
-                              groupIndex,
-                              exerciseIndex,
-                            )
-                          }
-                          className="font-custom text-xl opacity-50 dark:text-white"
-                        />
-                      )}
+                      <TextInput
+                        value={exercise.exerciseNotes}
+                        placeholder="Add exercise Notes"
+                        onChangeText={(text) =>
+                          handleSetExerciseNotes(text, selectedDayIndex, groupIndex, exerciseIndex)
+                        }
+                        className="font-custom text-xl opacity-50 dark:text-white"
+                      />
                     </View>
                     <Divider />
                     <View className="my-2">
@@ -527,7 +525,18 @@ export default function EditTraining({ navigation, route }) {
           </View>
         </View>
       </ScrollView>
-      <AppBar label={userTrainingData.trainingName} backButton={true} navigation={navigation} />
+      <AppBar
+        label={'Edit Training'}
+        backButton={true}
+        navigation={navigation}
+        buttons={
+          <PressableView>
+            <Pressable onPress={handleSaveTraining}>
+              <Text className="font-custom text-2xl text-primary-1">Save</Text>
+            </Pressable>
+          </PressableView>
+        }
+      />
       <ScrollToTop />
       <AddButton />
     </View>

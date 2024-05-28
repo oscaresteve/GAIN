@@ -38,7 +38,6 @@ export default function Progress({ navigation }) {
     visible: false,
     groupSelected: 'Bicep',
   })
-  console.log(selectExerciseModalShow.groupSelected)
 
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
