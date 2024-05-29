@@ -30,8 +30,16 @@ export default function Register({ navigation }) {
         .string()
         .oneOf([yup.ref('password')], 'Las contraseñas no coinciden')
         .required('Repite la contraseña'),
-      name: yup.string().required('Introduce tu nombre'),
-      lastName: yup.string().required('Introduce tus apellidos'),
+      name: yup
+        .string()
+        .trim()
+        .matches(/^\S+$/, 'El nombre no debe contener espacios')
+        .required('Introduce tu nombre'),
+      lastName: yup
+        .string()
+        .trim()
+        .matches(/^\S+$/, 'Los apellidos no deben contener espacios')
+        .required('Introduce tus apellidos'),
     })
     .required()
 

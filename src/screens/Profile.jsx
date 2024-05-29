@@ -87,17 +87,6 @@ const Profile = ({ navigation }) => {
   }
 
   const Stats = () => {
-    /* let trainingsFinished = 0
-    let trainingsNotFinished = 0
-
-    userAllTrainingDaysData.forEach((day) => {
-      if (day.done) {
-        trainingsFinished += 1
-      } else if (!day.done) {
-        trainingsNotFinished += 1
-      }
-    }) */
-
     return (
       <View>
         <View className="m-1 flex-row items-center justify-end">

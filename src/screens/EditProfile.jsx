@@ -1,23 +1,37 @@
-import { View, Text, Button, SafeAreaView, TextInput, Image } from 'react-native'
-import React, { useState } from 'react'
-
+import { View, Text, Button, Pressable, TextInput, Image, ScrollView } from 'react-native'
+import React, { useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUserData, saveUserData } from '../Redux/userSlice'
 import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as ImagePicker from 'expo-image-picker'
+import PressableView from '../components/PressableView'
+import CustomIcon from '../components/CustomIcon'
+import Divider from '../components/Divider'
+import AppBar, { useAppBarHeight } from '../components/AppBar'
+import YupError from '../components/YupError'
 
 export default function EditProfile({ navigation }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
   const [profilePic, setProfilePic] = useState(userData.profilePic)
+  const scrollViewRef = useRef()
+  const [showScrollToTop, setShowScrollToTop] = useState(false)
 
   const validationSchema = yup
     .object()
     .shape({
-      name: yup.string().required('Introduce tu nombre'),
-      lastName: yup.string().required('Introduce tus apellidos'),
+      name: yup
+        .string()
+        .trim()
+        .matches(/^[A-Z][a-z]{2,}$/, 'Introduce un nombre válido')
+        .required('Introduce tu nombre'),
+      lastName: yup
+        .string()
+        .trim()
+        .matches(/^[A-Z][a-z]{2,}$/, 'Introduce apellidos válidos')
+        .required('Introduce tus apellidos'),
     })
     .required()
 
@@ -27,6 +41,32 @@ export default function EditProfile({ navigation }) {
     formState: { errors },
     watch,
   } = useForm({ resolver: yupResolver(validationSchema) })
+
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    if (offsetY > 0 && !showScrollToTop) {
+      setShowScrollToTop(true)
+    } else if (offsetY === 0 && showScrollToTop) {
+      setShowScrollToTop(false)
+    }
+  }
+
+  const ScrollToTop = () => {
+    if (showScrollToTop) {
+      return (
+        <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
+          <PressableView>
+            <Pressable
+              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
+            >
+              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+            </Pressable>
+          </PressableView>
+        </View>
+      )
+    }
+  }
 
   const handleSelectProfilePic = async () => {
     // No permissions request is necessary for launching the image library
@@ -50,48 +90,79 @@ export default function EditProfile({ navigation }) {
   }
 
   return (
-    <SafeAreaView>
-      <Button title="Back" onPress={navigation.goBack} />
-      <View>
-        <Button title="Pick an image from camera roll" onPress={handleSelectProfilePic} />
-      </View>
-      <Image source={{ uri: profilePic }} className="w-48 h-48" />
-      <Text>Name: </Text>
-      <Controller
-        name="name"
-        control={control}
-        defaultValue={userData.name}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            placeholder="Nombre"
-            inputMode="text"
-            maxLength={20}
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
+    <View className="grow bg-smoke-1 dark:bg-night-1">
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: 0,
+          right: 0,
+        }}
+      >
+        <View className="mx-2 my-2 grow pb-20" style={{ paddingTop: useAppBarHeight() }}>
+          <View className="items-center">
+            <View className="m-2 aspect-square h-36 overflow-hidden rounded-full">
+              <Image source={{ uri: profilePic }} className="h-full w-full" />
+            </View>
+            <PressableView>
+              <Pressable onPress={handleSelectProfilePic}>
+                <Text className="font-custom text-2xl text-primary-1">Change photo</Text>
+              </Pressable>
+            </PressableView>
+          </View>
+          <Text className="font-custom text-2xl dark:text-white">Name: </Text>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue={userData.name}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <TextInput
+                placeholder="Nombre"
+                inputMode="text"
+                maxLength={20}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
+              />
+            )}
           />
-        )}
-      />
-      {errors.name && <Text className="text-red-500 text-xs">{errors.name.message}</Text>}
-      <Text>Last Name: </Text>
-      <Controller
-        name="lastName"
-        control={control}
-        defaultValue={userData.lastName}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            placeholder="Apellidos"
-            inputMode="text"
-            maxLength={40}
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
+          {errors.name && <YupError error={errors.name} />}
+          <Text className="font-custom text-2xl dark:text-white">Last Name: </Text>
+          <Controller
+            name="lastName"
+            control={control}
+            defaultValue={userData.lastName}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <TextInput
+                placeholder="Apellidos"
+                inputMode="text"
+                maxLength={40}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
+              />
+            )}
           />
-        )}
+          {errors.lastName && <YupError error={errors.lastName} />}
+        </View>
+      </ScrollView>
+      <ScrollToTop />
+      <AppBar
+        label={'Edit Profile'}
+        backButton={true}
+        navigation={navigation}
+        buttons={
+          <PressableView>
+            <Pressable onPress={handleSubmit(handleSave)}>
+              <Text className="font-custom text-2xl text-primary-1">Save</Text>
+            </Pressable>
+          </PressableView>
+        }
       />
-      {errors.lastName && <Text className="text-red-500 text-xs">{errors.lastName.message}</Text>}
-
-      <Button title="save" onPress={handleSubmit(handleSave)} />
-    </SafeAreaView>
+    </View>
   )
 }
