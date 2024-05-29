@@ -64,7 +64,16 @@ export default function Training({ navigation, route }) {
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: 0,
+          right: 0,
+        }}
+      >
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2">
             <Text className="ml-2 font-custom text-3xl dark:text-white">

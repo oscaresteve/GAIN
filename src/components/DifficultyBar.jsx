@@ -18,10 +18,7 @@ export default function DifficultyBar({ value = 1, maxValue = 10, height = 5, wi
   return (
     <View style={[styles.backgroundBar, { height, width }]} className="bg-smoke-3 dark:bg-night-3">
       <View
-        style={[
-          styles.foregroundBar,
-          { width: `${percentage}%`, backgroundColor: barColor, height },
-        ]}
+        style={[styles.foregroundBar, { width: `${percentage}%`, backgroundColor: barColor }]}
       />
     </View>
   )
@@ -29,7 +26,11 @@ export default function DifficultyBar({ value = 1, maxValue = 10, height = 5, wi
 
 const styles = StyleSheet.create({
   backgroundBar: {
-    borderRadius: 4,
+    borderRadius: '100%',
     overflow: 'hidden',
+  },
+  foregroundBar: {
+    borderRadius: '100%',
+    height: '100%',
   },
 })

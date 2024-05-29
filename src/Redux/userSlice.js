@@ -139,6 +139,7 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
       const state = getState()
       const userData = JSON.parse(JSON.stringify(state.user.userData))
       const userTrainingDayData = JSON.parse(JSON.stringify(state.user.userTrainingDayData))
+      const userAllTrainingDaysData = state.user.userAllTrainingDaysData
 
       const increaseXp = (amount) => {
         userData.userXp = (userData.userXp || 0) + amount
@@ -166,6 +167,21 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
         exercise.done = true
         userTrainingDayData.dayStats.totalExercisesNumber += 1
         userData.userStats.userTotalExercisesNumber += 1
+
+        // Obtener el nombre del grupo del ejercicio
+        const groupName = userTrainingDayData.groups[groupIndex].groupName
+
+        // Crear la propiedad dinámica en userStats
+        const statKey = `exercisesNumber${groupName}`
+
+        // Inicializar la propiedad si no existe
+        if (!userData.userStats[statKey]) {
+          userData.userStats[statKey] = 0
+        }
+
+        // Incrementar el contador del grupo específico
+        userData.userStats[statKey] += 1
+
         increaseXp(15)
       }
 
@@ -180,6 +196,20 @@ export const setSetDone = (email, groupIndex, exerciseIndex, setIndex) => {
 
         userTrainingDayData.dayStats.totalTrainingTime = totalTime
         userData.userStats.userTotalTrainingTime += totalTime
+
+        let trainingsFinished = 0
+        let trainingsNotFinished = 0
+
+        userAllTrainingDaysData.forEach((day) => {
+          if (day.done) {
+            trainingsFinished += 1
+          } else if (!day.done) {
+            trainingsNotFinished += 1
+          }
+        })
+
+        userData.userStats.trainingsFinished = trainingsFinished
+        userData.userStats.trainingsNotFinished = trainingsNotFinished
 
         increaseXp(150)
       }

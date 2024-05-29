@@ -63,7 +63,7 @@ export default function CalendarView({ navigation }) {
           <PressableView>
             <Pressable
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
+              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
               <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
             </Pressable>
