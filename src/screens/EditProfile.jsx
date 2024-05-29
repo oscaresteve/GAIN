@@ -112,7 +112,7 @@ export default function EditProfile({ navigation }) {
               </Pressable>
             </PressableView>
           </View>
-          <Text className="font-custom text-2xl dark:text-white">Name: </Text>
+
           <Controller
             name="name"
             control={control}
@@ -130,7 +130,7 @@ export default function EditProfile({ navigation }) {
             )}
           />
           {errors.name && <YupError error={errors.name} />}
-          <Text className="font-custom text-2xl dark:text-white">Last Name: </Text>
+
           <Controller
             name="lastName"
             control={control}
