@@ -21,10 +21,16 @@ import { BlurView } from 'expo-blur'
 import TrainingDayView from './screens/TrainingDayView'
 import ExerciseInfo from './screens/ExerciseInfo'
 
+import CustomIcon from './components/CustomIcon'
+import { Image, View } from 'react-native'
+import { useSelector } from 'react-redux'
+import { selectUserData } from './Redux/userSlice'
+
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const TabGroup = () => {
+  const userData = useSelector(selectUserData)
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -42,27 +48,95 @@ const TabGroup = () => {
       <Tab.Screen
         name="CalendarView"
         component={CalendarView}
-        options={{ headerShown: false, animationEnabled: false }}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <CustomIcon name="calendarMonthFILL" color={color} size={size} />
+            ) : (
+              <CustomIcon name="calendarMonth" color={color} size={size} />
+            ),
+          tabBarActiveTintColor: '#FF2400',
+        }}
       />
       <Tab.Screen
         name="Progress"
         component={Progress}
-        options={{ headerShown: false, animationEnabled: false }}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <CustomIcon name="analyticsFILL" color={color} size={size} />
+            ) : (
+              <CustomIcon name="analytics" color={color} size={size} />
+            ),
+          tabBarActiveTintColor: '#FF2400',
+        }}
       />
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{ headerShown: false, animationEnabled: false }}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <CustomIcon name="homeFILL" color={color} size={size} />
+            ) : (
+              <CustomIcon name="home" color={color} size={size} />
+            ),
+          tabBarActiveTintColor: '#FF2400',
+        }}
       />
       <Tab.Screen
         name="MyTrainings"
         component={MyTrainings}
-        options={{ headerShown: false, animationEnabled: false }}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <CustomIcon name="assignmentFILL" color={color} size={size} />
+            ) : (
+              <CustomIcon name="assignment" color={color} size={size} />
+            ),
+          tabBarActiveTintColor: '#FF2400',
+        }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false, animationEnabled: false }}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <Image
+                source={{ uri: userData.profilePic }}
+                style={{
+                  aspectRatio: 1,
+                  height: size,
+                  borderRadius: '100%',
+                  borderWidth: '2px',
+                  borderColor: color,
+                }}
+              />
+            ) : (
+              <Image
+                source={{ uri: userData.profilePic }}
+                style={{
+                  aspectRatio: 1,
+                  height: size,
+                  borderRadius: '100%',
+                  borderWidth: '2px',
+                  borderColor: color,
+                }}
+              />
+            ),
+          tabBarActiveTintColor: '#FF2400',
+        }}
       />
     </Tab.Navigator>
   )

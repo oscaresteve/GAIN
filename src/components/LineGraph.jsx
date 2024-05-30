@@ -109,7 +109,7 @@ export default function LineGraph({
             </Pressable>
           </PressableView>
 
-          <RNText className="mx-10 font-custom text-xl dark:text-white">
+          <RNText className="mx-10 font-rubik-regular text-xl dark:text-white">
             {moment().month(month).format('MMM YYYY')}
           </RNText>
 

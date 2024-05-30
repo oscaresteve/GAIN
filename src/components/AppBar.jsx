@@ -15,10 +15,10 @@ export default function AppBar({ label, backButton, navigation, buttons }) {
   const currentDate = new Date()
   const Label = () => {
     if (label) {
-      return <Text className="ml-4 font-custom text-2xl dark:text-white">{label}</Text>
+      return <Text className="ml-4 font-rubik-regular text-2xl dark:text-white">{label}</Text>
     } else {
       return (
-        <Text className="ml-4 font-custom text-2xl dark:text-white">
+        <Text className="ml-4 font-rubik-regular text-2xl dark:text-white">
           {moment(currentDate).format('dddd')} {moment(currentDate).format('Do')}
         </Text>
       )

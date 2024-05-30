@@ -6,7 +6,7 @@ export default function YupError({ error }) {
   return (
     <View className="flex-row items-center">
       <CustomIcon name={'info'} color={'#FF3333'} size={16} />
-      <Text className="text-md mx-1 font-custom text-vermillion">{error.message}</Text>
+      <Text className="text-md mx-1 font-rubik-regular text-vermillion">{error.message}</Text>
     </View>
   )
 }

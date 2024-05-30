@@ -76,7 +76,7 @@ export default Calendar = ({
               disabled={buttonDisabled}
               className={`aspect-square items-center justify-center rounded-xl ${getIsSelected()} ${getIsCurrentDay()}`}
             >
-              <Text className="font-custom text-xl dark:text-white">{dayNumber}</Text>
+              <Text className="font-rubik-regular text-xl dark:text-white">{dayNumber}</Text>
             </Pressable>
           </PressableView>
           <View className="items-center p-1">{getStatusDot()}</View>
@@ -128,7 +128,7 @@ export default Calendar = ({
                 <CustomIcon name={'navigate-before'} size={40} color={'black'} />
               </Pressable>
             </PressableView>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {currentDate.format('MMMM')} {currentDate.format('YYYY')}
             </Text>
             <PressableView>
