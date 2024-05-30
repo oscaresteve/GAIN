@@ -33,7 +33,7 @@ export default function AppBar({ label, backButton, navigation, buttons }) {
               navigation.goBack()
             }}
           >
-            <CustomIcon name={'keyboard-arrow-left'} size={40} color={'white'} />
+            <CustomIcon name={'arrowBack'} size={30} color={'white'} />
           </Pressable>
         </PressableView>
       )

@@ -41,7 +41,7 @@ export default function ProgressView({ navigation, route }) {
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
               className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
             >
-              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+              <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </Pressable>
           </PressableView>
         </View>
@@ -94,9 +94,9 @@ export default function ProgressView({ navigation, route }) {
                           >
                             (
                             {difference >= 0 ? (
-                              <CustomIcon name={'trending-up'} size={15} color={'white'} />
+                              <CustomIcon name={'trendingUp'} size={15} color={'white'} />
                             ) : (
-                              <CustomIcon name={'trending-down'} size={15} color={'white'} />
+                              <CustomIcon name={'trendingDown'} size={15} color={'white'} />
                             )}{' '}
                             {Math.abs(difference)})
                           </Text>

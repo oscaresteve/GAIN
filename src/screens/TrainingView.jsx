@@ -54,7 +54,7 @@ export default function Training({ navigation, route }) {
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
               className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
-              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+              <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </Pressable>
           </PressableView>
         </View>
@@ -76,7 +76,7 @@ export default function Training({ navigation, route }) {
       >
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2">
-            <Text className="ml-2 font-rubik-regular text-3xl dark:text-white">
+            <Text className="font-rubik-regular ml-2 text-3xl dark:text-white">
               {userTrainingData.trainingName}
             </Text>
           </View>

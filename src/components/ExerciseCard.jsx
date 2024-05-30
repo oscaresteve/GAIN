@@ -61,7 +61,7 @@ export const ExerciseCard = ({ exercise, exerciseExists, onAdd, onInfo }) => {
                     onPress={() => onInfo()}
                     className="m-1 grow items-center justify-center rounded-xl border border-white p-2"
                   >
-                    <CustomIcon name={'info-outline'} size={20} color={'white'} />
+                    <CustomIcon name={'info'} size={20} color={'white'} />
                   </Pressable>
                 </PressableView>
               </View>

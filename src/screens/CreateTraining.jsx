@@ -267,7 +267,7 @@ export default function CreateTraining({ navigation }) {
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
               className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
-              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+              <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </Pressable>
           </PressableView>
         </View>
@@ -326,7 +326,7 @@ export default function CreateTraining({ navigation }) {
                     handleTrainingNameChange(value)
                   }}
                   onBlur={onBlur}
-                  className="ml-2 font-rubik-regular text-3xl dark:text-white"
+                  className="font-rubik-regular ml-2 text-3xl dark:text-white"
                 />
               )}
             />
@@ -400,7 +400,7 @@ export default function CreateTraining({ navigation }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboard-arrow-up" size={40} color={'white'} />
+                                  <CustomIcon name="keyboardArrowUp" size={30} color={'white'} />
                                 </Pressable>
                               </PressableView>
                               <Text className="font-rubik-regular text-lg dark:text-white">
@@ -418,11 +418,7 @@ export default function CreateTraining({ navigation }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon
-                                    name="keyboard-arrow-down"
-                                    size={40}
-                                    color={'white'}
-                                  />
+                                  <CustomIcon name="keyboardArrowDown" size={30} color={'white'} />
                                 </Pressable>
                               </PressableView>
                             </View>
@@ -443,7 +439,7 @@ export default function CreateTraining({ navigation }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboard-arrow-up" size={40} color={'white'} />
+                                  <CustomIcon name="keyboardArrowUp" size={30} color={'white'} />
                                 </Pressable>
                               </PressableView>
                               <Text className="font-rubik-regular text-lg dark:text-white">
@@ -461,11 +457,7 @@ export default function CreateTraining({ navigation }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon
-                                    name="keyboard-arrow-down"
-                                    size={40}
-                                    color={'white'}
-                                  />
+                                  <CustomIcon name="keyboardArrowDown" size={30} color={'white'} />
                                 </Pressable>
                               </PressableView>
                             </View>
@@ -514,7 +506,9 @@ export default function CreateTraining({ navigation }) {
                         }
                         className="items-center"
                       >
-                        <Text className="font-rubik-regular text-xl dark:text-white">Delete Exercise</Text>
+                        <Text className="font-rubik-regular text-xl dark:text-white">
+                          Delete Exercise
+                        </Text>
                       </Pressable>
                     </PressableView>
                   </View>
@@ -550,7 +544,9 @@ export default function CreateTraining({ navigation }) {
                             }
                             className="m-1"
                           >
-                            <Text className="font-rubik-regular text-3xl dark:text-white">{group}</Text>
+                            <Text className="font-rubik-regular text-3xl dark:text-white">
+                              {group}
+                            </Text>
                             <View
                               className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
                             ></View>

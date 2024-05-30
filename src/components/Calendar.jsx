@@ -63,9 +63,9 @@ export default Calendar = ({
       }
 
       const getStatusDot = () => {
-        if (status === 'done') return <CustomIcon name="circle" size={5} color={'green'} />
-        if (status === 'notDone') return <CustomIcon name="circle" size={5} color={'red'} />
-        return <CustomIcon name="circle" size={10} color={'transparent'} />
+        if (status === 'done') return <CustomIcon name="circleFILL" size={5} color={'green'} />
+        if (status === 'notDone') return <CustomIcon name="circleFILL" size={5} color={'red'} />
+        return <CustomIcon name="circleFILL" size={10} color={'transparent'} />
       }
 
       return (

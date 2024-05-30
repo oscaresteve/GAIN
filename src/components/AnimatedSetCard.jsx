@@ -55,9 +55,9 @@ export default function AnimatedSetCard({ children, onSwipe, enabled }) {
       <View>
         <Animated.View
           style={[animatedStyleViewUnder]}
-          className="absolute my-1 pl-4 h-14 w-full flex-row items-center justify-start rounded-xl bg-green-500"
+          className="absolute my-1 h-14 w-full flex-row items-center justify-start rounded-xl bg-green-500 pl-4"
         >
-          <CustomIcon name={'check-circle-outline'} size={40} color={1} />
+          <CustomIcon name={'checkCircle'} size={40} color={1} />
         </Animated.View>
         <Animated.View style={[animatedStyle]}>{children}</Animated.View>
       </View>

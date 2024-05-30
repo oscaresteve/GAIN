@@ -65,7 +65,7 @@ export default function CalendarView({ navigation }) {
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
               className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
-              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+              <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </Pressable>
           </PressableView>
         </View>
@@ -93,8 +93,8 @@ export default function CalendarView({ navigation }) {
 
     return (
       <View className="flex-row items-center">
-        <CustomIcon name="circle" size={10} color={color} />
-        <Text className="ml-2 font-rubik-regular text-xl" style={{ color }}>
+        <CustomIcon name={'circleFILL'} size={10} color={color} />
+        <Text className="font-rubik-regular ml-2 text-xl" style={{ color }}>
           {message}
         </Text>
       </View>
@@ -146,13 +146,13 @@ export default function CalendarView({ navigation }) {
                 </Text>
                 {difference !== null && difference !== 0 && (
                   <Text
-                    className={`text-md ml-2 font-rubik-regular ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                    className={`text-md font-rubik-regular ml-2 ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
                   >
                     (
                     {difference >= 0 ? (
-                      <CustomIcon name={'trending-up'} size={15} color={'white'} />
+                      <CustomIcon name={'trendingUp'} size={15} color={'white'} />
                     ) : (
-                      <CustomIcon name={'trending-down'} size={15} color={'white'} />
+                      <CustomIcon name={'trendingDown'} size={15} color={'white'} />
                     )}{' '}
                     {Math.abs(difference)})
                   </Text>
@@ -212,13 +212,13 @@ export default function CalendarView({ navigation }) {
                 </Text>
                 {difference !== null && difference !== 0 && (
                   <Text
-                    className={`text-md ml-2 font-rubik-regular ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                    className={`text-md font-rubik-regular ml-2 ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
                   >
                     (
                     {difference >= 0 ? (
-                      <CustomIcon name={'trending-up'} size={15} color={'white'} />
+                      <CustomIcon name={'trendingUp'} size={15} color={'white'} />
                     ) : (
-                      <CustomIcon name={'trending-down'} size={15} color={'white'} />
+                      <CustomIcon name={'trendingDown'} size={15} color={'white'} />
                     )}{' '}
                     {Math.abs(difference)})
                   </Text>

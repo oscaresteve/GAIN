@@ -224,7 +224,7 @@ export default function EditTraining({ navigation, route }) {
               onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
               className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
             >
-              <CustomIcon name={'keyboard-double-arrow-up'} size={40} color={'white'} />
+              <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </Pressable>
           </PressableView>
         </View>
@@ -339,7 +339,7 @@ export default function EditTraining({ navigation, route }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboard-arrow-up" size={40} color={'white'} />
+                                  <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
                                 </Pressable>
                               </PressableView>
                               <Text className="font-rubik-regular text-lg dark:text-white">
@@ -358,7 +358,7 @@ export default function EditTraining({ navigation, route }) {
                                   }
                                 >
                                   <CustomIcon
-                                    name="keyboard-arrow-down"
+                                    name="keyboardArrowDown"
                                     size={40}
                                     color={'white'}
                                   />
@@ -382,7 +382,7 @@ export default function EditTraining({ navigation, route }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboard-arrow-up" size={40} color={'white'} />
+                                  <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
                                 </Pressable>
                               </PressableView>
                               <Text className="font-rubik-regular text-lg dark:text-white">
@@ -401,7 +401,7 @@ export default function EditTraining({ navigation, route }) {
                                   }
                                 >
                                   <CustomIcon
-                                    name="keyboard-arrow-down"
+                                    name="keyboardArrowDown"
                                     size={40}
                                     color={'white'}
                                   />

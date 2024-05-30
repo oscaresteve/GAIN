@@ -105,7 +105,7 @@ export default function LineGraph({
         <View className="flex-row items-center justify-center">
           <PressableView>
             <Pressable onPress={() => handlePrevMonth()}>
-              <CustomIcon name={'keyboard-arrow-left'} size={40} color={'black'} />
+              <CustomIcon name={'chevronBack'} size={40} color={'black'} />
             </Pressable>
           </PressableView>
 
@@ -115,7 +115,7 @@ export default function LineGraph({
 
           <PressableView>
             <Pressable onPress={() => handleNextMonth()}>
-              <CustomIcon name={'keyboard-arrow-right'} size={40} color={'black'} />
+              <CustomIcon name={'chevronForward'} size={40} color={'black'} />
             </Pressable>
           </PressableView>
         </View>
