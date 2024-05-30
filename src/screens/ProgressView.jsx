@@ -66,7 +66,7 @@ export default function ProgressView({ navigation, route }) {
           </View>
           <View>
             <View className="my-4">
-              <Text className="font-custom text-2xl dark:text-white">
+              <Text className="font-rubik-regular text-2xl dark:text-white">
                 {name} progress in {moment().month(month).format('MMMM')}
               </Text>
             </View>
@@ -80,17 +80,17 @@ export default function ProgressView({ navigation, route }) {
                 return (
                   <View key={itemIndex} className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
                     <View className="m-1">
-                      <Text className="font-custom text-xl dark:text-white">
+                      <Text className="font-rubik-regular text-xl dark:text-white">
                         {moment(item.date).format('Do MMMM')}
                       </Text>
                     </View>
                     <Divider />
                     <View className="m-1 flex-row items-center">
-                      <Text className="font-custom text-xl dark:text-white">{item.value} Kg</Text>
+                      <Text className="font-rubik-regular text-xl dark:text-white">{item.value} Kg</Text>
                       {difference !== null && difference !== 0 && (
                         <View className="">
                           <Text
-                            className={`ml-2 font-custom text-lg ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                            className={`ml-2 font-rubik-regular text-lg ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
                           >
                             (
                             {difference >= 0 ? (

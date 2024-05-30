@@ -46,7 +46,7 @@ export default function TrainingDayView({ navigation, route }) {
         <View>
           {userTrainingDayData?.groups?.map((group, groupIndex) => (
             <View key={groupIndex} className="my-2">
-              <Text className="my-2 font-custom text-4xl font-bold dark:text-white">
+              <Text className="my-2 font-rubik-regular text-4xl font-bold dark:text-white">
                 {group.groupName}
               </Text>
               {group.exercises?.map((exercise, exerciseIndex) => (
@@ -58,13 +58,13 @@ export default function TrainingDayView({ navigation, route }) {
                           navigation.navigate('ExerciseInfo', { exercise: exercise })
                         }}
                       >
-                        <Text className="font-custom text-2xl dark:text-white">
+                        <Text className="font-rubik-regular text-2xl dark:text-white">
                           {exercise.exerciseName}
                         </Text>
                       </Pressable>
                     </PressableView>
                     {exercise.exerciseNotes && (
-                      <Text className="font-custom text-xl opacity-50 dark:text-white">
+                      <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
                         Note: {exercise.exerciseNotes}
                       </Text>
                     )}
@@ -82,14 +82,14 @@ export default function TrainingDayView({ navigation, route }) {
                             }`}
                           >
                             <View className="w-12 items-center justify-center">
-                              <Text className="text-md font-custom dark:text-white">
+                              <Text className="text-md font-rubik-regular dark:text-white">
                                 {set.setNumber}
                               </Text>
                             </View>
                             <Divider direction="vertical" />
                             <View className="mx-4 grow flex-row">
                               <View className="flex-1 items-center justify-center">
-                                <Text className="font-custom text-lg dark:text-white">
+                                <Text className="font-rubik-regular text-lg dark:text-white">
                                   {set.details.reps} reps
                                 </Text>
                                 <DifficultyBar value={set.details.reps} maxValue={12} />
@@ -98,7 +98,7 @@ export default function TrainingDayView({ navigation, route }) {
                                 <Divider />
                               </View>
                               <View className="flex-1 items-center justify-center">
-                                <Text className="font-custom text-lg dark:text-white">
+                                <Text className="font-rubik-regular text-lg dark:text-white">
                                   {set.details.weight} kg
                                 </Text>
                                 <DifficultyBar value={set.details.weight} maxValue={100} />
@@ -119,7 +119,7 @@ export default function TrainingDayView({ navigation, route }) {
     } else {
       return (
         <View>
-          <Text className="font-custom text-3xl dark:text-white">REST DAY</Text>
+          <Text className="font-rubik-regular text-3xl dark:text-white">REST DAY</Text>
         </View>
       )
     }
@@ -141,68 +141,68 @@ export default function TrainingDayView({ navigation, route }) {
     return (
       <View className="my-2">
         <View className="items-center">
-          <Text className="my-2 font-custom text-2xl dark:text-white">Training Stats</Text>
+          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Training Stats</Text>
         </View>
 
         <Divider />
 
         <View className="m-4">
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-custom text-xl dark:text-white">Exercises</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Exercises</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {userTrainingDayData.dayStats.totalExercisesNumber}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-custom text-xl dark:text-white">Sets</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Sets</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {userTrainingDayData.dayStats.totalSetsNumber}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-custom text-xl dark:text-white">Reps</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Reps</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {userTrainingDayData.dayStats.totalRepsNumber}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-custom text-xl dark:text-white">Weight lifted</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Weight lifted</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {userTrainingDayData.dayStats.totalWeightNumber} Kg
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-custom text-xl dark:text-white">Training Time</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Training Time</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {msToTime(userTrainingDayData.dayStats.totalTrainingTime)}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-custom text-xl dark:text-white">Xp obtained</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Xp obtained</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-custom text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl dark:text-white">
               {userTrainingDayData.xpObtained} XP
             </Text>
           </View>

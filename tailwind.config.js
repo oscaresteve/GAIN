@@ -4,7 +4,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        custom: ['rubik'],
+        'rubik-regular': 'Rubik-Regular',
+        'rubik-medium': 'Rubik-Medium',
+        'rubik-bold': 'Rubik-Bold',
+        'rubik-italic': 'Rubik-Italic',
       },
       colors: {
         vermillion: '#FF3333',

@@ -156,9 +156,9 @@ export default function Progress({ navigation }) {
               maxLength={6}
               textAlign="right"
               enterKeyHint="done"
-              className="grow font-custom text-xl dark:text-white"
+              className="grow font-rubik-regular text-xl dark:text-white"
             />
-            <Text className="text-md ml-1 font-custom dark:text-white">Kg</Text>
+            <Text className="text-md ml-1 font-rubik-regular dark:text-white">Kg</Text>
           </View>
           <PressableView>
             <Pressable
@@ -166,7 +166,7 @@ export default function Progress({ navigation }) {
               disabled={bodyWeightDisabled}
               className={`ml-4 grow items-center justify-center rounded-lg ${bodyWeightDisabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
-              <Text className="mx-3 font-custom text-xl font-bold text-smoke-2 dark:text-night-2 ">
+              <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
                 Save
               </Text>
             </Pressable>
@@ -193,7 +193,7 @@ export default function Progress({ navigation }) {
 
     return (
       <View className="my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
-        <Text className="m-2 font-custom text-xl dark:text-white">
+        <Text className="m-2 font-rubik-regular text-xl dark:text-white">
           {userPersonalRecord.exercise.exerciseName}
         </Text>
         <Divider />
@@ -227,9 +227,9 @@ export default function Progress({ navigation }) {
               maxLength={6}
               textAlign="right"
               enterKeyHint="done"
-              className="grow font-custom text-xl dark:text-white"
+              className="grow font-rubik-regular text-xl dark:text-white"
             />
-            <Text className="text-md ml-1 font-custom dark:text-white">Kg</Text>
+            <Text className="text-md ml-1 font-rubik-regular dark:text-white">Kg</Text>
           </View>
           <PressableView>
             <Pressable
@@ -239,7 +239,7 @@ export default function Progress({ navigation }) {
               disabled={disabled}
               className={`ml-4 grow items-center justify-center rounded-lg ${disabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
-              <Text className="mx-3 font-custom text-xl font-bold text-smoke-2 dark:text-night-2 ">
+              <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
                 Save
               </Text>
             </Pressable>
@@ -265,12 +265,12 @@ export default function Progress({ navigation }) {
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
-          <Text className="my-2 font-custom text-2xl dark:text-white">Body Weight</Text>
+          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Body Weight</Text>
           <Divider />
 
           <BodyWeight />
 
-          <Text className="my-2 font-custom text-2xl dark:text-white">Personal Records</Text>
+          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Personal Records</Text>
           <Divider />
 
           {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
@@ -304,7 +304,7 @@ export default function Progress({ navigation }) {
                         }
                         className="m-1"
                       >
-                        <Text className="font-custom text-3xl dark:text-white">{group}</Text>
+                        <Text className="font-rubik-regular text-3xl dark:text-white">{group}</Text>
                         <View
                           className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
                         ></View>

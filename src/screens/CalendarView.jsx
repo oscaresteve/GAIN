@@ -94,7 +94,7 @@ export default function CalendarView({ navigation }) {
     return (
       <View className="flex-row items-center">
         <CustomIcon name="circle" size={10} color={color} />
-        <Text className="ml-2 font-custom text-xl" style={{ color }}>
+        <Text className="ml-2 font-rubik-regular text-xl" style={{ color }}>
           {message}
         </Text>
       </View>
@@ -137,16 +137,16 @@ export default function CalendarView({ navigation }) {
           >
             <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
               <View className="m-1">
-                <Text className="font-custom text-xl dark:text-white">Body Weight</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Body Weight</Text>
               </View>
               <Divider />
               <View className="m-1 flex-row items-center">
-                <Text className="font-custom text-xl dark:text-white">
+                <Text className="font-rubik-regular text-xl dark:text-white">
                   {bodyWeightMark.bodyWeight} Kg
                 </Text>
                 {difference !== null && difference !== 0 && (
                   <Text
-                    className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                    className={`text-md ml-2 font-rubik-regular ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
                   >
                     (
                     {difference >= 0 ? (
@@ -201,18 +201,18 @@ export default function CalendarView({ navigation }) {
           >
             <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
               <View className="m-1">
-                <Text className="font-custom text-xl dark:text-white">
+                <Text className="font-rubik-regular text-xl dark:text-white">
                   {userPersonalRecord.exercise.exerciseName}
                 </Text>
               </View>
               <Divider />
               <View className="m-1 flex-row items-center">
-                <Text className="font-custom text-xl dark:text-white">
+                <Text className="font-rubik-regular text-xl dark:text-white">
                   {personalRecordMark.mark} Kg
                 </Text>
                 {difference !== null && difference !== 0 && (
                   <Text
-                    className={`text-md ml-2 font-custom ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                    className={`text-md ml-2 font-rubik-regular ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
                   >
                     (
                     {difference >= 0 ? (
@@ -256,7 +256,7 @@ export default function CalendarView({ navigation }) {
           />
 
           <View className="mt-12">
-            <Text className="font-custom text-4xl dark:text-white">
+            <Text className="font-rubik-regular text-4xl dark:text-white">
               {moment(currentDate).format('Do MMM YYYY')}
             </Text>
 
@@ -272,14 +272,14 @@ export default function CalendarView({ navigation }) {
                   }
                   className="my-4 items-center justify-center rounded-xl border border-primary-1 p-2"
                 >
-                  <Text className="font-custom text-xl font-bold text-primary-1">
+                  <Text className="font-rubik-regular text-xl font-bold text-primary-1">
                     View Training
                   </Text>
                 </Pressable>
               </PressableView>
             )}
             <View className="my-2 items-center">
-              <Text className="font-custom text-xl dark:text-white">Day Progress</Text>
+              <Text className="font-rubik-regular text-xl dark:text-white">Day Progress</Text>
             </View>
             <Divider />
             <View className="m-2">

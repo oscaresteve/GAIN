@@ -55,7 +55,7 @@ export default function Configuration({ navigation }) {
           <View className="my-2 items-center">
             <PressableView>
               <Pressable onPress={handleLogOut}>
-                <Text className="font-custom text-2xl text-red-500">Log Out</Text>
+                <Text className="font-rubik-regular text-2xl text-red-500">Log Out</Text>
               </Pressable>
             </PressableView>
           </View>

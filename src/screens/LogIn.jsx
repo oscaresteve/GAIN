@@ -80,7 +80,7 @@ export default function LogIn({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
+                  className={`font-rubik-regular my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
                 />
               )}
             />
@@ -97,7 +97,7 @@ export default function LogIn({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
+                  className={`font-rubik-regular my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
                 />
               )}
             />
@@ -109,14 +109,14 @@ export default function LogIn({ navigation }) {
               onPress={handleSubmit(handleLogIn)}
               className="my-4 items-center justify-center rounded-xl bg-primary-1 p-2"
             >
-              <Text className="font-custom text-xl font-bold text-smoke-1 dark:text-night-1">
+              <Text className="font-rubik-medium text-xl text-smoke-1 dark:text-night-1">
                 Sign In
               </Text>
             </Pressable>
           </PressableView>
           <PressableView>
             <Pressable onPress={() => navigation.navigate('Register')} className="items-center">
-              <Text className="text-md font-custom text-primary-2">
+              <Text className="text-md font-rubik-regular text-primary-2">
                 ¿New here? ¡Create your account!
               </Text>
             </Pressable>

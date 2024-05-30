@@ -90,141 +90,141 @@ const Profile = ({ navigation }) => {
     return (
       <View>
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.userTotalExercisesNumber || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Sets</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Sets</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.userTotalSetsNumber || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Reps</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Reps</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.userTotalRepsNumber || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Weight lifted</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Weight lifted</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.userTotalWeightNumber || 0)} kg
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Time trained</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Time trained</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {msToTime(userData.userStats.userTotalTrainingTime || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Chest exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Chest exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberChest || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Bicep exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Bicep exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberBicep || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Tricep exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Tricep exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberTricep || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Shoulder exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Shoulder exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberShoulder || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Back exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Back exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberBack || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Legs exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Legs exercises</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberLegs || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Trainings finished</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Trainings finished</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.trainingsFinished || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Trainings not finished</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Trainings not finished</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {formatNumber(userData.userStats.trainingsNotFinished || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-custom text-xl dark:text-white">Average Training Time</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Average Training Time</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-custom text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl dark:text-white">
             {msToTime(
               userData.userStats.userTotalTrainingTime / userData.userStats.trainingsFinished || 0,
             )}
@@ -243,13 +243,13 @@ const Profile = ({ navigation }) => {
       >
         <View className="grow">
           <View className="mb-4">
-            <Text className="font-custom text-2xl dark:text-white">{title}</Text>
+            <Text className="font-rubik-regular text-2xl dark:text-white">{title}</Text>
             {unit === 'time' ? (
-              <Text className="text-xxl font-custom dark:text-white">
+              <Text className="text-xxl font-rubik-regular dark:text-white">
                 {description} ({msToTime(current || 0)} / {msToTime(target || 0)})
               </Text>
             ) : (
-              <Text className="text-xxl font-custom dark:text-white">
+              <Text className="text-xxl font-rubik-regular dark:text-white">
                 {description} ({formatNumber(current || 0)} {unit} / {formatNumber(target || 0)}{' '}
                 {unit})
               </Text>
@@ -449,7 +449,7 @@ const Profile = ({ navigation }) => {
             }
           })}
         </View>
-        <Text className="font-custom text-2xl dark:text-white">
+        <Text className="font-rubik-regular text-2xl dark:text-white">
           Completed ({completedAchievements})
         </Text>
         <Divider />
@@ -494,7 +494,7 @@ const Profile = ({ navigation }) => {
             <View className="m-2 aspect-square h-36 overflow-hidden rounded-full">
               <Image source={{ uri: userData.profilePic }} className="h-full w-full" />
             </View>
-            <Text className="font-custom text-3xl dark:text-white">
+            <Text className="font-rubik-regular text-3xl dark:text-white">
               {userData?.name} {userData?.lastName}
             </Text>
           </View>
@@ -504,7 +504,7 @@ const Profile = ({ navigation }) => {
                 onPress={() => navigation.navigate('EditProfile')}
                 className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2"
               >
-                <Text className="font-custom text-xl dark:text-white">Edit Profile</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Edit Profile</Text>
               </Pressable>
             </PressableView>
             <PressableView>
@@ -512,7 +512,7 @@ const Profile = ({ navigation }) => {
                 onPress={() => navigation.navigate('Configuration')}
                 className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2"
               >
-                <Text className="font-custom text-xl dark:text-white">Configuration</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Configuration</Text>
               </Pressable>
             </PressableView>
           </View>
@@ -527,7 +527,7 @@ const Profile = ({ navigation }) => {
                     scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
                   }}
                 >
-                  <Text className="font-custom text-2xl dark:text-white">Achievements</Text>
+                  <Text className="font-rubik-regular text-2xl dark:text-white">Achievements</Text>
                 </Pressable>
               </PressableView>
             </View>
@@ -541,7 +541,7 @@ const Profile = ({ navigation }) => {
                     scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
                   }}
                 >
-                  <Text className="font-custom text-2xl dark:text-white">Stats</Text>
+                  <Text className="font-rubik-regular text-2xl dark:text-white">Stats</Text>
                 </Pressable>
               </PressableView>
             </View>

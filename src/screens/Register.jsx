@@ -91,7 +91,7 @@ export default function Register({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
                 />
               )}
             />
@@ -109,7 +109,7 @@ export default function Register({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
                 />
               )}
             />
@@ -126,7 +126,7 @@ export default function Register({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.confirmPassword && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.confirmPassword && 'border-red-500'}`}
                 />
               )}
             />
@@ -142,7 +142,7 @@ export default function Register({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.name && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.name && 'border-red-500'}`}
                 />
               )}
             />
@@ -158,7 +158,7 @@ export default function Register({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
                 />
               )}
             />
@@ -169,7 +169,7 @@ export default function Register({ navigation }) {
               onPress={handleSubmit(handleRegister)}
               className="items-center justify-center rounded-xl bg-primary-1 p-2"
             >
-              <Text className="text-md font-custom text-xl font-bold text-smoke-1 dark:text-night-1">
+              <Text className="text-md font-rubik-medium text-xl text-smoke-1 dark:text-night-1">
                 Hecho
               </Text>
             </Pressable>

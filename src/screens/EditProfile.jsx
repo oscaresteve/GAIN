@@ -108,7 +108,7 @@ export default function EditProfile({ navigation }) {
             </View>
             <PressableView>
               <Pressable onPress={handleSelectProfilePic}>
-                <Text className="font-custom text-2xl text-primary-1">Change photo</Text>
+                <Text className="font-rubik-regular text-2xl text-primary-1">Change photo</Text>
               </Pressable>
             </PressableView>
           </View>
@@ -125,7 +125,7 @@ export default function EditProfile({ navigation }) {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
+                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
               />
             )}
           />
@@ -143,7 +143,7 @@ export default function EditProfile({ navigation }) {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-custom text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
+                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
               />
             )}
           />
@@ -158,7 +158,7 @@ export default function EditProfile({ navigation }) {
         buttons={
           <PressableView>
             <Pressable onPress={handleSubmit(handleSave)}>
-              <Text className="font-custom text-2xl text-primary-1">Save</Text>
+              <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
             </Pressable>
           </PressableView>
         }

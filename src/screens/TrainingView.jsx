@@ -76,7 +76,7 @@ export default function Training({ navigation, route }) {
       >
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2">
-            <Text className="ml-2 font-custom text-3xl dark:text-white">
+            <Text className="ml-2 font-rubik-regular text-3xl dark:text-white">
               {userTrainingData.trainingName}
             </Text>
           </View>
@@ -89,14 +89,14 @@ export default function Training({ navigation, route }) {
                     onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
                     className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
                   >
-                    <Text className="font-custom text-2xl dark:text-white">{weekday}</Text>
+                    <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
                   </Pressable>
                 </PressableView>
               ))}
             </View>
             {userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
               <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
-                <Text className="font-custom text-4xl font-bold dark:text-white">
+                <Text className="font-rubik-regular text-4xl font-bold dark:text-white">
                   {group.groupName}
                 </Text>
                 {group.exercises?.map((exercise, exerciseIndex) => (
@@ -108,13 +108,13 @@ export default function Training({ navigation, route }) {
                             navigation.navigate('ExerciseInfo', { exercise: exercise })
                           }}
                         >
-                          <Text className="font-custom text-2xl dark:text-white">
+                          <Text className="font-rubik-regular text-2xl dark:text-white">
                             {exercise.exerciseName}
                           </Text>
                         </Pressable>
                       </PressableView>
                       {exercise.exerciseNotes && (
-                        <Text className="font-custom text-xl opacity-50 dark:text-white">
+                        <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
                           {exercise.exerciseNotes}
                         </Text>
                       )}
@@ -125,14 +125,14 @@ export default function Training({ navigation, route }) {
                         <View key={setIndex}>
                           <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
                             <View className="w-12 items-center justify-center">
-                              <Text className="text-md font-custom dark:text-white">
+                              <Text className="text-md font-rubik-regular dark:text-white">
                                 {set.setNumber}
                               </Text>
                             </View>
                             <Divider direction="vertical" />
                             <View className="mx-4 grow flex-row">
                               <View className="flex-1 items-center justify-center">
-                                <Text className="font-custom text-lg dark:text-white">
+                                <Text className="font-rubik-regular text-lg dark:text-white">
                                   {set.details.reps} reps
                                 </Text>
                                 <DifficultyBar value={set.details.reps} maxValue={12} />
@@ -143,7 +143,7 @@ export default function Training({ navigation, route }) {
                               </View>
 
                               <View className="flex-1 items-center justify-center">
-                                <Text className="font-custom text-lg dark:text-white">
+                                <Text className="font-rubik-regular text-lg dark:text-white">
                                   {set.details.weight} kg
                                 </Text>
                                 <DifficultyBar value={set.details.weight} maxValue={100} />
@@ -161,7 +161,7 @@ export default function Training({ navigation, route }) {
           <View className="flex-row justify-around p-2">
             <PressableView>
               <Pressable onPress={handleDeleteTraining}>
-                <Text className="font-custom text-xl dark:text-white">Delete</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Delete</Text>
               </Pressable>
             </PressableView>
             <PressableView>
@@ -169,7 +169,7 @@ export default function Training({ navigation, route }) {
                 onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
                 disabled={userTrainingData.primary ? true : false}
               >
-                <Text className="font-custom text-xl dark:text-white">Make primary</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Make primary</Text>
               </Pressable>
             </PressableView>
           </View>
@@ -182,7 +182,7 @@ export default function Training({ navigation, route }) {
         buttons={
           <PressableView>
             <Pressable onPress={handleEditTraining}>
-              <Text className="font-custom text-2xl text-primary-1">Edit</Text>
+              <Text className="font-rubik-regular text-2xl text-primary-1">Edit</Text>
             </Pressable>
           </PressableView>
         }
