@@ -51,10 +51,10 @@ export default function PressableView({
   const tapGesture = Gesture.Tap()
     .onBegin(() => {
       pressed.value = true
-      runOnJS(handleHaptics)()
     })
     .onFinalize(() => {
       pressed.value = false
+      runOnJS(handleHaptics)()
     })
 
   const animatedStyles = useAnimatedStyle(() => ({

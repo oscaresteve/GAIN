@@ -408,21 +408,23 @@ export default function EditTraining({ navigation, route }) {
                           </View>
                         </View>
                       ))}
-                      <PressableView
-                        onPress={() => handleAddSet(selectedDayIndex, groupIndex, exerciseIndex)}
-                      >
-                        <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
-                          <View className="w-12 items-center justify-center">
-                            <Text className="text-md font-rubik-regular dark:text-white">
-                              {exercise.sets.length + 1}
-                            </Text>
+                      {exercise.sets.length < 10 && (
+                        <PressableView
+                          onPress={() => handleAddSet(selectedDayIndex, groupIndex, exerciseIndex)}
+                        >
+                          <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
+                            <View className="w-12 items-center justify-center">
+                              <Text className="text-md font-rubik-regular dark:text-white">
+                                {exercise.sets.length + 1}
+                              </Text>
+                            </View>
+                            <Divider direction="vertical" />
+                            <View className="mx-4 grow flex-row items-center justify-center">
+                              <CustomIcon name="add" size={60} color={'white'} />
+                            </View>
                           </View>
-                          <Divider direction="vertical" />
-                          <View className="mx-4 grow flex-row items-center justify-center">
-                            <CustomIcon name="add" size={60} color={'white'} />
-                          </View>
-                        </View>
-                      </PressableView>
+                        </PressableView>
+                      )}
                     </View>
 
                     <PressableView
@@ -502,6 +504,13 @@ export default function EditTraining({ navigation, route }) {
                           exerciseExists={exerciseExists}
                           onAdd={() => {
                             handleAddExercise(selectExerciseModalShow.dayIndex, exercise)
+                            setSelectExerciseModalShow({
+                              ...selectExerciseModalShow,
+                              visible: false,
+                            })
+                          }}
+                          onInfo={() => {
+                            navigation.navigate('ExerciseInfo', { exercise: exercise })
                             setSelectExerciseModalShow({
                               ...selectExerciseModalShow,
                               visible: false,

@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { fetchUserData } from '../Redux/userSlice'
 import PressableView from '../components/PressableView'
 import KeyboardView from '../components/KeyboardView'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import CustomIcon from '../components/CustomIcon'
 import YupError from '../components/YupError'
 import * as Haptics from 'expo-haptics'
 
@@ -74,10 +74,10 @@ export default function Register({ navigation }) {
   return (
     <SafeAreaView className="grow bg-smoke-1 dark:bg-night-1">
       <KeyboardView>
-        <View className="mx-2">
-          <Pressable onPress={navigation.goBack}>
-            <Icon name="chevron-left" size={50} color={'#FF2400'} />
-          </Pressable>
+        <View className="m-4">
+          <PressableView onPress={navigation.goBack}>
+            <CustomIcon name="arrowBack" size={40} color={'white'} />
+          </PressableView>
         </View>
         <View className="mx-2 grow justify-center">
           <View className="items-start">

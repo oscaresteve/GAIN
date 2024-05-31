@@ -32,14 +32,16 @@ export const ExerciseCard = ({ exercise, exerciseExists, onAdd, onInfo }) => {
   }
 
   return (
-    <Pressable onPress={toggleExpand}>
+    <PressableView onPress={toggleExpand}>
       <View
         className={`m-2 rounded-xl bg-white p-4 ${
           exerciseExists ? 'bg-smoke-2 dark:bg-night-2' : 'bg-smoke-3 dark:bg-night-3'
         }`}
       >
         <View className="">
-          <Text className="font-rubik-regular text-xl dark:text-white">{exercise.exerciseName}</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">
+            {exercise.exerciseName}
+          </Text>
           {expanded && !exerciseExists && (
             <Animated.View style={[animatedHeightStyle]}>
               <View className="my-2 flex-row">
@@ -69,6 +71,6 @@ export const ExerciseCard = ({ exercise, exerciseExists, onAdd, onInfo }) => {
           )}
         </View>
       </View>
-    </Pressable>
+    </PressableView>
   )
 }

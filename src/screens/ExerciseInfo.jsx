@@ -10,10 +10,10 @@ export default function ExerciseInfo({ navigation, route }) {
   const { exercise } = route.params
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
+      <View className="grow px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
         <Text className="font-rubik-regular text-2xl dark:text-white">{exercise.exerciseName}</Text>
       </View>
-      <AppBar label={exercise.exerciseName} backButton={true} navigation={navigation} />
+      <AppBar label={'Exercise Info'} backButton={true} navigation={navigation} />
     </View>
   )
 }
