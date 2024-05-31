@@ -49,13 +49,12 @@ export default function Training({ navigation, route }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -76,7 +75,7 @@ export default function Training({ navigation, route }) {
       >
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2">
-            <Text className="font-rubik-regular ml-2 text-3xl dark:text-white">
+            <Text className="ml-2 font-rubik-regular text-3xl dark:text-white">
               {userTrainingData.trainingName}
             </Text>
           </View>
@@ -84,13 +83,15 @@ export default function Training({ navigation, route }) {
           <View className="my-2">
             <View className="flex-row justify-around">
               {moment.weekdaysShort().map((weekday, index) => (
-                <PressableView key={index}>
-                  <Pressable
-                    onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                <PressableView
+                  key={index}
+                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                >
+                  <View
                     className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
                   >
                     <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
-                  </Pressable>
+                  </View>
                 </PressableView>
               ))}
             </View>
@@ -102,16 +103,14 @@ export default function Training({ navigation, route }) {
                 {group.exercises?.map((exercise, exerciseIndex) => (
                   <View key={exerciseIndex} className="mx-2">
                     <View className="my-2">
-                      <PressableView>
-                        <Pressable
-                          onPress={() => {
-                            navigation.navigate('ExerciseInfo', { exercise: exercise })
-                          }}
-                        >
-                          <Text className="font-rubik-regular text-2xl dark:text-white">
-                            {exercise.exerciseName}
-                          </Text>
-                        </Pressable>
+                      <PressableView
+                        onPress={() => {
+                          navigation.navigate('ExerciseInfo', { exercise: exercise })
+                        }}
+                      >
+                        <Text className="font-rubik-regular text-2xl dark:text-white">
+                          {exercise.exerciseName}
+                        </Text>
                       </PressableView>
                       {exercise.exerciseNotes && (
                         <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
@@ -159,18 +158,14 @@ export default function Training({ navigation, route }) {
             ))}
           </View>
           <View className="flex-row justify-around p-2">
-            <PressableView>
-              <Pressable onPress={handleDeleteTraining}>
-                <Text className="font-rubik-regular text-xl dark:text-white">Delete</Text>
-              </Pressable>
+            <PressableView onPress={handleDeleteTraining}>
+              <Text className="font-rubik-regular text-xl dark:text-white">Delete</Text>
             </PressableView>
-            <PressableView>
-              <Pressable
-                onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
-                disabled={userTrainingData.primary ? true : false}
-              >
-                <Text className="font-rubik-regular text-xl dark:text-white">Make primary</Text>
-              </Pressable>
+            <PressableView
+              onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
+              disabled={userTrainingData.primary ? true : false}
+            >
+              <Text className="font-rubik-regular text-xl dark:text-white">Make primary</Text>
             </PressableView>
           </View>
         </View>
@@ -180,10 +175,8 @@ export default function Training({ navigation, route }) {
         backButton={true}
         navigation={navigation}
         buttons={
-          <PressableView>
-            <Pressable onPress={handleEditTraining}>
-              <Text className="font-rubik-regular text-2xl text-primary-1">Edit</Text>
-            </Pressable>
+          <PressableView onPress={handleEditTraining}>
+            <Text className="font-rubik-regular text-2xl text-primary-1">Edit</Text>
           </PressableView>
         }
       />

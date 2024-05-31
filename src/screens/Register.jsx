@@ -10,6 +10,7 @@ import PressableView from '../components/PressableView'
 import KeyboardView from '../components/KeyboardView'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import YupError from '../components/YupError'
+import * as Haptics from 'expo-haptics'
 
 export default function Register({ navigation }) {
   const dispatch = useDispatch()
@@ -60,10 +61,12 @@ export default function Register({ navigation }) {
     const registerUserSuccess = await registerUser(formData.email, formData.password)
 
     if (registerUserSuccess === true) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
       await updateUserData(formData.email, userData)
       dispatch(fetchUserData(userData.email))
       navigation.navigate('TabGroup')
     } else {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
       Alert.alert('Ese correo ya esta en uso')
     }
   }
@@ -164,15 +167,12 @@ export default function Register({ navigation }) {
             />
             {errors.lastName && <YupError error={errors.lastName} />}
           </View>
-          <PressableView>
-            <Pressable
-              onPress={handleSubmit(handleRegister)}
-              className="items-center justify-center rounded-xl bg-primary-1 p-2"
-            >
+          <PressableView onPress={handleSubmit(handleRegister)}>
+            <View className="items-center justify-center rounded-xl bg-primary-1 p-2">
               <Text className="text-md font-rubik-medium text-xl text-smoke-1 dark:text-night-1">
                 Hecho
               </Text>
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       </KeyboardView>

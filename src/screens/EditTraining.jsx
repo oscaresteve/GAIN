@@ -219,13 +219,12 @@ export default function EditTraining({ navigation, route }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -235,19 +234,18 @@ export default function EditTraining({ navigation, route }) {
   const AddButton = () => {
     return (
       <View className="absolute bottom-0 right-0 mb-10">
-        <PressableView>
-          <Pressable
-            onPress={() =>
-              setSelectExerciseModalShow({
-                ...selectExerciseModalShow,
-                visible: true,
-                dayIndex: selectedDayIndex,
-              })
-            }
-            className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-          >
+        <PressableView
+          onPress={() =>
+            setSelectExerciseModalShow({
+              ...selectExerciseModalShow,
+              visible: true,
+              dayIndex: selectedDayIndex,
+            })
+          }
+        >
+          <View className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
             <CustomIcon name={'add'} size={50} color={'white'} />
-          </Pressable>
+          </View>
         </PressableView>
       </View>
     )
@@ -275,13 +273,15 @@ export default function EditTraining({ navigation, route }) {
           <View calssName="my-2">
             <View className="flex-row justify-around">
               {moment.weekdaysShort().map((weekday, index) => (
-                <PressableView key={index}>
-                  <Pressable
-                    onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                <PressableView
+                  key={index}
+                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
+                >
+                  <View
                     className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
                   >
                     <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
-                  </Pressable>
+                  </View>
                 </PressableView>
               ))}
             </View>
@@ -293,16 +293,14 @@ export default function EditTraining({ navigation, route }) {
                 {group.exercises?.map((exercise, exerciseIndex) => (
                   <View key={exerciseIndex} className="mx-2">
                     <View className="my-2">
-                      <PressableView>
-                        <Pressable
-                          onPress={() => {
-                            navigation.navigate('ExerciseInfo', { exercise: exercise })
-                          }}
-                        >
-                          <Text className="font-rubik-regular text-2xl dark:text-white">
-                            {exercise.exerciseName}
-                          </Text>
-                        </Pressable>
+                      <PressableView
+                        onPress={() => {
+                          navigation.navigate('ExerciseInfo', { exercise: exercise })
+                        }}
+                      >
+                        <Text className="font-rubik-regular text-2xl dark:text-white">
+                          {exercise.exerciseName}
+                        </Text>
                       </PressableView>
                       <TextInput
                         value={exercise.exerciseNotes}
@@ -328,41 +326,33 @@ export default function EditTraining({ navigation, route }) {
                           <Divider direction="vertical" />
                           <View className="mx-4 grow flex-row">
                             <View className="flex-1 items-center justify-center">
-                              <PressableView>
-                                <Pressable
-                                  onPress={() =>
-                                    handleIncrementReps(
-                                      selectedDayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex,
-                                    )
-                                  }
-                                >
-                                  <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
-                                </Pressable>
+                              <PressableView
+                                onPress={() =>
+                                  handleIncrementReps(
+                                    selectedDayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex,
+                                  )
+                                }
+                              >
+                                <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
                               </PressableView>
                               <Text className="font-rubik-regular text-lg dark:text-white">
                                 {set.details.reps} reps
                               </Text>
                               <DifficultyBar value={set.details.reps} maxValue={12} />
-                              <PressableView>
-                                <Pressable
-                                  onPress={() =>
-                                    handleDecrementReps(
-                                      selectedDayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex,
-                                    )
-                                  }
-                                >
-                                  <CustomIcon
-                                    name="keyboardArrowDown"
-                                    size={40}
-                                    color={'white'}
-                                  />
-                                </Pressable>
+                              <PressableView
+                                onPress={() =>
+                                  handleDecrementReps(
+                                    selectedDayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex,
+                                  )
+                                }
+                              >
+                                <CustomIcon name="keyboardArrowDown" size={40} color={'white'} />
                               </PressableView>
                             </View>
 
@@ -371,68 +361,57 @@ export default function EditTraining({ navigation, route }) {
                             </View>
 
                             <View className="flex-1 items-center justify-center">
-                              <PressableView>
-                                <Pressable
-                                  onPress={() =>
-                                    handleIncrementWeight(
-                                      selectedDayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex,
-                                    )
-                                  }
-                                >
-                                  <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
-                                </Pressable>
+                              <PressableView
+                                onPress={() =>
+                                  handleIncrementWeight(
+                                    selectedDayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex,
+                                  )
+                                }
+                              >
+                                <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
                               </PressableView>
                               <Text className="font-rubik-regular text-lg dark:text-white">
                                 {set.details.weight} kg
                               </Text>
                               <DifficultyBar value={set.details.weight} maxValue={100} />
-                              <PressableView>
-                                <Pressable
-                                  onPress={() =>
-                                    handleDecrementWeight(
-                                      selectedDayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex,
-                                    )
-                                  }
-                                >
-                                  <CustomIcon
-                                    name="keyboardArrowDown"
-                                    size={40}
-                                    color={'white'}
-                                  />
-                                </Pressable>
+                              <PressableView
+                                onPress={() =>
+                                  handleDecrementWeight(
+                                    selectedDayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex,
+                                  )
+                                }
+                              >
+                                <CustomIcon name="keyboardArrowDown" size={40} color={'white'} />
                               </PressableView>
                             </View>
                             <View className="items-center justify-center">
-                              <PressableView>
-                                <Pressable
-                                  onPress={() =>
-                                    handleDeleteSet(
-                                      selectedDayIndex,
-                                      groupIndex,
-                                      exerciseIndex,
-                                      setIndex,
-                                    )
-                                  }
-                                  disabled={exercise.sets.length === 1}
-                                >
-                                  <CustomIcon name="delete" size={30} color={'white'} />
-                                </Pressable>
+                              <PressableView
+                                onPress={() =>
+                                  handleDeleteSet(
+                                    selectedDayIndex,
+                                    groupIndex,
+                                    exerciseIndex,
+                                    setIndex,
+                                  )
+                                }
+                                disabled={exercise.sets.length === 1}
+                              >
+                                <CustomIcon name="delete" size={30} color={'white'} />
                               </PressableView>
                             </View>
                           </View>
                         </View>
                       ))}
-                      <PressableView>
-                        <Pressable
-                          onPress={() => handleAddSet(selectedDayIndex, groupIndex, exerciseIndex)}
-                          className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2"
-                        >
+                      <PressableView
+                        onPress={() => handleAddSet(selectedDayIndex, groupIndex, exerciseIndex)}
+                      >
+                        <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
                           <View className="w-12 items-center justify-center">
                             <Text className="text-md font-rubik-regular dark:text-white">
                               {exercise.sets.length + 1}
@@ -442,19 +421,20 @@ export default function EditTraining({ navigation, route }) {
                           <View className="mx-4 grow flex-row items-center justify-center">
                             <CustomIcon name="add" size={60} color={'white'} />
                           </View>
-                        </Pressable>
+                        </View>
                       </PressableView>
                     </View>
 
-                    <PressableView>
-                      <Pressable
-                        onPress={() =>
-                          handleDeleteExercise(selectedDayIndex, groupIndex, exerciseIndex)
-                        }
-                        className="items-center"
-                      >
-                        <Text className="font-rubik-regular text-xl dark:text-white">Delete Exercise</Text>
-                      </Pressable>
+                    <PressableView
+                      onPress={() =>
+                        handleDeleteExercise(selectedDayIndex, groupIndex, exerciseIndex)
+                      }
+                    >
+                      <View className="items-center">
+                        <Text className="font-rubik-regular text-xl dark:text-white">
+                          Delete Exercise
+                        </Text>
+                      </View>
                     </PressableView>
                   </View>
                 ))}
@@ -479,21 +459,23 @@ export default function EditTraining({ navigation, route }) {
                   <View className="my-4 flex-row flex-wrap justify-start ">
                     {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map(
                       (group, index) => (
-                        <PressableView key={index}>
-                          <Pressable
-                            onPress={() =>
-                              setSelectExerciseModalShow({
-                                ...selectExerciseModalShow,
-                                groupSelected: group,
-                              })
-                            }
-                            className="m-1"
-                          >
-                            <Text className="font-rubik-regular text-3xl dark:text-white">{group}</Text>
+                        <PressableView
+                          key={index}
+                          onPress={() =>
+                            setSelectExerciseModalShow({
+                              ...selectExerciseModalShow,
+                              groupSelected: group,
+                            })
+                          }
+                        >
+                          <View className="m-1">
+                            <Text className="font-rubik-regular text-3xl dark:text-white">
+                              {group}
+                            </Text>
                             <View
                               className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
                             ></View>
-                          </Pressable>
+                          </View>
                         </PressableView>
                       ),
                     )}
@@ -539,10 +521,8 @@ export default function EditTraining({ navigation, route }) {
         backButton={true}
         navigation={navigation}
         buttons={
-          <PressableView>
-            <Pressable onPress={handleSaveTraining}>
-              <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
-            </Pressable>
+          <PressableView onPress={handleSaveTraining}>
+            <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
           </PressableView>
         }
       />

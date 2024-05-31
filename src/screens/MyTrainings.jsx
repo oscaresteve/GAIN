@@ -34,13 +34,12 @@ export default function MyTrainings({ navigation }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -51,13 +50,10 @@ export default function MyTrainings({ navigation }) {
   const AddButton = () => {
     return (
       <View className="absolute bottom-0 right-0" style={{ marginBottom: useBottomTabBarHeight() }}>
-        <PressableView>
-          <Pressable
-            onPress={() => navigation.navigate('CreateTraining')}
-            className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-          >
+        <PressableView onPress={() => navigation.navigate('CreateTraining')}>
+          <View className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
             <CustomIcon name={'add'} size={50} color={'white'} />
-          </Pressable>
+          </View>
         </PressableView>
       </View>
     )

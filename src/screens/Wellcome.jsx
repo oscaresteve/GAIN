@@ -12,20 +12,18 @@ export default function Wellcome({ navigation }) {
             className="mb-20 mt-20 h-52 w-52 "
           />
           <View className="mx-5">
-            <Text className="font-rubik-medium text-center text-5xl text-black dark:text-white">
+            <Text className="text-center font-rubik-medium text-5xl text-black dark:text-white">
               ¡Wellcome!
             </Text>
-            <Text className="font-rubik-regular my-2 text-center text-lg text-black dark:text-white">
+            <Text className="my-2 text-center font-rubik-regular text-lg text-black dark:text-white">
               Start progressing every day. Each step takes you closer to your best version.
             </Text>
           </View>
         </View>
       </View>
       <View className="mb-20 grow items-center">
-        <PressableView>
-          <Pressable onPress={() => navigation.navigate('LogIn')}>
-            <Text className="font-rubik-regular text-3xl text-primary-1">¡Get Started!</Text>
-          </Pressable>
+        <PressableView onPress={() => navigation.navigate('LogIn')}>
+          <Text className="font-rubik-regular text-3xl text-primary-1">¡Get Started!</Text>
         </PressableView>
       </View>
     </SafeAreaView>

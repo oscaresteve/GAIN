@@ -27,13 +27,12 @@ export default function TrainingDayView({ navigation, route }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -52,16 +51,14 @@ export default function TrainingDayView({ navigation, route }) {
               {group.exercises?.map((exercise, exerciseIndex) => (
                 <View key={exerciseIndex} className="mx-2">
                   <View className="my-2">
-                    <PressableView>
-                      <Pressable
-                        onPress={() => {
-                          navigation.navigate('ExerciseInfo', { exercise: exercise })
-                        }}
-                      >
-                        <Text className="font-rubik-regular text-2xl dark:text-white">
-                          {exercise.exerciseName}
-                        </Text>
-                      </Pressable>
+                    <PressableView
+                      onPress={() => {
+                        navigation.navigate('ExerciseInfo', { exercise: exercise })
+                      }}
+                    >
+                      <Text className="font-rubik-regular text-2xl dark:text-white">
+                        {exercise.exerciseName}
+                      </Text>
                     </PressableView>
                     {exercise.exerciseNotes && (
                       <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">

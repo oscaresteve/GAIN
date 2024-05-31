@@ -31,13 +31,12 @@ const Profile = ({ navigation }) => {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -499,50 +498,40 @@ const Profile = ({ navigation }) => {
             </Text>
           </View>
           <View className="my-2 flex-row justify-center">
-            <PressableView>
-              <Pressable
-                onPress={() => navigation.navigate('EditProfile')}
-                className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2"
-              >
+            <PressableView onPress={() => navigation.navigate('EditProfile')}>
+              <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
                 <Text className="font-rubik-regular text-xl dark:text-white">Edit Profile</Text>
-              </Pressable>
+              </View>
             </PressableView>
-            <PressableView>
-              <Pressable
-                onPress={() => navigation.navigate('Configuration')}
-                className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2"
-              >
+            <PressableView onPress={() => navigation.navigate('Configuration')}>
+              <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
                 <Text className="font-rubik-regular text-xl dark:text-white">Configuration</Text>
-              </Pressable>
+              </View>
             </PressableView>
           </View>
           <View className="flex-row">
             <View
               className={`flex-1 items-center ${view === 'achievements' && 'border-b-2 border-b-primary-1'}`}
             >
-              <PressableView>
-                <Pressable
-                  onPress={() => {
-                    setView('achievements')
-                    scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
-                  }}
-                >
-                  <Text className="font-rubik-regular text-2xl dark:text-white">Achievements</Text>
-                </Pressable>
+              <PressableView
+                onPress={() => {
+                  setView('achievements')
+                  scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
+                }}
+              >
+                <Text className="font-rubik-regular text-2xl dark:text-white">Achievements</Text>
               </PressableView>
             </View>
             <View
               className={`flex-1 items-center ${view === 'stats' && 'border-b-2 border-b-primary-1'}`}
             >
-              <PressableView>
-                <Pressable
-                  onPress={() => {
-                    setView('stats')
-                    scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
-                  }}
-                >
-                  <Text className="font-rubik-regular text-2xl dark:text-white">Stats</Text>
-                </Pressable>
+              <PressableView
+                onPress={() => {
+                  setView('stats')
+                  scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
+                }}
+              >
+                <Text className="font-rubik-regular text-2xl dark:text-white">Stats</Text>
               </PressableView>
             </View>
           </View>

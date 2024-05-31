@@ -55,13 +55,12 @@ export default function EditProfile({ navigation }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -106,10 +105,8 @@ export default function EditProfile({ navigation }) {
             <View className="m-2 aspect-square h-36 overflow-hidden rounded-full">
               <Image source={{ uri: profilePic }} className="h-full w-full" />
             </View>
-            <PressableView>
-              <Pressable onPress={handleSelectProfilePic}>
-                <Text className="font-rubik-regular text-2xl text-primary-1">Change photo</Text>
-              </Pressable>
+            <PressableView onPress={handleSelectProfilePic}>
+              <Text className="font-rubik-regular text-2xl text-primary-1">Change photo</Text>
             </PressableView>
           </View>
 
@@ -156,10 +153,8 @@ export default function EditProfile({ navigation }) {
         backButton={true}
         navigation={navigation}
         buttons={
-          <PressableView>
-            <Pressable onPress={handleSubmit(handleSave)}>
-              <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
-            </Pressable>
+          <PressableView onPress={handleSubmit(handleSave)}>
+            <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
           </PressableView>
         }
       />

@@ -36,13 +36,12 @@ export default function ProgressView({ navigation, route }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full bg-smoke-2 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full bg-smoke-2 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -86,7 +85,9 @@ export default function ProgressView({ navigation, route }) {
                     </View>
                     <Divider />
                     <View className="m-1 flex-row items-center">
-                      <Text className="font-rubik-regular text-xl dark:text-white">{item.value} Kg</Text>
+                      <Text className="font-rubik-regular text-xl dark:text-white">
+                        {item.value} Kg
+                      </Text>
                       {difference !== null && difference !== 0 && (
                         <View className="">
                           <Text

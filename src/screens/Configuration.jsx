@@ -27,13 +27,12 @@ export default function Configuration({ navigation }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -53,10 +52,8 @@ export default function Configuration({ navigation }) {
       >
         <View className="mx-2 my-2 grow pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2 items-center">
-            <PressableView>
-              <Pressable onPress={handleLogOut}>
-                <Text className="font-rubik-regular text-2xl text-red-500">Log Out</Text>
-              </Pressable>
+            <PressableView onPress={handleLogOut}>
+              <Text className="font-rubik-regular text-2xl text-red-500">Log Out</Text>
             </PressableView>
           </View>
         </View>

@@ -1,4 +1,4 @@
-import { Text, TextInput, SafeAreaView, Alert, Pressable, View, Image } from 'react-native'
+import { Text, TextInput, SafeAreaView, Alert, Pressable, View, Image, Button } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -10,6 +10,7 @@ import PressableView from '../components/PressableView'
 import KeyboardView from '../components/KeyboardView'
 import YupError from '../components/YupError'
 import Divider from '../components/Divider'
+import * as Haptics from 'expo-haptics'
 
 export default function LogIn({ navigation }) {
   const dispatch = useDispatch()
@@ -32,8 +33,10 @@ export default function LogIn({ navigation }) {
     const loginSuccess = await logInUser(formData.email, formData.password)
     if (loginSuccess === true) {
       fetchData(formData.email)
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
       navigation.navigate('TabGroup')
     } else {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
       Alert.alert('Correo o contraseña incorrectos')
     }
   }
@@ -80,7 +83,7 @@ export default function LogIn({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`font-rubik-regular my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
                 />
               )}
             />
@@ -97,29 +100,27 @@ export default function LogIn({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`font-rubik-regular my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
+                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
                 />
               )}
             />
             {errors.password && <YupError error={errors.password} />}
           </View>
           <Divider />
-          <PressableView>
-            <Pressable
-              onPress={handleSubmit(handleLogIn)}
-              className="my-4 items-center justify-center rounded-xl bg-primary-1 p-2"
-            >
+          <PressableView onPress={handleSubmit(handleLogIn)}>
+            <View className="my-4 items-center justify-center rounded-xl bg-primary-1 p-2">
               <Text className="font-rubik-medium text-xl text-smoke-1 dark:text-night-1">
                 Sign In
               </Text>
-            </Pressable>
+            </View>
           </PressableView>
-          <PressableView>
-            <Pressable onPress={() => navigation.navigate('Register')} className="items-center">
+
+          <PressableView onPress={() => navigation.navigate('Register')}>
+            <View className="items-center">
               <Text className="text-md font-rubik-regular text-primary-2">
                 ¿New here? ¡Create your account!
               </Text>
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       </KeyboardView>

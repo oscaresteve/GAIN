@@ -76,13 +76,12 @@ export default function Progress({ navigation }) {
     if (showScrollToTop) {
       return (
         <View className="absolute right-0" style={{ marginTop: useAppBarHeight() }}>
-          <PressableView>
-            <Pressable
-              onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
-              className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-            >
+          <PressableView
+            onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
+          >
+            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       )
@@ -92,18 +91,17 @@ export default function Progress({ navigation }) {
   const AddButton = () => {
     return (
       <View className="absolute bottom-0 right-0" style={{ marginBottom: useBottomTabBarHeight() }}>
-        <PressableView>
-          <Pressable
-            onPress={() =>
-              setSelectExerciseModalShow({
-                ...selectExerciseModalShow,
-                visible: true,
-              })
-            }
-            className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2"
-          >
+        <PressableView
+          onPress={() =>
+            setSelectExerciseModalShow({
+              ...selectExerciseModalShow,
+              visible: true,
+            })
+          }
+        >
+          <View className="m-4 h-16 w-16 items-center justify-center rounded-xl border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
             <CustomIcon name={'add'} size={50} color={'white'} />
-          </Pressable>
+          </View>
         </PressableView>
       </View>
     )
@@ -160,16 +158,14 @@ export default function Progress({ navigation }) {
             />
             <Text className="text-md ml-1 font-rubik-regular dark:text-white">Kg</Text>
           </View>
-          <PressableView>
-            <Pressable
-              onPress={handleSaveBodyWeightValueProgress}
-              disabled={bodyWeightDisabled}
+          <PressableView onPress={handleSaveBodyWeightValueProgress} disabled={bodyWeightDisabled}>
+            <View
               className={`ml-4 grow items-center justify-center rounded-lg ${bodyWeightDisabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
               <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
                 Save
               </Text>
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       </View>
@@ -231,18 +227,19 @@ export default function Progress({ navigation }) {
             />
             <Text className="text-md ml-1 font-rubik-regular dark:text-white">Kg</Text>
           </View>
-          <PressableView>
-            <Pressable
-              onPress={() =>
-                handleSavePersonalRecord(userPersonalRecord.exercise, recordValues[index])
-              }
-              disabled={disabled}
+          <PressableView
+            onPress={() =>
+              handleSavePersonalRecord(userPersonalRecord.exercise, recordValues[index])
+            }
+            disabled={disabled}
+          >
+            <View
               className={`ml-4 grow items-center justify-center rounded-lg ${disabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
               <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
                 Save
               </Text>
-            </Pressable>
+            </View>
           </PressableView>
         </View>
       </View>
@@ -294,21 +291,21 @@ export default function Progress({ navigation }) {
 
                 <View className="my-4 flex-row flex-wrap justify-start ">
                   {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map((group, index) => (
-                    <PressableView key={index}>
-                      <Pressable
-                        onPress={() =>
-                          setSelectExerciseModalShow({
-                            ...selectExerciseModalShow,
-                            groupSelected: group,
-                          })
-                        }
-                        className="m-1"
-                      >
+                    <PressableView
+                      key={index}
+                      onPress={() =>
+                        setSelectExerciseModalShow({
+                          ...selectExerciseModalShow,
+                          groupSelected: group,
+                        })
+                      }
+                    >
+                      <View className="m-1">
                         <Text className="font-rubik-regular text-3xl dark:text-white">{group}</Text>
                         <View
                           className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
                         ></View>
-                      </Pressable>
+                      </View>
                     </PressableView>
                   ))}
                 </View>
