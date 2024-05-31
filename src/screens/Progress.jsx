@@ -27,6 +27,7 @@ import Divider from '../components/Divider'
 import LineGraph from '../components/LineGraph'
 import KeyboardView from '../components/KeyboardView'
 import { ExerciseCard } from '../components/ExerciseCard'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function Progress({ navigation }) {
   const userData = useSelector(selectUserData)
@@ -248,7 +249,7 @@ export default function Progress({ navigation }) {
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView
+      <KeyboardAwareScrollView
         ref={scrollViewRef}
         onScroll={handleScroll}
         scrollIndicatorInsets={{
@@ -345,7 +346,7 @@ export default function Progress({ navigation }) {
             </ScrollView>
           </Modal>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <ScrollToTop />
       <AddButton />
       <AppBar label="Progress" />

@@ -7,8 +7,9 @@ import {
   selectUserData,
   fetchUserTrainingDayData,
   fetchUserAllTrainingsData,
-  saveUserTrainingDayData,
+  selectUserAllTrainingDaysData,
   setSetDone,
+  selectUserAllTrainingsData,
 } from '../Redux/userSlice'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { useAppBarHeight } from '../components/AppBar'
@@ -16,10 +17,15 @@ import AnimatedSetCard from '../components/AnimatedSetCard'
 import PressableView from '../components/PressableView'
 import CustomIcon from '../components/CustomIcon'
 import DifficultyBar from '../components/DifficultyBar'
+import moment from 'moment'
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch()
   const userTrainingDayData = useSelector(selectUserTrainingDayData)
+  const userAllTrainingsData = useSelector(selectUserAllTrainingsData)
+  const userTrainingPrimaryData = userAllTrainingsData?.find(
+    (userTrainingData) => userTrainingData.primary === true,
+  )
   const userData = useSelector(selectUserData)
 
   const scrollViewRef = useRef()
@@ -62,91 +68,105 @@ export default function Home({ navigation }) {
   }
 
   const TrainingDay = () => {
-    if (userTrainingDayData.groups.length > 0) {
-      return (
-        <View>
-          {userTrainingDayData?.groups?.map((group, groupIndex) => (
-            <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
-              <Text className="my-2 font-rubik-medium text-4xl dark:text-white">
-                {group.groupName}
-              </Text>
-              {group.exercises?.map((exercise, exerciseIndex) => (
-                <View key={exerciseIndex} className="mx-2">
-                  <View className="my-2">
-                    <PressableView
-                      onPress={() => {
-                        navigation.navigate('ExerciseInfo', { exercise: exercise })
-                      }}
-                    >
-                      <Text className="font-rubik-regular text-2xl dark:text-white">
-                        {exercise.exerciseName}
-                      </Text>
-                    </PressableView>
-                    {exercise.exerciseNotes && (
-                      <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
-                        Note: {exercise.exerciseNotes}
-                      </Text>
-                    )}
-                  </View>
-                  <Divider />
-                  <View className="my-2">
-                    {exercise.sets?.map((set, setIndex) => {
-                      const enabled =
-                        !set.details.done &&
-                        (setIndex === 0 || exercise.sets[setIndex - 1].details.done)
-                      return (
-                        <View key={setIndex}>
-                          <AnimatedSetCard
-                            enabled={enabled}
-                            onSwipe={() => handleSetDone(groupIndex, exerciseIndex, setIndex)}
-                          >
-                            <View
-                              className={`my-1 h-14 flex-row rounded-xl bg-smoke-2 py-2 shadow-sm dark:bg-night-2 
+    return (
+      <View>
+        {userTrainingDayData?.groups?.map((group, groupIndex) => (
+          <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
+            <Text className="my-2 font-rubik-medium text-4xl dark:text-white">
+              {group.groupName}
+            </Text>
+            {group.exercises?.map((exercise, exerciseIndex) => (
+              <View key={exerciseIndex} className="mx-2">
+                <View className="my-2">
+                  <PressableView
+                    onPress={() => {
+                      navigation.navigate('ExerciseInfo', { exercise: exercise })
+                    }}
+                  >
+                    <Text className="font-rubik-regular text-2xl dark:text-white">
+                      {exercise.exerciseName}
+                    </Text>
+                  </PressableView>
+                  {exercise.exerciseNotes && (
+                    <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
+                      Note: {exercise.exerciseNotes}
+                    </Text>
+                  )}
+                </View>
+                <Divider />
+                <View className="my-2">
+                  {exercise.sets?.map((set, setIndex) => {
+                    const enabled =
+                      !set.details.done &&
+                      (setIndex === 0 || exercise.sets[setIndex - 1].details.done)
+                    return (
+                      <View key={setIndex}>
+                        <AnimatedSetCard
+                          enabled={enabled}
+                          onSwipe={() => handleSetDone(groupIndex, exerciseIndex, setIndex)}
+                        >
+                          <View
+                            className={`my-1 h-14 flex-row rounded-xl bg-smoke-2 py-2 shadow-sm dark:bg-night-2 
                               ${set.details.done && 'border-2 border-green-500'} ${enabled && 'border-2 border-smoke-3 dark:border-night-3'}`}
-                            >
-                              <View className="w-12 items-center justify-center">
-                                <Text className="text-md font-rubik-regular dark:text-white">
-                                  {set.setNumber}
+                          >
+                            <View className="w-12 items-center justify-center">
+                              <Text className="text-md font-rubik-regular dark:text-white">
+                                {set.setNumber}
+                              </Text>
+                            </View>
+                            <Divider direction="vertical" />
+                            <View className="mx-4 grow flex-row">
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-rubik-regular text-lg dark:text-white">
+                                  {set.details.reps} reps
                                 </Text>
+                                <DifficultyBar value={set.details.reps} maxValue={12} />
                               </View>
-                              <Divider direction="vertical" />
-                              <View className="mx-4 grow flex-row">
-                                <View className="flex-1 items-center justify-center">
-                                  <Text className="font-rubik-regular text-lg dark:text-white">
-                                    {set.details.reps} reps
-                                  </Text>
-                                  <DifficultyBar value={set.details.reps} maxValue={12} />
-                                </View>
-                                <View className="flex-1 items-center justify-center">
-                                  <Divider />
-                                </View>
-                                <View className="flex-1 items-center justify-center">
-                                  <Text className="font-rubik-regular text-lg dark:text-white">
-                                    {set.details.weight} kg
-                                  </Text>
-                                  <DifficultyBar value={set.details.weight} maxValue={100} />
-                                </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Divider />
+                              </View>
+                              <View className="flex-1 items-center justify-center">
+                                <Text className="font-rubik-regular text-lg dark:text-white">
+                                  {set.details.weight} kg
+                                </Text>
+                                <DifficultyBar value={set.details.weight} maxValue={100} />
                               </View>
                             </View>
-                          </AnimatedSetCard>
-                        </View>
-                      )
-                    })}
-                  </View>
+                          </View>
+                        </AnimatedSetCard>
+                      </View>
+                    )
+                  })}
                 </View>
-              ))}
-            </View>
-          ))}
-          <TrainingStats />
-        </View>
-      )
-    } else {
-      return (
-        <View>
-          <Text className="font-rubik-regular text-3xl dark:text-white">REST DAY</Text>
-        </View>
-      )
-    }
+              </View>
+            ))}
+          </View>
+        ))}
+        <TrainingStats />
+      </View>
+    )
+  }
+
+  const RestDay = () => {
+    return (
+      <View className="items-center justify-center">
+        <Text className="font-rubik-regular text-4xl dark:text-white">Rest Day Reminder!</Text>
+        <Text className="font-rubik-regular text-2xl dark:text-white">Today: Chill. Recover.</Text>
+        <Text className="font-rubik-regular text-2xl dark:text-white">Tomorrow, we conquer!</Text>
+        <PressableView
+          onPress={() =>
+            navigation.navigate('TrainingView', {
+              userTrainingData: userTrainingPrimaryData,
+              watchDay: moment().add(1, 'days').format('d'),
+            })
+          }
+        >
+          <Text className="font-rubik-regular text-2xl text-primary-1">
+            See Tomorrow's Training
+          </Text>
+        </PressableView>
+      </View>
+    )
   }
 
   const TrainingStats = () => {
@@ -250,10 +270,10 @@ export default function Home({ navigation }) {
         }}
       >
         <View
-          className="grow justify-center px-2"
+          className="min-h-full justify-center px-2"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
-          <TrainingDay />
+          {userTrainingDayData ? <TrainingDay /> : <RestDay />}
         </View>
       </ScrollView>
       <ScrollToTop />

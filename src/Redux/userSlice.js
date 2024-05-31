@@ -68,9 +68,28 @@ export const fetchUserTrainingDayData = (email) => {
           (userTrainingData) => userTrainingData.primary === true,
         )
         if (userTrainingPrimaryData) {
-          await newUserTrainingDay(email, userTrainingPrimaryData)
-          const newUserTrainingDayDataSnap = await getUserTrainingDay(email)
-          dispatch(setUserTrainingDayData(newUserTrainingDayDataSnap))
+          const dayData = userTrainingPrimaryData?.days.find(
+            (day) => day.day === moment(new Date()).format('d'),
+          )
+
+          if (dayData.groups.length > 0) {
+            const newDayData = JSON.parse(JSON.stringify(dayData))
+            newDayData.date = moment(new Date()).format('YYYY-MM-DD')
+            newDayData.trainingName = userTrainingPrimaryData.trainingName
+            newDayData.done = false
+            newDayData.timeStarted = false
+            newDayData.timeEnded = false
+            newDayData.dayStats = {
+              totalTrainingTime: 0,
+              totalExercisesNumber: 0,
+              totalSetsNumber: 0,
+              totalRepsNumber: 0,
+              totalWeightNumber: 0,
+            }
+            await newUserTrainingDay(email, newDayData)
+            const newUserTrainingDayDataSnap = await getUserTrainingDay(email)
+            dispatch(setUserTrainingDayData(newUserTrainingDayDataSnap))
+          }
         } else {
           // No hay training marcado como primario
         }
