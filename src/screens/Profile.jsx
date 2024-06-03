@@ -8,6 +8,7 @@ import CustomIcon from '../components/CustomIcon'
 import Divider from '../components/Divider'
 import AppBar, { useAppBarHeight } from '../components/AppBar'
 import ProgressBar from '../components/ProgressBar'
+import ProfilePictureProgress from '../components/ProfilePictureProgress'
 
 const Profile = ({ navigation }) => {
   const userData = useSelector(selectUserData)
@@ -84,6 +85,43 @@ const Profile = ({ navigation }) => {
   const formatNumber = (num) => {
     return num.toLocaleString('en-US')
   }
+
+  const generateXpLevels = (baseXp, initialIncrement, factor, count) => {
+    let levels = []
+    let increment = initialIncrement
+
+    for (let i = 0; i < count; i++) {
+      levels.push(baseXp)
+      baseXp += increment
+      increment *= factor
+    }
+
+    return levels
+  }
+
+  const calculateUserLevel = (xp, levels) => {
+    let level = 0
+    let nextLevelXp = 0
+
+    for (let i = 0; i < levels.length; i++) {
+      if (xp < levels[i]) {
+        nextLevelXp = levels[i]
+        break
+      }
+      level = i + 1
+    }
+
+    return {
+      level,
+      nextLevelXp,
+      currentLevelXp: levels[level - 1] || 0,
+      xp,
+    }
+  }
+
+  const xpLevels = generateXpLevels(100, 100, 1.5, 50)
+  const { level, nextLevelXp, currentLevelXp, xp } = calculateUserLevel(userData.userXp, xpLevels)
+  console.log(level, formatNumber(nextLevelXp), formatNumber(currentLevelXp), formatNumber(xp))
 
   const Stats = () => {
     return (
@@ -428,6 +466,14 @@ const Profile = ({ navigation }) => {
     return (
       <View>
         <View className="my-2">
+          <AchievementCard
+            title={'Level ' + (level + 1)}
+            description={'Obtain Xp'}
+            achieved={false}
+            current={xp}
+            target={nextLevelXp}
+            unit={'xp'}
+          />
           {achievements.map((achievement, index) => {
             if (!achievement.achieved) {
               return (
@@ -490,9 +536,13 @@ const Profile = ({ navigation }) => {
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
           <View className="items-center">
-            <View className="m-2 aspect-square h-36 overflow-hidden rounded-full">
-              <Image source={{ uri: userData.profilePic }} className="h-full w-full" />
-            </View>
+            <ProfilePictureProgress
+              profilePic={userData.profilePic}
+              currentXp={xp}
+              level={level}
+              targetXp={nextLevelXp}
+              size={150}
+            />
             <Text className="font-rubik-regular text-3xl dark:text-white">
               {userData?.name} {userData?.lastName}
             </Text>
