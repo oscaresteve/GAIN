@@ -18,6 +18,7 @@ import PressableView from '../components/PressableView'
 import CustomIcon from '../components/CustomIcon'
 import DifficultyBar from '../components/DifficultyBar'
 import moment from 'moment'
+import * as Haptics from 'expo-haptics'
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch()
@@ -103,7 +104,10 @@ export default function Home({ navigation }) {
                       <View key={setIndex}>
                         <AnimatedSetCard
                           enabled={enabled}
-                          onSwipe={() => handleSetDone(groupIndex, exerciseIndex, setIndex)}
+                          onSwipe={() => {
+                            handleSetDone(groupIndex, exerciseIndex, setIndex)
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+                          }}
                         >
                           <View
                             className={`my-1 h-14 flex-row rounded-xl bg-smoke-2 py-2 shadow-sm dark:bg-night-2 

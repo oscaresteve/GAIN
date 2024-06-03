@@ -1,5 +1,5 @@
 import { Text, TextInput, SafeAreaView, Alert, Pressable, View, Image, Button } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -11,9 +11,12 @@ import KeyboardView from '../components/KeyboardView'
 import YupError from '../components/YupError'
 import Divider from '../components/Divider'
 import * as Haptics from 'expo-haptics'
+import CustomIcon from '../components/CustomIcon'
 
 export default function LogIn({ navigation }) {
   const dispatch = useDispatch()
+
+  const [showPassword, setShowPassword] = useState(false)
 
   const validationSchema = yup
     .object()
@@ -88,22 +91,35 @@ export default function LogIn({ navigation }) {
               )}
             />
             {errors.email && <YupError error={errors.email} />}
+            <View
+              className={`my-2 flex-row items-center justify-end rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
+            >
+              <Controller
+                name="password"
+                control={control}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextInput
+                    placeholder="Contraseña"
+                    inputMode="text"
+                    secureTextEntry={!showPassword}
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    className="grow font-rubik-regular text-xl dark:text-white"
+                  />
+                )}
+              />
+              <PressableView onPress={() => setShowPassword(!showPassword)}>
+                <View className="mx-2">
+                  {showPassword ? (
+                    <CustomIcon name={'visibility'} color={'white'} />
+                  ) : (
+                    <CustomIcon name={'visibilityOff'} color={'white'} />
+                  )}
+                </View>
+              </PressableView>
+            </View>
 
-            <Controller
-              name="password"
-              control={control}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  placeholder="Contraseña"
-                  inputMode="text"
-                  secureTextEntry={true}
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
-                />
-              )}
-            />
             {errors.password && <YupError error={errors.password} />}
           </View>
           <Divider />
