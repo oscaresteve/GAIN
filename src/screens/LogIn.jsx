@@ -126,7 +126,7 @@ export default function LogIn({ navigation }) {
           <PressableView onPress={handleSubmit(handleLogIn)}>
             <View className="my-4 items-center justify-center rounded-xl bg-primary-1 p-2">
               <Text className="font-rubik-medium text-xl text-smoke-1 dark:text-night-1">
-                Sign In
+                Inicia sesión
               </Text>
             </View>
           </PressableView>
@@ -134,21 +134,12 @@ export default function LogIn({ navigation }) {
           <PressableView onPress={() => navigation.navigate('Register')}>
             <View className="items-center">
               <Text className="text-md font-rubik-regular text-primary-2">
-                ¿New here? ¡Create your account!
+                ¿Eres nuevo? Crea tu cuenta
               </Text>
             </View>
           </PressableView>
         </View>
       </KeyboardView>
-
-      <View>
-        <Pressable onPress={handleLoginOscar}>
-          <Text className="text-md font-bold">Login As Oscar</Text>
-        </Pressable>
-        <Pressable onPress={handleLoginTest}>
-          <Text className="text-md font-bold">Login As Test</Text>
-        </Pressable>
-      </View>
     </SafeAreaView>
   )
 }

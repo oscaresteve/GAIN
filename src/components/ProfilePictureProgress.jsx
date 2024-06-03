@@ -57,7 +57,7 @@ const ProfilePictureProgress = ({ profilePic, currentXp, targetXp, level, size =
         />
         <View className="absolute bottom-0 w-full items-center">
           <View className="rounded-md bg-primary-1 p-1">
-            <Text className="text-md font-rubik-bold dark:text-white">Level {level}</Text>
+            <Text className="text-md font-rubik-bold dark:text-white">Nivel {level}</Text>
           </View>
         </View>
       </View>

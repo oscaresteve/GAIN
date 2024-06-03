@@ -90,7 +90,7 @@ export default function MyTrainings({ navigation }) {
       />
       <ScrollToTop />
       <AddButton />
-      <AppBar label={'My Trainings'} />
+      <AppBar label={'Entrenamientos'} />
     </View>
   )
 }

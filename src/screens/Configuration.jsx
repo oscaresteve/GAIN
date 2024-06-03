@@ -63,12 +63,12 @@ export default function Configuration({ navigation }) {
         <View className="mx-2 my-2 grow pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2 items-center">
             <PressableView onPress={noSaveAlert}>
-              <Text className="font-rubik-regular text-2xl text-red-500">Log Out</Text>
+              <Text className="font-rubik-regular text-2xl text-red-500">Cerrar sesión</Text>
             </PressableView>
           </View>
         </View>
       </ScrollView>
-      <AppBar label={'Configuration'} backButton={true} onBack={() => navigation.goBack()} />
+      <AppBar label={'Configuración'} backButton={true} onBack={() => navigation.goBack()} />
       <ScrollToTop />
     </View>
   )

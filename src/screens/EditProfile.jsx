@@ -129,7 +129,9 @@ export default function EditProfile({ navigation }) {
               <Image source={{ uri: profilePic }} className="h-full w-full" />
             </View>
             <PressableView onPress={handleSelectProfilePic}>
-              <Text className="font-rubik-regular text-2xl text-primary-1">Change photo</Text>
+              <Text className="font-rubik-regular text-lg text-primary-1">
+                Seleccionar foto de perfil
+              </Text>
             </PressableView>
           </View>
 
@@ -172,12 +174,12 @@ export default function EditProfile({ navigation }) {
       </ScrollView>
       <ScrollToTop />
       <AppBar
-        label={'Edit Profile'}
+        label={'Editar'}
         backButton={true}
         onBack={checkIfModified}
         buttons={
           <PressableView onPress={handleSubmit(handleSave)}>
-            <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
+            <Text className="font-rubik-regular text-2xl text-primary-1">Guardar</Text>
           </PressableView>
         }
       />

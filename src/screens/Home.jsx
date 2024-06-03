@@ -154,9 +154,9 @@ export default function Home({ navigation }) {
   const RestDay = () => {
     return (
       <View className="items-center justify-center">
-        <Text className="font-rubik-regular text-4xl dark:text-white">Rest Day Reminder!</Text>
-        <Text className="font-rubik-regular text-2xl dark:text-white">Today: Chill. Recover.</Text>
-        <Text className="font-rubik-regular text-2xl dark:text-white">Tomorrow, we conquer!</Text>
+        <Text className="font-rubik-regular text-4xl dark:text-white">¡Nada por el momento!</Text>
+        <Text className="font-rubik-regular text-2xl dark:text-white">Recupera energias</Text>
+        <Text className="font-rubik-regular text-2xl dark:text-white">Mañana mas</Text>
         <PressableView
           onPress={() =>
             navigation.navigate('TrainingView', {
@@ -166,7 +166,7 @@ export default function Home({ navigation }) {
           }
         >
           <Text className="font-rubik-regular text-2xl text-primary-1">
-            See Tomorrow's Training
+            Ver el entrenamiento de mañana
           </Text>
         </PressableView>
       </View>
@@ -189,14 +189,14 @@ export default function Home({ navigation }) {
     return (
       <View className="my-2">
         <View className="items-center">
-          <Text className="my-2 font-rubik-medium text-2xl dark:text-white">Training Stats</Text>
+          <Text className="my-2 font-rubik-medium text-2xl dark:text-white">Estadísticas</Text>
         </View>
 
         <Divider />
 
         <View className="m-4">
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Exercises</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Ejercicios</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
@@ -206,7 +206,7 @@ export default function Home({ navigation }) {
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Sets</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Series</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
@@ -216,7 +216,7 @@ export default function Home({ navigation }) {
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Reps</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Repeticiones</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
@@ -226,34 +226,34 @@ export default function Home({ navigation }) {
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Weight lifted</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Peso levantado</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
             <Text className="font-rubik-regular text-xl dark:text-white">
-              {userTrainingDayData.dayStats.totalWeightNumber} Kg
+              {userTrainingDayData.dayStats.totalWeightNumber} kg
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Training Time</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Tiempo total</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
             <Text className="font-rubik-regular text-xl dark:text-white">
               {userTrainingDayData.dayStats.totalTrainingTime
                 ? msToTime(userTrainingDayData.dayStats.totalTrainingTime)
-                : 'Not Finished'}
+                : 'No finalizado'}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Xp obtained</Text>
+            <Text className="font-rubik-regular text-xl dark:text-white">Xp obtenida</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
             <Text className="font-rubik-regular text-xl dark:text-white">
-              {userTrainingDayData.xpObtained} XP
+              {userTrainingDayData.xpObtained} xp
             </Text>
           </View>
         </View>

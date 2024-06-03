@@ -127,7 +127,7 @@ const Profile = ({ navigation }) => {
     return (
       <View>
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejercicios</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -137,7 +137,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Sets</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Series</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -147,7 +147,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Reps</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Repeticiones</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -157,7 +157,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Weight lifted</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Peso levantado</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -167,17 +167,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Time trained</Text>
-          <View className="grow">
-            <Divider height={2} width={'80%'} />
-          </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
-            {msToTime(userData.userStats.userTotalTrainingTime || 0)}
-          </Text>
-        </View>
-
-        <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Chest exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Pecho</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -187,7 +177,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Bicep exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Biceps</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -197,7 +187,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Tricep exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Triceps</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -207,7 +197,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Shoulder exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Hombro</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -217,7 +207,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Back exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Espalda</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -227,7 +217,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Legs exercises</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Pierna</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -237,7 +227,9 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Trainings finished</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">
+            Entrenaminetos finalizados
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -247,7 +239,9 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Trainings not finished</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">
+            Entrenamientos no finalizados
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -257,7 +251,17 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Average Training Time</Text>
+          <Text className="font-rubik-regular text-xl dark:text-white">Tiempo entrenado</Text>
+          <View className="grow">
+            <Divider height={2} width={'80%'} />
+          </View>
+          <Text className="font-rubik-regular text-xl dark:text-white">
+            {msToTime(userData.userStats.userTotalTrainingTime || 0)}
+          </Text>
+        </View>
+
+        <View className="m-1 flex-row items-center justify-end">
+          <Text className="font-rubik-regular text-xl dark:text-white">Tiempo medio</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
@@ -495,7 +499,7 @@ const Profile = ({ navigation }) => {
           })}
         </View>
         <Text className="font-rubik-regular text-2xl dark:text-white">
-          Completed ({completedAchievements})
+          Completados ({completedAchievements})
         </Text>
         <Divider />
         <View className="my-2">
@@ -550,12 +554,12 @@ const Profile = ({ navigation }) => {
           <View className="my-2 flex-row justify-center">
             <PressableView onPress={() => navigation.navigate('EditProfile')}>
               <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-                <Text className="font-rubik-regular text-xl dark:text-white">Edit Profile</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Editar perfil</Text>
               </View>
             </PressableView>
             <PressableView onPress={() => navigation.navigate('Configuration')}>
               <View className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-                <Text className="font-rubik-regular text-xl dark:text-white">Configuration</Text>
+                <Text className="font-rubik-regular text-xl dark:text-white">Configuración</Text>
               </View>
             </PressableView>
           </View>
@@ -569,7 +573,7 @@ const Profile = ({ navigation }) => {
                   scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
                 }}
               >
-                <Text className="font-rubik-regular text-2xl dark:text-white">Achievements</Text>
+                <Text className="font-rubik-regular text-2xl dark:text-white">Logros</Text>
               </PressableView>
             </View>
             <View
@@ -581,7 +585,7 @@ const Profile = ({ navigation }) => {
                   scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
                 }}
               >
-                <Text className="font-rubik-regular text-2xl dark:text-white">Stats</Text>
+                <Text className="font-rubik-regular text-2xl dark:text-white">Estadísticas</Text>
               </PressableView>
             </View>
           </View>
@@ -591,7 +595,7 @@ const Profile = ({ navigation }) => {
         </View>
       </ScrollView>
       <ScrollToTop />
-      <AppBar label={'Profile'} />
+      <AppBar label={'Perfil'} />
     </View>
   )
 }

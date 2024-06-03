@@ -92,7 +92,7 @@ export default function Register({ navigation }) {
               control={control}
               render={({ field: { value, onChange, onBlur } }) => (
                 <TextInput
-                  placeholder="E-mail"
+                  placeholder="Email"
                   inputMode="email"
                   value={value}
                   onChangeText={onChange}
@@ -111,7 +111,7 @@ export default function Register({ navigation }) {
                 control={control}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     inputMode="text"
                     secureTextEntry={!showPassword}
                     maxLength={12}
@@ -141,7 +141,7 @@ export default function Register({ navigation }) {
                 control={control}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
-                    placeholder="Confirm password"
+                    placeholder="Repita su contraseña"
                     inputMode="text"
                     secureTextEntry={!showConfirmPassword}
                     maxLength={12}

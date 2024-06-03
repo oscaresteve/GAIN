@@ -49,7 +49,7 @@ export const ExerciseCard = ({ exercise, exerciseExists, onAdd, onInfo }) => {
                   <PressableView onPress={() => onAdd()}>
                     <View className="m-1 grow items-center justify-center rounded-xl bg-primary-1 p-2">
                       <Text className="font-rubik-regular text-xl text-smoke-2 dark:text-night-3">
-                        ADD
+                        Añadir
                       </Text>
                     </View>
                   </PressableView>

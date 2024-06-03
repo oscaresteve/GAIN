@@ -179,22 +179,22 @@ export default function Training({ navigation, route }) {
       </ScrollView>
       <BottomBar>
         <PressableView onPress={deleteAlert}>
-          <Text className="font-rubik-regular text-2xl dark:text-white">Delete</Text>
+          <Text className="font-rubik-regular text-2xl dark:text-white">Eliminar</Text>
         </PressableView>
         <PressableView
           onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
           disabled={userTrainingData.primary ? true : false}
         >
-          <Text className="font-rubik-regular text-2xl dark:text-white">Make primary</Text>
+          <Text className="font-rubik-regular text-2xl dark:text-white">Seleccionar</Text>
         </PressableView>
       </BottomBar>
       <AppBar
-        label={'Training'}
+        label={'Entrenamiento'}
         backButton={true}
         onBack={() => navigation.goBack()}
         buttons={
           <PressableView onPress={handleEditTraining}>
-            <Text className="font-rubik-regular text-2xl text-primary-1">Edit</Text>
+            <Text className="font-rubik-regular text-2xl text-primary-1">Editar</Text>
           </PressableView>
         }
       />

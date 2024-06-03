@@ -330,7 +330,7 @@ export default function CreateTraining({ navigation }) {
               control={control}
               render={({ field: { value, onChange, onBlur } }) => (
                 <TextInput
-                  placeholder="New Training"
+                  placeholder="Nuevo entrenamiento"
                   inputMode="text"
                   maxLength={30}
                   value={value || userTrainingData.trainingName}
@@ -381,7 +381,7 @@ export default function CreateTraining({ navigation }) {
                         </PressableView>
                         <TextInput
                           value={exercise.exerciseNotes}
-                          placeholder="Add exercise Notes"
+                          placeholder="Escribe aquí tus anotaciones ..."
                           onChangeText={(text) =>
                             handleSetExerciseNotes(
                               text,
@@ -518,7 +518,7 @@ export default function CreateTraining({ navigation }) {
                       >
                         <View className="items-center">
                           <Text className="font-rubik-regular text-xl dark:text-white">
-                            Delete Exercise
+                            Eliminar ejercicio
                           </Text>
                         </View>
                       </PressableView>
@@ -528,7 +528,7 @@ export default function CreateTraining({ navigation }) {
               ))
             ) : (
               <Text className="ml-4 text-center font-rubik-italic text-2xl dark:text-white ">
-                Nothing at the moment...
+                Nada por el momento ...
               </Text>
             )}
 
@@ -616,7 +616,7 @@ export default function CreateTraining({ navigation }) {
       </KeyboardAwareScrollView>
       <AddButton />
       <AppBar
-        label={'Create Training'}
+        label={'Crear'}
         backButton={true}
         onBack={() =>
           JSON.stringify(originalUserTrainingData) !== JSON.stringify(userTrainingData)
@@ -625,7 +625,7 @@ export default function CreateTraining({ navigation }) {
         }
         buttons={
           <PressableView onPress={handleSubmit(handleSaveTraining)}>
-            <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>
+            <Text className="font-rubik-regular text-2xl text-primary-1">Guardar</Text>
           </PressableView>
         }
       />

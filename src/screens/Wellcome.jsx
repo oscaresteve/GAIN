@@ -13,17 +13,17 @@ export default function Wellcome({ navigation }) {
           />
           <View className="mx-5">
             <Text className="text-center font-rubik-medium text-5xl text-black dark:text-white">
-              ¡Wellcome!
+              ¡Bienvenido!
             </Text>
             <Text className="my-2 text-center font-rubik-regular text-lg text-black dark:text-white">
-              Start progressing every day. Each step takes you closer to your best version.
+              Empieza a progresar cada día. Cada paso te acerca más a tu mejor versión.
             </Text>
           </View>
         </View>
       </View>
       <View className="mb-20 grow items-center">
         <PressableView onPress={() => navigation.navigate('LogIn')}>
-          <Text className="font-rubik-regular text-3xl text-primary-1">¡Get Started!</Text>
+          <Text className="font-rubik-regular text-3xl text-primary-1">¡Empezemos!</Text>
         </PressableView>
       </View>
     </SafeAreaView>

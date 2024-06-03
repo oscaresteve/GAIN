@@ -135,7 +135,7 @@ export default function CalendarView({ navigation }) {
         >
           <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
             <View className="m-1">
-              <Text className="font-rubik-regular text-xl dark:text-white">Body Weight</Text>
+              <Text className="font-rubik-regular text-xl dark:text-white">Peso corporal</Text>
             </View>
             <Divider />
             <View className="m-1 flex-row items-center">
@@ -267,7 +267,7 @@ export default function CalendarView({ navigation }) {
               >
                 <View className="my-4 items-center justify-center rounded-xl border border-primary-1 p-2">
                   <Text className="font-rubik-regular text-xl font-bold text-primary-1">
-                    View Training
+                    Ver entrenamiento
                   </Text>
                 </View>
               </PressableView>
@@ -286,7 +286,7 @@ export default function CalendarView({ navigation }) {
         </View>
       </ScrollView>
       <ScrollToTop />
-      <AppBar label={'Calendar'} />
+      <AppBar label={'Calendario'} />
     </View>
   )
 }

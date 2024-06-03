@@ -164,7 +164,7 @@ export default function Progress({ navigation }) {
               className={`ml-4 grow items-center justify-center rounded-lg ${bodyWeightDisabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
               <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
-                Save
+                Guardar
               </Text>
             </View>
           </PressableView>
@@ -238,7 +238,7 @@ export default function Progress({ navigation }) {
               className={`ml-4 grow items-center justify-center rounded-lg ${disabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
               <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
-                Save
+                Guardar
               </Text>
             </View>
           </PressableView>
@@ -263,12 +263,14 @@ export default function Progress({ navigation }) {
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
-          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Body Weight</Text>
+          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Peso corporal</Text>
           <Divider />
 
           <BodyWeight />
 
-          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Personal Records</Text>
+          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">
+            Récords personales
+          </Text>
           <Divider />
 
           {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
@@ -349,7 +351,7 @@ export default function Progress({ navigation }) {
       </KeyboardAwareScrollView>
       <ScrollToTop />
       <AddButton />
-      <AppBar label="Progress" />
+      <AppBar label="Progreso" />
     </View>
   )
 }

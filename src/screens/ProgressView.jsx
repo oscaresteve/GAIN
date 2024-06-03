@@ -64,9 +64,9 @@ export default function ProgressView({ navigation, route }) {
             />
           </View>
           <View>
-            <View className="my-4">
+            <View className="my-2">
               <Text className="font-rubik-regular text-2xl dark:text-white">
-                {name} progress in {moment().month(month).format('MMMM')}
+                Progreso en {moment().month(month).format('MMMM')}
               </Text>
             </View>
             <Divider />
