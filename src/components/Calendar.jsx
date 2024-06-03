@@ -70,14 +70,12 @@ export default Calendar = ({
 
       return (
         <View className="w-[14.28%] p-2">
-          <PressableView>
-            <Pressable
-              onPress={() => handleDayPress(date)}
-              disabled={buttonDisabled}
+          <PressableView onPress={() => handleDayPress(date)} disabled={buttonDisabled}>
+            <View
               className={`aspect-square items-center justify-center rounded-xl ${getIsSelected()} ${getIsCurrentDay()}`}
             >
               <Text className="font-rubik-regular text-xl dark:text-white">{dayNumber}</Text>
-            </Pressable>
+            </View>
           </PressableView>
           <View className="items-center p-1">{getStatusDot()}</View>
         </View>
@@ -123,18 +121,14 @@ export default Calendar = ({
       <GestureDetector gesture={swipeMonthGesture}>
         <View className="rounded-3xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
           <View className="my-2 flex-row items-center justify-between px-10">
-            <PressableView>
-              <Pressable onPress={handlePrevMonth}>
-                <CustomIcon name={'navigate-before'} size={40} color={'black'} />
-              </Pressable>
+            <PressableView onPress={handlePrevMonth}>
+              <CustomIcon name={'chevronBack'} size={40} color={'white'} />
             </PressableView>
             <Text className="font-rubik-regular text-xl dark:text-white">
               {currentDate.format('MMMM')} {currentDate.format('YYYY')}
             </Text>
-            <PressableView>
-              <Pressable onPress={handleNextMonth}>
-                <CustomIcon name={'navigate-next'} size={40} color={'black'} />
-              </Pressable>
+            <PressableView onPress={handleNextMonth}>
+              <CustomIcon name={'chevronForward'} size={40} color={'white'} />
             </PressableView>
           </View>
           <Divider />

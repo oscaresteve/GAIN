@@ -46,25 +46,19 @@ export const ExerciseCard = ({ exercise, exerciseExists, onAdd, onInfo }) => {
             <Animated.View style={[animatedHeightStyle]}>
               <View className="my-2 flex-row">
                 <View className="grow">
-                  <PressableView>
-                    <Pressable
-                      onPress={() => onAdd()}
-                      className="m-1 grow items-center justify-center rounded-xl bg-primary-1 p-2"
-                    >
+                  <PressableView onPress={() => onAdd()}>
+                    <View className="m-1 grow items-center justify-center rounded-xl bg-primary-1 p-2">
                       <Text className="font-rubik-regular text-xl text-smoke-2 dark:text-night-3">
                         ADD
                       </Text>
-                    </Pressable>
+                    </View>
                   </PressableView>
                 </View>
 
-                <PressableView>
-                  <Pressable
-                    onPress={() => onInfo()}
-                    className="m-1 grow items-center justify-center rounded-xl border border-white p-2"
-                  >
+                <PressableView onPress={() => onInfo()}>
+                  <View className="m-1 grow items-center justify-center rounded-xl border border-white p-2">
                     <CustomIcon name={'info'} size={20} color={'white'} />
-                  </Pressable>
+                  </View>
                 </PressableView>
               </View>
             </Animated.View>

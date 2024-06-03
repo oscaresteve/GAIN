@@ -111,7 +111,7 @@ export default function ProgressView({ navigation, route }) {
           </View>
         </View>
       </ScrollView>
-      <AppBar label={name} backButton={true} navigation={navigation} />
+      <AppBar label={name} backButton={true} onBack={() => navigation.goBack()} />
       <ScrollToTop />
     </View>
   )

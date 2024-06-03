@@ -114,7 +114,7 @@ const TabGroup = () => {
           tabBarIcon: ({ color, size, focused }) =>
             focused ? (
               <Image
-                source={{ uri: userData.profilePic }}
+                source={{ uri: userData?.profilePic }}
                 style={{
                   aspectRatio: 1,
                   height: size,
@@ -125,7 +125,7 @@ const TabGroup = () => {
               />
             ) : (
               <Image
-                source={{ uri: userData.profilePic }}
+                source={{ uri: userData?.profilePic }}
                 style={{
                   aspectRatio: 1,
                   height: size,

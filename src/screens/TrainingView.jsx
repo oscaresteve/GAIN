@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Button, SafeAreaView, TextInput, Pressable } from 'react-native'
+import { View, Text, ScrollView, Alert } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUserData, deleteUserTrainingData, setUserTrainingPrimary } from '../Redux/userSlice'
@@ -44,6 +44,15 @@ export default function Training({ navigation, route }) {
       setShowScrollToTop(false)
     }
   }
+
+  const deleteAlert = () =>
+    Alert.alert('Are you sure?', 'This cant be reverted', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => handleDeleteTraining(), style: 'destructive' },
+    ])
 
   const ScrollToTop = () => {
     if (showScrollToTop) {
@@ -169,7 +178,7 @@ export default function Training({ navigation, route }) {
         </View>
       </ScrollView>
       <BottomBar>
-        <PressableView onPress={handleDeleteTraining}>
+        <PressableView onPress={deleteAlert}>
           <Text className="font-rubik-regular text-2xl dark:text-white">Delete</Text>
         </PressableView>
         <PressableView
@@ -182,7 +191,7 @@ export default function Training({ navigation, route }) {
       <AppBar
         label={'Training'}
         backButton={true}
-        navigation={navigation}
+        onBack={() => navigation.goBack()}
         buttons={
           <PressableView onPress={handleEditTraining}>
             <Text className="font-rubik-regular text-2xl text-primary-1">Edit</Text>

@@ -1,5 +1,5 @@
-import { View, Text, Button, Pressable, TextInput, Image, ScrollView } from 'react-native'
-import React, { useState, useRef } from 'react'
+import { View, Text, Alert, TextInput, Image, ScrollView } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUserData, saveUserData } from '../Redux/userSlice'
 import { useForm, Controller } from 'react-hook-form'
@@ -18,6 +18,7 @@ export default function EditProfile({ navigation }) {
   const [profilePic, setProfilePic] = useState(userData.profilePic)
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
+  const initialUserData = useRef(userData)
 
   const validationSchema = yup
     .object()
@@ -40,7 +41,7 @@ export default function EditProfile({ navigation }) {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ resolver: yupResolver(validationSchema) })
+  } = useForm({ resolver: yupResolver(validationSchema), defaultValues: userData })
 
   const handleScroll = (event) => {
     const offsetY = event.nativeEvent.contentOffset.y
@@ -88,6 +89,28 @@ export default function EditProfile({ navigation }) {
     navigation.navigate('Profile')
   }
 
+  const noSaveAlert = () =>
+    Alert.alert('Are you sure?', 'This cant be reverted', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => navigation.goBack(), style: 'destructive' },
+    ])
+
+  const checkIfModified = () => {
+    const formData = watch()
+    if (
+      formData.name !== initialUserData.current.name ||
+      formData.lastName !== initialUserData.current.lastName ||
+      profilePic !== initialUserData.current.profilePic
+    ) {
+      noSaveAlert()
+    } else {
+      navigation.goBack()
+    }
+  }
+
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
       <ScrollView
@@ -122,7 +145,7 @@ export default function EditProfile({ navigation }) {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.lastName && 'border-red-500'}`}
+                className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.name && 'border-red-500'}`}
               />
             )}
           />
@@ -151,7 +174,7 @@ export default function EditProfile({ navigation }) {
       <AppBar
         label={'Edit Profile'}
         backButton={true}
-        navigation={navigation}
+        onBack={checkIfModified}
         buttons={
           <PressableView onPress={handleSubmit(handleSave)}>
             <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>

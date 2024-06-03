@@ -103,20 +103,16 @@ export default function LineGraph({
     <GestureDetector gesture={swipeMonthGesture}>
       <View>
         <View className="flex-row items-center justify-center">
-          <PressableView>
-            <Pressable onPress={() => handlePrevMonth()}>
-              <CustomIcon name={'chevronBack'} size={40} color={'black'} />
-            </Pressable>
+          <PressableView onPress={() => handlePrevMonth()}>
+            <CustomIcon name={'chevronBack'} size={40} color={'black'} />
           </PressableView>
 
           <RNText className="mx-10 font-rubik-regular text-xl dark:text-white">
             {moment().month(month).format('MMM YYYY')}
           </RNText>
 
-          <PressableView>
-            <Pressable onPress={() => handleNextMonth()}>
-              <CustomIcon name={'chevronForward'} size={40} color={'black'} />
-            </Pressable>
+          <PressableView onPress={() => handleNextMonth()}>
+            <CustomIcon name={'chevronForward'} size={40} color={'black'} />
           </PressableView>
         </View>
         <Svg width={width} height={height} className="mx-auto">

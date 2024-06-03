@@ -219,7 +219,7 @@ export default function TrainingDayView({ navigation, route }) {
       <AppBar
         label={moment(userTrainingDayData.date, 'YYYY-MM-DD').format('Do MMM YYYY')}
         backButton={true}
-        navigation={navigation}
+        onBack={() => navigation.goBack()}
       />
     </View>
   )

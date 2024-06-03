@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Button,
-  ScrollView,
-  Modal,
-  Pressable,
-  TextInput,
-} from 'react-native'
+import { View, Text, Alert, ScrollView, Modal, Pressable, TextInput } from 'react-native'
 import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectGainData, fetchGainData } from '../Redux/gainSlice'
@@ -25,7 +16,7 @@ export default function EditTraining({ navigation, route }) {
   const dispatch = useDispatch()
   const gainData = useSelector(selectGainData)
   const userData = useSelector(selectUserData)
-
+  const originalUserTrainingData = JSON.parse(JSON.stringify(route.params.userTrainingData))
   const [userTrainingData, setUserTrainingData] = useState(
     JSON.parse(JSON.stringify(route.params.userTrainingData)),
   )
@@ -215,6 +206,15 @@ export default function EditTraining({ navigation, route }) {
       })
     }
   }
+
+  const noSaveAlert = () =>
+    Alert.alert('Are you sure?', 'This cant be reverted', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => navigation.goBack(), style: 'destructive' },
+    ])
 
   const ScrollToTop = () => {
     if (showScrollToTop) {
@@ -542,7 +542,11 @@ export default function EditTraining({ navigation, route }) {
       <AppBar
         label={'Edit Training'}
         backButton={true}
-        navigation={navigation}
+        onBack={() =>
+          JSON.stringify(originalUserTrainingData) !== JSON.stringify(userTrainingData)
+            ? noSaveAlert()
+            : navigation.goBack()
+        }
         buttons={
           <PressableView onPress={handleSaveTraining}>
             <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>

@@ -89,7 +89,7 @@ export default function Home({ navigation }) {
                   </PressableView>
                   {exercise.exerciseNotes && (
                     <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
-                      Note: {exercise.exerciseNotes}
+                      {exercise.exerciseNotes}
                     </Text>
                   )}
                 </View>

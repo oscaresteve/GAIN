@@ -11,7 +11,7 @@ export const useAppBarHeight = () => {
   return height
 }
 
-export default function AppBar({ label, backButton, navigation, buttons }) {
+export default function AppBar({ label, backButton, buttons, onBack }) {
   const currentDate = new Date()
   const Label = () => {
     if (label) {
@@ -27,14 +27,8 @@ export default function AppBar({ label, backButton, navigation, buttons }) {
   const Icon = () => {
     if (backButton) {
       return (
-        <PressableView>
-          <Pressable
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <CustomIcon name={'arrowBack'} size={30} color={'white'} />
-          </Pressable>
+        <PressableView onPress={onBack}>
+          <CustomIcon name={'arrowBack'} size={30} color={'white'} />
         </PressableView>
       )
     } else {

@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Button,
-  ScrollView,
-  TextInput,
-  Modal,
-  Pressable,
-} from 'react-native'
+import { View, Text, Alert, ScrollView, TextInput, Modal, Pressable } from 'react-native'
 import React, { useEffect, useState, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -49,6 +40,20 @@ export default function CreateTraining({ navigation }) {
     ],
     primary: false,
   })
+
+  const originalUserTrainingData = {
+    trainingName: '',
+    days: [
+      { day: '0', groups: [] },
+      { day: '1', groups: [] },
+      { day: '2', groups: [] },
+      { day: '3', groups: [] },
+      { day: '4', groups: [] },
+      { day: '5', groups: [] },
+      { day: '6', groups: [] },
+    ],
+    primary: false,
+  }
 
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
     visible: false,
@@ -258,6 +263,15 @@ export default function CreateTraining({ navigation }) {
       setShowScrollToTop(false)
     }
   }
+
+  const noSaveAlert = () =>
+    Alert.alert('Are you sure?', 'This cant be reverted', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => navigation.goBack(), style: 'destructive' },
+    ])
 
   const ScrollToTop = () => {
     if (showScrollToTop) {
@@ -604,7 +618,11 @@ export default function CreateTraining({ navigation }) {
       <AppBar
         label={'Create Training'}
         backButton={true}
-        navigation={navigation}
+        onBack={() =>
+          JSON.stringify(originalUserTrainingData) !== JSON.stringify(userTrainingData)
+            ? noSaveAlert()
+            : navigation.goBack()
+        }
         buttons={
           <PressableView onPress={handleSubmit(handleSaveTraining)}>
             <Text className="font-rubik-regular text-2xl text-primary-1">Save</Text>

@@ -13,7 +13,7 @@ export default function ExerciseInfo({ navigation, route }) {
       <View className="grow px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
         <Text className="font-rubik-regular text-2xl dark:text-white">{exercise.exerciseName}</Text>
       </View>
-      <AppBar label={'Exercise Info'} backButton={true} navigation={navigation} />
+      <AppBar label={'Exercise Info'} backButton={true} onBack={() => navigation.goBack()} />
     </View>
   )
 }

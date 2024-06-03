@@ -1,4 +1,4 @@
-import { View, ScrollView, Pressable, Text } from 'react-native'
+import { View, ScrollView, Alert, Text } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { clearUserSession } from '../Redux/userSlice'
@@ -8,6 +8,16 @@ import CustomIcon from '../components/CustomIcon'
 
 export default function Configuration({ navigation }) {
   const dispatch = useDispatch()
+
+  const noSaveAlert = () =>
+    Alert.alert('Are you sure?', 'This cant be reverted', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => handleLogOut(), style: 'destructive' },
+    ])
+
   const handleLogOut = () => {
     dispatch(clearUserSession())
     navigation.navigate('LogIn')
@@ -52,13 +62,13 @@ export default function Configuration({ navigation }) {
       >
         <View className="mx-2 my-2 grow pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="my-2 items-center">
-            <PressableView onPress={handleLogOut}>
+            <PressableView onPress={noSaveAlert}>
               <Text className="font-rubik-regular text-2xl text-red-500">Log Out</Text>
             </PressableView>
           </View>
         </View>
       </ScrollView>
-      <AppBar label={'Configuration'} backButton={true} navigation={navigation} />
+      <AppBar label={'Configuration'} backButton={true} onBack={() => navigation.goBack()} />
       <ScrollToTop />
     </View>
   )
