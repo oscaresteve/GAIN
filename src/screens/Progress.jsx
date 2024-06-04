@@ -293,28 +293,29 @@ export default function Progress({ navigation }) {
                 <Divider height={4} width={50} />
 
                 <View className="my-4 flex-row flex-wrap justify-start ">
-                  {['Biceps', 'Triceps', 'Pecho', 'Espalda', 'Piernas', 'Hombros'].map(
-                    (group, index) => (
-                      <PressableView
-                        key={index}
-                        onPress={() =>
-                          setSelectExerciseModalShow({
-                            ...selectExerciseModalShow,
-                            groupSelected: group,
-                          })
-                        }
-                      >
-                        <View className="m-1">
-                          <Text className="font-rubik-regular text-3xl dark:text-white">
-                            {group}
-                          </Text>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {['Biceps', 'Triceps', 'Pecho', 'Espalda', 'Piernas', 'Hombros'].map(
+                      (group, index) => (
+                        <PressableView
+                          key={index}
+                          onPress={() =>
+                            setSelectExerciseModalShow({
+                              ...selectExerciseModalShow,
+                              groupSelected: group,
+                            })
+                          }
+                        >
                           <View
-                            className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
-                          ></View>
-                        </View>
-                      </PressableView>
-                    ),
-                  )}
+                            className={`mx-2 border-b-2 px-1 ${selectExerciseModalShow.groupSelected === group ? 'border-b-primary-1' : 'border-b-transparent'}`}
+                          >
+                            <Text className="font-rubik-regular text-3xl dark:text-white">
+                              {group}
+                            </Text>
+                          </View>
+                        </PressableView>
+                      ),
+                    )}
+                  </ScrollView>
                 </View>
                 {gainData?.trainingExercises
                   ?.filter(

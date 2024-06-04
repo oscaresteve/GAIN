@@ -94,18 +94,20 @@ export default function Training({ navigation, route }) {
           </View>
           <Divider />
           <View className="flex-row justify-around">
-            {moment.weekdaysShort().map((weekday, index) => (
-              <PressableView
-                key={index}
-                onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
-              >
-                <View
-                  className={`${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              {moment.weekdays().map((weekday, index) => (
+                <PressableView
+                  key={index}
+                  onPress={() => setSelectedDayIndex(moment(weekday, 'ddd').format('d'))}
                 >
-                  <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
-                </View>
-              </PressableView>
-            ))}
+                  <View
+                    className={`mx-2 px-1 ${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
+                  >
+                    <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
+                  </View>
+                </PressableView>
+              ))}
+            </ScrollView>
           </View>
           <View className="my-2">
             {userTrainingData.days[selectedDayIndex].groups.length > 0 ? (

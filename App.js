@@ -13,6 +13,7 @@ moment.updateLocale('es', {
     dow: 1,
   },
   weekdaysShort: ['lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.', 'dom.'],
+  weekdays: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
 })
 
 export default function App() {
