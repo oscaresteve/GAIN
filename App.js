@@ -6,6 +6,15 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { useColorScheme } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { useFonts } from 'expo-font'
+import moment from 'moment'
+import 'moment/locale/es'
+moment.updateLocale('es', {
+  week: {
+    dow: 1,
+  },
+  weekdaysShort: ['lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.', 'dom.'],
+})
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Rubik-Regular': require('./assets/fonts/Rubik-Regular.ttf'),

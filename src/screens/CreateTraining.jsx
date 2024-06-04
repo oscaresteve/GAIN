@@ -58,7 +58,7 @@ export default function CreateTraining({ navigation }) {
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
     visible: false,
     dayIndex: null,
-    groupSelected: 'Bicep',
+    groupSelected: 'Biceps',
   })
 
   const validationSchema = yup
@@ -548,7 +548,7 @@ export default function CreateTraining({ navigation }) {
                   <Divider height={4} width={50} />
 
                   <View className="my-4 flex-row flex-wrap justify-start ">
-                    {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map(
+                    {['Biceps', 'Triceps', 'Pecho', 'Espalda', 'Piernas', 'Hombros'].map(
                       (group, index) => (
                         <PressableView
                           key={index}

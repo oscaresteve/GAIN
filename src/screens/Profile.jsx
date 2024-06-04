@@ -121,7 +121,6 @@ const Profile = ({ navigation }) => {
 
   const xpLevels = generateXpLevels(100, 100, 1.5, 50)
   const { level, nextLevelXp, currentLevelXp, xp } = calculateUserLevel(userData.userXp, xpLevels)
-  console.log(level, formatNumber(nextLevelXp), formatNumber(currentLevelXp), formatNumber(xp))
 
   const Stats = () => {
     return (
@@ -321,97 +320,97 @@ const Profile = ({ navigation }) => {
     const achievementsData = {
       userTotalWeightNumber: [
         {
-          title: 'Brute Force',
-          description: 'Lift weight',
+          title: 'Fuerza Bruta',
+          description: 'Levantar peso',
           unit: 'kg',
           levels: generateLevels(10000, 5000, 1.1, 50),
         },
       ],
       userTotalRepsNumber: [
         {
-          title: 'Repetition King',
-          description: 'Complete reps',
+          title: 'Rey de las Repeticiones',
+          description: 'Completar repeticiones',
           unit: 'reps',
           levels: generateLevels(1000, 500, 1.1, 50),
         },
       ],
       userTotalTrainingTime: [
         {
-          title: 'Training Time',
-          description: 'Train for',
-          unit: 'time',
+          title: 'Tiempo de Entrenamiento',
+          description: 'Entrenar durante',
+          unit: 'tiempo',
           levels: generateLevels(3600000, 3600000, 1.1, 50),
         },
       ],
       userTotalSetsNumber: [
         {
-          title: 'Set Master',
-          description: 'Complete sets',
-          unit: 'sets',
+          title: 'Maestro de Series',
+          description: 'Completar series',
+          unit: 'series',
           levels: generateLevels(100, 50, 1.1, 50),
         },
       ],
       userTotalExercisesNumber: [
         {
-          title: 'Exercise Enthusiast',
-          description: 'Complete exercises',
-          unit: 'exercises',
+          title: 'Entusiasta del Ejercicio',
+          description: 'Completar ejercicios',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberBicep: [
         {
-          title: 'Bicep Enjoyer',
-          description: 'Complete bicep exercises',
-          unit: 'exercises',
+          title: 'Fanático del Bíceps',
+          description: 'Completar ejercicios de bíceps',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberTricep: [
         {
-          title: 'Tricep Achiever',
-          description: 'Complete tricep exercises',
-          unit: 'exercises',
+          title: 'Especialista en Tríceps',
+          description: 'Completar ejercicios de tríceps',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberChest: [
         {
-          title: 'Chest Champion',
-          description: 'Complete chest exercises',
-          unit: 'exercises',
+          title: 'Campeón de Pecho',
+          description: 'Completar ejercicios de pecho',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberBack: [
         {
-          title: 'Back Beast',
-          description: 'Complete back exercises',
-          unit: 'exercises',
+          title: 'Bestia de Espalda',
+          description: 'Completar ejercicios de espalda',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberShoulder: [
         {
-          title: 'Shoulder Specialist',
-          description: 'Complete shoulder exercises',
-          unit: 'exercises',
+          title: 'Especialista en Hombros',
+          description: 'Completar ejercicios de hombros',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberLegs: [
         {
-          title: 'Legs Legend',
-          description: 'Complete legs exercises',
-          unit: 'exercises',
+          title: 'Leyenda de Piernas',
+          description: 'Completar ejercicios de piernas',
+          unit: 'ejercicios',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       trainingsFinished: [
         {
-          title: 'Training Terminator',
-          description: 'Finish training sessions',
-          unit: 'sessions',
+          title: 'Terminator de Entrenamientos',
+          description: 'Terminar sesiones de entrenamiento',
+          unit: 'sesiones',
           levels: generateLevels(50, 10, 1.1, 50),
         },
       ],
@@ -471,8 +470,8 @@ const Profile = ({ navigation }) => {
       <View>
         <View className="my-2">
           <AchievementCard
-            title={'Level ' + (level + 1)}
-            description={'Obtain Xp'}
+            title={'Nivel ' + (level + 1)}
+            description={'Consigue Xp'}
             achieved={false}
             current={xp}
             target={nextLevelXp}

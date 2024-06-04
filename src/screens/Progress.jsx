@@ -37,7 +37,7 @@ export default function Progress({ navigation }) {
   const [recordValues, setRecordValues] = useState([])
   const [selectExerciseModalShow, setSelectExerciseModalShow] = useState({
     visible: false,
-    groupSelected: 'Bicep',
+    groupSelected: 'Biceps',
   })
 
   const scrollViewRef = useRef()
@@ -137,7 +137,7 @@ export default function Progress({ navigation }) {
           onPress={() => {
             navigation.navigate('ProgressView', {
               data: bodyWeightData,
-              name: 'BodyWeight',
+              name: 'Peso corporal',
             })
           }}
         >
@@ -198,7 +198,7 @@ export default function Progress({ navigation }) {
           onPress={() => {
             navigation.navigate('ProgressView', {
               data: personalRecordData,
-              name: userPersonalRecord.exercise.exerciseName,
+              name: 'Record personal',
             })
           }}
         >
@@ -293,24 +293,28 @@ export default function Progress({ navigation }) {
                 <Divider height={4} width={50} />
 
                 <View className="my-4 flex-row flex-wrap justify-start ">
-                  {['Bicep', 'Tricep', 'Chest', 'Back', 'Legs', 'Shoulder'].map((group, index) => (
-                    <PressableView
-                      key={index}
-                      onPress={() =>
-                        setSelectExerciseModalShow({
-                          ...selectExerciseModalShow,
-                          groupSelected: group,
-                        })
-                      }
-                    >
-                      <View className="m-1">
-                        <Text className="font-rubik-regular text-3xl dark:text-white">{group}</Text>
-                        <View
-                          className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
-                        ></View>
-                      </View>
-                    </PressableView>
-                  ))}
+                  {['Biceps', 'Triceps', 'Pecho', 'Espalda', 'Piernas', 'Hombros'].map(
+                    (group, index) => (
+                      <PressableView
+                        key={index}
+                        onPress={() =>
+                          setSelectExerciseModalShow({
+                            ...selectExerciseModalShow,
+                            groupSelected: group,
+                          })
+                        }
+                      >
+                        <View className="m-1">
+                          <Text className="font-rubik-regular text-3xl dark:text-white">
+                            {group}
+                          </Text>
+                          <View
+                            className={`mx-2 h-1.5 rounded-full ${selectExerciseModalShow.groupSelected === group ? 'bg-primary-1' : 'bg-transparent'}`}
+                          ></View>
+                        </View>
+                      </PressableView>
+                    ),
+                  )}
                 </View>
                 {gainData?.trainingExercises
                   ?.filter(

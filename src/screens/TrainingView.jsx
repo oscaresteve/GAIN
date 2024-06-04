@@ -15,6 +15,7 @@ export default function Training({ navigation, route }) {
   const userData = useSelector(selectUserData)
   const { userTrainingData, watchDay } = route.params
 
+  console.log(moment.weekdaysShort())
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
 

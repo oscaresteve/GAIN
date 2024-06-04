@@ -80,14 +80,11 @@ export default function CalendarView({ navigation }) {
     if (currentDateData) {
       if (status === 'done') {
         color = 'green'
-        message = 'Training Finished'
+        message = 'Entrenamineto finalizado'
       } else if (status === 'notDone') {
         color = 'red'
-        message = 'Training Not Finished'
+        message = 'Entrenamineto no finalizado'
       }
-    } else {
-      color = 'gray'
-      message = 'Rest Day'
     }
 
     return (
@@ -273,7 +270,7 @@ export default function CalendarView({ navigation }) {
               </PressableView>
             )}
             <View className="my-2 items-center">
-              <Text className="font-rubik-regular text-xl dark:text-white">Day Progress</Text>
+              <Text className="font-rubik-regular text-xl dark:text-white">Progreso</Text>
             </View>
             <Divider />
             <View className="m-2">
