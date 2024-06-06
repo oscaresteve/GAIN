@@ -45,7 +45,7 @@ export default Calendar = ({
       const foundDay =
         date.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')
           ? userTrainingDayData
-          : userAllTrainingDaysData.find((item) => item.date === date.format('YYYY-MM-DD'))
+          : userAllTrainingDaysData?.find((item) => item.date === date.format('YYYY-MM-DD'))
       if (foundDay) {
         return foundDay?.done ? 'done' : 'notDone'
       }
