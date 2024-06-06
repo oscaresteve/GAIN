@@ -31,6 +31,11 @@ const Tab = createBottomTabNavigator()
 
 const TabGroup = () => {
   const userData = useSelector(selectUserData)
+
+  const profilePicSource = userData?.profilePic
+    ? { uri: userData.profilePic }
+    : require('../assets/default-profile.png')
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -38,7 +43,7 @@ const TabGroup = () => {
         tabBarStyle: { position: 'absolute', borderTopWidth: 0 },
         tabBarBackground: () => (
           <BlurView
-            intensity={100}
+            intensity={70}
             className="border-t border-t-smoke-3 dark:border-t-night-3"
             style={StyleSheet.absoluteFill}
           />
@@ -114,7 +119,7 @@ const TabGroup = () => {
           tabBarIcon: ({ color, size, focused }) =>
             focused ? (
               <Image
-                source={{ uri: userData?.profilePic }}
+                source={profilePicSource}
                 style={{
                   aspectRatio: 1,
                   height: size,
@@ -125,7 +130,7 @@ const TabGroup = () => {
               />
             ) : (
               <Image
-                source={{ uri: userData?.profilePic }}
+                source={profilePicSource}
                 style={{
                   aspectRatio: 1,
                   height: size,
@@ -169,7 +174,7 @@ export default function Navigation() {
           component={Register}
           options={{
             headerShown: false,
-            gestureEnabled: true,
+            gestureEnabled: false,
             animationEnabled: true,
           }}
         />
@@ -223,8 +228,8 @@ export default function Navigation() {
           component={Configuration}
           options={{
             headerShown: false,
-            gestureEnabled: false,
-            animationEnabled: false,
+            gestureEnabled: true,
+            animationEnabled: true,
           }}
         />
         <Stack.Screen

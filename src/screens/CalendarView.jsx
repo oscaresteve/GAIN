@@ -63,7 +63,7 @@ export default function CalendarView({ navigation }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -85,6 +85,9 @@ export default function CalendarView({ navigation }) {
         color = 'red'
         message = 'Entrenamineto no finalizado'
       }
+    } else {
+      color = 'gray'
+      message = 'Dia de descanso'
     }
 
     return (
@@ -131,8 +134,14 @@ export default function CalendarView({ navigation }) {
           }}
         >
           <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
-            <View className="m-1">
-              <Text className="font-rubik-regular text-xl dark:text-white">Peso corporal</Text>
+            <View className="m-1 flex-row">
+              <Text className="grow font-rubik-regular text-lg opacity-70 dark:text-white">
+                Peso corporal
+              </Text>
+              {(difference > 0 && <CustomIcon name={'trendingUp'} color="green" opacity={0.7} />) ||
+                (difference < 0 && (
+                  <CustomIcon name={'trendingDown'} color="red" opacity={0.7} />
+                )) || <CustomIcon name={'equal'} opacity={0.7} />}
             </View>
             <Divider />
             <View className="m-1 flex-row items-center">
@@ -140,17 +149,14 @@ export default function CalendarView({ navigation }) {
                 {bodyWeightMark.bodyWeight} Kg
               </Text>
               {difference !== null && difference !== 0 && (
-                <Text
-                  className={`text-md ml-2 font-rubik-regular ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
-                >
-                  (
-                  {difference >= 0 ? (
-                    <CustomIcon name={'trendingUp'} size={15} color={'white'} />
-                  ) : (
-                    <CustomIcon name={'trendingDown'} size={15} color={'white'} />
-                  )}{' '}
-                  {Math.abs(difference)})
-                </Text>
+                <View className="">
+                  <Text
+                    className={`ml-2 font-rubik-regular text-lg ${difference >= 0 ? 'text-officeGreen' : 'text-vermillion'}`}
+                  >
+                    ({difference >= 0 ? '+' : '-'}
+                    {Math.abs(difference)})
+                  </Text>
+                </View>
               )}
             </View>
           </View>
@@ -193,10 +199,14 @@ export default function CalendarView({ navigation }) {
           }}
         >
           <View className="m-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
-            <View className="m-1">
-              <Text className="font-rubik-regular text-xl dark:text-white">
+            <View className="m-1 flex-row">
+              <Text className="grow font-rubik-regular text-lg opacity-70 dark:text-white">
                 {userPersonalRecord.exercise.exerciseName}
               </Text>
+              {(difference > 0 && <CustomIcon name={'trendingUp'} color="green" opacity={0.7} />) ||
+                (difference < 0 && (
+                  <CustomIcon name={'trendingDown'} color="red" opacity={0.7} />
+                )) || <CustomIcon name={'equal'} opacity={0.7} />}
             </View>
             <Divider />
             <View className="m-1 flex-row items-center">
@@ -204,17 +214,14 @@ export default function CalendarView({ navigation }) {
                 {personalRecordMark.mark} Kg
               </Text>
               {difference !== null && difference !== 0 && (
-                <Text
-                  className={`text-md ml-2 font-rubik-regular ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
-                >
-                  (
-                  {difference >= 0 ? (
-                    <CustomIcon name={'trendingUp'} size={15} color={'white'} />
-                  ) : (
-                    <CustomIcon name={'trendingDown'} size={15} color={'white'} />
-                  )}{' '}
-                  {Math.abs(difference)})
-                </Text>
+                <View className="">
+                  <Text
+                    className={`ml-2 font-rubik-regular text-lg ${difference >= 0 ? 'text-officeGreen' : 'text-vermillion'}`}
+                  >
+                    ({difference >= 0 ? '+' : '-'}
+                    {Math.abs(difference)})
+                  </Text>
+                </View>
               )}
             </View>
           </View>
@@ -270,7 +277,9 @@ export default function CalendarView({ navigation }) {
               </PressableView>
             )}
             <View className="my-2 items-center">
-              <Text className="font-rubik-regular text-xl dark:text-white">Progreso</Text>
+              <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+                Progreso
+              </Text>
             </View>
             <Divider />
             <View className="m-2">

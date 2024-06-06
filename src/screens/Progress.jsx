@@ -80,7 +80,7 @@ export default function Progress({ navigation }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -146,7 +146,7 @@ export default function Progress({ navigation }) {
         <View className="my-4 flex-row">
           <View className="w-32 flex-row justify-end rounded-lg border-2 border-smoke-3 p-2 dark:border-night-3">
             <TextInput
-              inputMode="decimal"
+              inputMode="numeric"
               value={bodyWeightValue}
               onChangeText={(bodyWeightValue) => setBodyWeightValue(bodyWeightValue)}
               editable={
@@ -157,13 +157,15 @@ export default function Progress({ navigation }) {
               enterKeyHint="done"
               className="grow font-rubik-regular text-xl dark:text-white"
             />
-            <Text className="text-md ml-1 font-rubik-regular dark:text-white">Kg</Text>
+            <Text className="text-md ml-1 font-rubik-regular opacity-70 dark:text-white">Kg</Text>
           </View>
           <PressableView onPress={handleSaveBodyWeightValueProgress} disabled={bodyWeightDisabled}>
             <View
-              className={`ml-4 grow items-center justify-center rounded-lg ${bodyWeightDisabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
+              className={`ml-4 items-center justify-center rounded-lg ${bodyWeightDisabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
-              <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
+              <Text
+                className={`mx-3 font-rubik-medium text-xl ${bodyWeightDisabled ? 'text-smoke-2 dark:text-night-2' : 'text-smoke-3 dark:text-night-3'} `}
+              >
                 Guardar
               </Text>
             </View>
@@ -190,7 +192,7 @@ export default function Progress({ navigation }) {
 
     return (
       <View className="my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 dark:border-night-3 dark:bg-night-2">
-        <Text className="m-2 font-rubik-regular text-xl dark:text-white">
+        <Text className="m-2 font-rubik-regular text-xl opacity-80 dark:text-white">
           {userPersonalRecord.exercise.exerciseName}
         </Text>
         <Divider />
@@ -207,7 +209,7 @@ export default function Progress({ navigation }) {
         <View className="my-4 flex-row">
           <View className="w-32 flex-row justify-end rounded-lg border-2 border-smoke-3 p-2 dark:border-night-3">
             <TextInput
-              inputMode="decimal"
+              inputMode="numeric"
               value={recordValues[index]}
               onChangeText={(newValue) => {
                 const newValues = [...recordValues]
@@ -226,7 +228,7 @@ export default function Progress({ navigation }) {
               enterKeyHint="done"
               className="grow font-rubik-regular text-xl dark:text-white"
             />
-            <Text className="text-md ml-1 font-rubik-regular dark:text-white">Kg</Text>
+            <Text className="text-md ml-1 font-rubik-regular opacity-70 dark:text-white">Kg</Text>
           </View>
           <PressableView
             onPress={() =>
@@ -235,9 +237,11 @@ export default function Progress({ navigation }) {
             disabled={disabled}
           >
             <View
-              className={`ml-4 grow items-center justify-center rounded-lg ${disabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
+              className={`ml-4 items-center justify-center rounded-lg ${disabled ? 'bg-smoke-3 dark:bg-night-3' : 'bg-primary-1'} p-1`}
             >
-              <Text className="mx-3 font-rubik-regular text-xl text-smoke-2 dark:text-night-2 ">
+              <Text
+                className={`mx-3 font-rubik-medium text-xl ${disabled ? 'text-smoke-2 dark:text-night-2' : 'text-smoke-3 dark:text-night-3'} `}
+              >
                 Guardar
               </Text>
             </View>
@@ -263,19 +267,25 @@ export default function Progress({ navigation }) {
           className="mx-2 my-2 grow"
           style={{ paddingBottom: useBottomTabBarHeight(), paddingTop: useAppBarHeight() }}
         >
-          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">Peso corporal</Text>
+          <Text className="my-2 font-rubik-regular text-3xl dark:text-white">Peso corporal</Text>
           <Divider />
 
           <BodyWeight />
 
-          <Text className="my-2 font-rubik-regular text-2xl dark:text-white">
+          <Text className="my-2 font-rubik-regular text-3xl dark:text-white">
             Récords personales
           </Text>
           <Divider />
 
-          {userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
-            <PersonalRecord key={index} userPersonalRecord={userPersonalRecord} index={index} />
-          ))}
+          {userData.userProgress.userPersonalRecords.length > 0 ? (
+            userData.userProgress.userPersonalRecords.map((userPersonalRecord, index) => (
+              <PersonalRecord key={index} userPersonalRecord={userPersonalRecord} index={index} />
+            ))
+          ) : (
+            <Text className="ml-4 font-rubik-italic text-2xl opacity-50 dark:text-white">
+              Nada por el momento ...
+            </Text>
+          )}
 
           <Modal
             animationType="slide"
@@ -290,7 +300,7 @@ export default function Progress({ navigation }) {
           >
             <ScrollView onScroll={handleModalScroll} showsVerticalScrollIndicator={false}>
               <View className="mt-24 rounded-3xl bg-smoke-1 p-4 dark:bg-night-1">
-                <Divider height={4} width={50} />
+                <Divider height={5} width={50} />
 
                 <View className="my-4 flex-row flex-wrap justify-start ">
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -308,7 +318,9 @@ export default function Progress({ navigation }) {
                           <View
                             className={`mx-2 border-b-2 px-1 ${selectExerciseModalShow.groupSelected === group ? 'border-b-primary-1' : 'border-b-transparent'}`}
                           >
-                            <Text className="font-rubik-regular text-3xl dark:text-white">
+                            <Text
+                              className={`font-rubik-regular text-3xl opacity-70 dark:text-white ${selectExerciseModalShow.groupSelected === group && 'opacity-100'}`}
+                            >
                               {group}
                             </Text>
                           </View>

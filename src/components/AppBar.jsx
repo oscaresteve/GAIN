@@ -12,7 +12,7 @@ export const useAppBarHeight = () => {
 }
 
 export default function AppBar({ label, backButton, buttons, onBack }) {
-  const currentDate = new Date()
+  const currentDate = moment()
   const Label = () => {
     if (label) {
       return <Text className="ml-4 font-rubik-regular text-2xl dark:text-white">{label}</Text>
@@ -28,7 +28,7 @@ export default function AppBar({ label, backButton, buttons, onBack }) {
     if (backButton) {
       return (
         <PressableView onPress={onBack}>
-          <CustomIcon name={'arrowBack'} size={30} color={'white'} />
+          <CustomIcon name={'arrowBack'} size={30} />
         </PressableView>
       )
     } else {
@@ -42,7 +42,7 @@ export default function AppBar({ label, backButton, buttons, onBack }) {
 
   return (
     <BlurView
-      intensity={100}
+      intensity={70}
       className="absolute w-full justify-end border-b border-b-smoke-3 p-4 dark:border-b-night-3"
       style={{ height: height }}
     >

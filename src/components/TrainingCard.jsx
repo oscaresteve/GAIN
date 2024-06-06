@@ -25,8 +25,8 @@ export default function TrainingCard({ navigation, userTrainingData }) {
             (day, dayIndex) =>
               day.groups.length > 0 && (
                 <View key={dayIndex} className="">
-                  <Text className="font-rubik-regular text-xl dark:text-white">
-                    {moment(day.day, 'd').format('dddd')}
+                  <Text className="font-rubik-regular text-xl opacity-80 dark:text-white">
+                    {moment().day(day.day).format('dddd')}
                   </Text>
                   <View className="ml-1">
                     <Text className="text-md font-rubik-regular opacity-50 dark:text-white">

@@ -17,8 +17,6 @@ const Profile = ({ navigation }) => {
   const [showScrollToTop, setShowScrollToTop] = useState(false)
   const [view, setView] = useState('achievements')
 
-  console.log(JSON.stringify(userData.userStats))
-
   const handleScroll = (event) => {
     const offsetY = event.nativeEvent.contentOffset.y
     if (offsetY > 0 && !showScrollToTop) {
@@ -35,7 +33,7 @@ const Profile = ({ navigation }) => {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -126,145 +124,165 @@ const Profile = ({ navigation }) => {
     return (
       <View>
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejercicios</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">Ejercicios</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.userTotalExercisesNumber || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Series</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">Series</Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.userTotalSetsNumber || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Repeticiones</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Repeticiones
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.userTotalRepsNumber || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Peso levantado</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Peso levantado
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.userTotalWeightNumber || 0)} kg
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Pecho</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Ejer. de Pecho
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberChest || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Biceps</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Ejer. de Biceps
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberBicep || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Triceps</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Ejer. de Triceps
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberTricep || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Hombro</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Ejer. de Hombro
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberShoulder || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Espalda</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Ejer. de Espalda
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberBack || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Ejer. de Pierna</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Ejer. de Pierna
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.exercisesNumberLegs || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             Entrenaminetos finalizados
           </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.trainingsFinished || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             Entrenamientos no finalizados
           </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {formatNumber(userData.userStats.trainingsNotFinished || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Tiempo entrenado</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Tiempo entrenado
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {msToTime(userData.userStats.userTotalTrainingTime || 0)}
           </Text>
         </View>
 
         <View className="m-1 flex-row items-center justify-end">
-          <Text className="font-rubik-regular text-xl dark:text-white">Tiempo medio</Text>
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
+            Tiempo medio
+          </Text>
           <View className="grow">
             <Divider height={2} width={'80%'} />
           </View>
-          <Text className="font-rubik-regular text-xl dark:text-white">
+          <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
             {msToTime(
               userData.userStats.userTotalTrainingTime / userData.userStats.trainingsFinished || 0,
             )}
@@ -277,27 +295,31 @@ const Profile = ({ navigation }) => {
   const Achievements = () => {
     const AchievementCard = ({ title, achieved, description, target, current, unit }) => (
       <View
-        className={`my-2 flex-row justify-end rounded-xl bg-smoke-2 p-2 dark:bg-night-2 ${
-          achieved ? 'border border-green-500' : 'border border-smoke-3 dark:border-night-3'
+        className={`my-2 flex-row rounded-xl bg-smoke-2 p-2 dark:bg-night-2 ${
+          achieved ? 'border border-officeGreen' : 'border border-smoke-3 dark:border-night-3'
         }`}
       >
-        <View className="grow">
-          <View className="mb-4">
-            <Text className="font-rubik-regular text-2xl dark:text-white">{title}</Text>
-            {unit === 'time' ? (
-              <Text className="text-xxl font-rubik-regular dark:text-white">
-                {description} ({msToTime(current || 0)} / {msToTime(target || 0)})
-              </Text>
-            ) : (
-              <Text className="text-xxl font-rubik-regular dark:text-white">
-                {description} ({formatNumber(current || 0)} {unit} / {formatNumber(target || 0)}{' '}
-                {unit})
-              </Text>
-            )}
-          </View>
-          <View>
-            <ProgressBar current={current} target={target} height={6} />
-          </View>
+        <View className="flex-1">
+          <Text className="flex-shrink-1 mb-2 font-rubik-regular text-2xl dark:text-white">
+            {title}
+          </Text>
+          <Divider />
+          <Text className="flex-shrink-1 my-2 font-rubik-regular text-lg opacity-70 dark:text-white">
+            {description}
+          </Text>
+          {unit === 'time' ? (
+            <Text className="text-md my-2 font-rubik-regular opacity-70 dark:text-white">
+              ({msToTime(current || 0)} / {msToTime(target || 0)})
+            </Text>
+          ) : (
+            <Text className="text-md my-2 font-rubik-regular opacity-70 dark:text-white">
+              ({formatNumber(current || 0)} {unit} / {formatNumber(target || 0)} {unit})
+            </Text>
+          )}
+          <ProgressBar current={current} target={target} height={6} />
+        </View>
+        <View className="flex-shrink-0 flex-grow-0">
+          <CustomIcon name="trophy" size={30} opacity={0.7} color={achieved ? 'green' : 'white'} />
         </View>
       </View>
     )
@@ -321,7 +343,7 @@ const Profile = ({ navigation }) => {
       userTotalWeightNumber: [
         {
           title: 'Fuerza Bruta',
-          description: 'Levantar peso',
+          description: 'Levanta peso, cada repetición cuenta',
           unit: 'kg',
           levels: generateLevels(10000, 5000, 1.1, 50),
         },
@@ -329,7 +351,7 @@ const Profile = ({ navigation }) => {
       userTotalRepsNumber: [
         {
           title: 'Rey de las Repeticiones',
-          description: 'Completar repeticiones',
+          description: 'Haz reps de cualquier ejercicio',
           unit: 'reps',
           levels: generateLevels(1000, 500, 1.1, 50),
         },
@@ -337,15 +359,15 @@ const Profile = ({ navigation }) => {
       userTotalTrainingTime: [
         {
           title: 'Tiempo de Entrenamiento',
-          description: 'Entrenar durante',
-          unit: 'tiempo',
+          description: 'Echa horas en el gimnasio, sin prisa pero sin pausa',
+          unit: 'time',
           levels: generateLevels(3600000, 3600000, 1.1, 50),
         },
       ],
       userTotalSetsNumber: [
         {
           title: 'Maestro de Series',
-          description: 'Completar series',
+          description: 'Termina tus series, no seas cagallón',
           unit: 'series',
           levels: generateLevels(100, 50, 1.1, 50),
         },
@@ -353,64 +375,64 @@ const Profile = ({ navigation }) => {
       userTotalExercisesNumber: [
         {
           title: 'Entusiasta del Ejercicio',
-          description: 'Completar ejercicios',
-          unit: 'ejercicios',
+          description: 'Acaba las series de tues ejercicios, no te quedes a medias',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberBicep: [
         {
-          title: 'Fanático del Bíceps',
-          description: 'Completar ejercicios de bíceps',
-          unit: 'ejercicios',
+          title: 'Fan del Bíceps',
+          description: 'Termina ejercicios de bíceps',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberTricep: [
         {
           title: 'Especialista en Tríceps',
-          description: 'Completar ejercicios de tríceps',
-          unit: 'ejercicios',
+          description: 'Termina ejercicios de tríceps',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberChest: [
         {
           title: 'Campeón de Pecho',
-          description: 'Completar ejercicios de pecho',
-          unit: 'ejercicios',
+          description: 'Termina ejercicios de pecho',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberBack: [
         {
           title: 'Bestia de Espalda',
-          description: 'Completar ejercicios de espalda',
-          unit: 'ejercicios',
+          description: 'Termina ejercicios de espalda',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberShoulder: [
         {
-          title: 'Especialista en Hombros',
-          description: 'Completar ejercicios de hombros',
-          unit: 'ejercicios',
+          title: 'Destructor de Hombros',
+          description: 'Termina ejercicios de hombros',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       exercisesNumberLegs: [
         {
           title: 'Leyenda de Piernas',
-          description: 'Completar ejercicios de piernas',
-          unit: 'ejercicios',
+          description: 'Termina ejercicios de piernas',
+          unit: 'ejer.',
           levels: generateLevels(15, 5, 1.1, 50),
         },
       ],
       trainingsFinished: [
         {
           title: 'Terminator de Entrenamientos',
-          description: 'Terminar sesiones de entrenamiento',
-          unit: 'sesiones',
+          description: 'Termina tus sesiones de entrenamiento, sin excusas',
+          unit: 'ses.',
           levels: generateLevels(50, 10, 1.1, 50),
         },
       ],
@@ -572,7 +594,11 @@ const Profile = ({ navigation }) => {
                   scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
                 }}
               >
-                <Text className="font-rubik-regular text-2xl dark:text-white">Logros</Text>
+                <Text
+                  className={`font-rubik-regular text-2xl opacity-70 dark:text-white ${view === 'achievements' && 'opacity-100'}`}
+                >
+                  Logros
+                </Text>
               </PressableView>
             </View>
             <View
@@ -584,7 +610,11 @@ const Profile = ({ navigation }) => {
                   scrollViewRef.current.scrollTo({ x: 0, y: 250, animated: true })
                 }}
               >
-                <Text className="font-rubik-regular text-2xl dark:text-white">Estadísticas</Text>
+                <Text
+                  className={`font-rubik-regular text-2xl opacity-70 dark:text-white ${view === 'stats' && 'opacity-100'}`}
+                >
+                  Estadísticas
+                </Text>
               </PressableView>
             </View>
           </View>

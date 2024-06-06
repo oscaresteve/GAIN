@@ -208,12 +208,12 @@ export default function EditTraining({ navigation, route }) {
   }
 
   const noSaveAlert = () =>
-    Alert.alert('Are you sure?', 'This cant be reverted', [
+    Alert.alert('¿Descartar los cambios?', 'Si los descartas no los podras recuperar', [
       {
-        text: 'Cancel',
+        text: 'Cancelar',
         style: 'cancel',
       },
-      { text: 'Delete', onPress: () => navigation.goBack(), style: 'destructive' },
+      { text: 'Descartar cambios', onPress: () => navigation.goBack(), style: 'destructive' },
     ])
 
   const ScrollToTop = () => {
@@ -223,7 +223,7 @@ export default function EditTraining({ navigation, route }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -265,8 +265,8 @@ export default function EditTraining({ navigation, route }) {
         }}
       >
         <View className="grow justify-center px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
-          <View className="my-2">
-            <Text className="ml-2 font-rubik-regular text-3xl dark:text-white">
+          <View className="my-4">
+            <Text className="ml-2 font-rubik-regular text-4xl dark:text-white">
               {userTrainingData.trainingName}
             </Text>
           </View>
@@ -282,7 +282,11 @@ export default function EditTraining({ navigation, route }) {
                     <View
                       className={`mx-2 px-1 ${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
                     >
-                      <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
+                      <Text
+                        className={`font-rubik-regular text-2xl opacity-70 dark:text-white ${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'opacity-100'}`}
+                      >
+                        {weekday}
+                      </Text>
                     </View>
                   </PressableView>
                 ))}
@@ -290,7 +294,7 @@ export default function EditTraining({ navigation, route }) {
             </View>
             {userTrainingData.days[selectedDayIndex].groups.length > 0 ? (
               userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
-                <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
+                <View key={groupIndex} className="my-2 border-l-4 border-l-primary-1 pl-2">
                   <Text className="font-rubik-regular text-4xl font-bold dark:text-white">
                     {group.groupName}
                   </Text>
@@ -302,7 +306,7 @@ export default function EditTraining({ navigation, route }) {
                             navigation.navigate('ExerciseInfo', { exercise: exercise })
                           }}
                         >
-                          <Text className="font-rubik-regular text-2xl dark:text-white">
+                          <Text className="font-rubik-regular text-2xl opacity-80 dark:text-white">
                             {exercise.exerciseName}
                           </Text>
                         </PressableView>
@@ -328,7 +332,7 @@ export default function EditTraining({ navigation, route }) {
                             className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2"
                           >
                             <View className="w-12 items-center justify-center">
-                              <Text className="text-md font-rubik-regular dark:text-white">
+                              <Text className="text-md font-rubik-regular opacity-50 dark:text-white">
                                 {set.setNumber}
                               </Text>
                             </View>
@@ -345,7 +349,12 @@ export default function EditTraining({ navigation, route }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
+                                  <CustomIcon
+                                    name="keyboardArrowUp"
+                                    size={40}
+                                    color={'white'}
+                                    opacity={0.7}
+                                  />
                                 </PressableView>
                                 <Text className="font-rubik-regular text-lg dark:text-white">
                                   {set.details.reps} reps
@@ -361,7 +370,12 @@ export default function EditTraining({ navigation, route }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboardArrowDown" size={40} color={'white'} />
+                                  <CustomIcon
+                                    name="keyboardArrowDown"
+                                    size={40}
+                                    color={'white'}
+                                    opacity={0.7}
+                                  />
                                 </PressableView>
                               </View>
 
@@ -380,7 +394,12 @@ export default function EditTraining({ navigation, route }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboardArrowUp" size={40} color={'white'} />
+                                  <CustomIcon
+                                    name="keyboardArrowUp"
+                                    size={40}
+                                    color={'white'}
+                                    opacity={0.7}
+                                  />
                                 </PressableView>
                                 <Text className="font-rubik-regular text-lg dark:text-white">
                                   {set.details.weight} kg
@@ -396,7 +415,12 @@ export default function EditTraining({ navigation, route }) {
                                     )
                                   }
                                 >
-                                  <CustomIcon name="keyboardArrowDown" size={40} color={'white'} />
+                                  <CustomIcon
+                                    name="keyboardArrowDown"
+                                    size={40}
+                                    color={'white'}
+                                    opacity={0.7}
+                                  />
                                 </PressableView>
                               </View>
                               <View className="items-center justify-center">
@@ -411,7 +435,12 @@ export default function EditTraining({ navigation, route }) {
                                   }
                                   disabled={exercise.sets.length === 1}
                                 >
-                                  <CustomIcon name="delete" size={30} color={'white'} />
+                                  <CustomIcon
+                                    name="delete"
+                                    size={30}
+                                    color={'red'}
+                                    opacity={exercise.sets.length === 1 ? 0.3 : 0.7}
+                                  />
                                 </PressableView>
                               </View>
                             </View>
@@ -425,13 +454,13 @@ export default function EditTraining({ navigation, route }) {
                           >
                             <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
                               <View className="w-12 items-center justify-center">
-                                <Text className="text-md font-rubik-regular dark:text-white">
+                                <Text className="text-md font-rubik-regular opacity-50 dark:text-white">
                                   {exercise.sets.length + 1}
                                 </Text>
                               </View>
                               <Divider direction="vertical" />
                               <View className="mx-4 grow flex-row items-center justify-center">
-                                <CustomIcon name="add" size={60} color={'white'} />
+                                <CustomIcon name="add" size={60} color={'white'} opacity={0.7} />
                               </View>
                             </View>
                           </PressableView>
@@ -444,7 +473,10 @@ export default function EditTraining({ navigation, route }) {
                         }
                       >
                         <View className="items-center">
-                          <Text className="font-rubik-regular text-xl dark:text-white">
+                          <Text
+                            className="font-rubik-regular text-xl text-vermillion
+                          "
+                          >
                             Eliminar ejercicio
                           </Text>
                         </View>
@@ -454,7 +486,7 @@ export default function EditTraining({ navigation, route }) {
                 </View>
               ))
             ) : (
-              <Text className="ml-4 text-center font-rubik-italic text-2xl dark:text-white ">
+              <Text className="ml-4 font-rubik-italic text-2xl opacity-50 dark:text-white ">
                 Nada por el momento ...
               </Text>
             )}
@@ -472,7 +504,7 @@ export default function EditTraining({ navigation, route }) {
             >
               <ScrollView onScroll={handleModalScroll} showsVerticalScrollIndicator={false}>
                 <View className="mt-24 rounded-3xl bg-smoke-1 p-4 dark:bg-night-1">
-                  <Divider height={4} width={50} />
+                  <Divider height={5} width={50} />
 
                   <View className="my-4 flex-row flex-wrap justify-start ">
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -490,7 +522,9 @@ export default function EditTraining({ navigation, route }) {
                             <View
                               className={`mx-2 border-b-2 px-1 ${selectExerciseModalShow.groupSelected === group ? 'border-b-primary-1' : 'border-b-transparent'}`}
                             >
-                              <Text className="font-rubik-regular text-3xl dark:text-white">
+                              <Text
+                                className={`font-rubik-regular text-3xl opacity-70 dark:text-white ${selectExerciseModalShow.groupSelected === group && 'opacity-100'}`}
+                              >
                                 {group}
                               </Text>
                             </View>
@@ -552,7 +586,7 @@ export default function EditTraining({ navigation, route }) {
         }
         buttons={
           <PressableView onPress={handleSaveTraining}>
-            <Text className="font-rubik-regular text-2xl text-primary-1">Guardar</Text>
+            <Text className="font-rubik-medium text-2xl text-primary-1">Guardar</Text>
           </PressableView>
         }
       />

@@ -4,8 +4,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { logInUser } from '../database/Database'
-import { useDispatch } from 'react-redux'
-import { fetchUserData } from '../Redux/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUserData, selectUserData } from '../Redux/userSlice'
 import PressableView from '../components/PressableView'
 import KeyboardView from '../components/KeyboardView'
 import YupError from '../components/YupError'
@@ -15,6 +15,7 @@ import CustomIcon from '../components/CustomIcon'
 
 export default function LogIn({ navigation }) {
   const dispatch = useDispatch()
+  const userData = useSelector(selectUserData)
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -48,33 +49,11 @@ export default function LogIn({ navigation }) {
     dispatch(fetchUserData(email))
   }
 
-  const handleLoginOscar = async () => {
-    const loginSuccess = await logInUser('oscar@esteve.com', 'Oscar2024@')
-    if (loginSuccess === true) {
-      fetchData('oscar@esteve.com')
-      navigation.navigate('TabGroup')
-    } else {
-      Alert.alert('Correo o contraseña incorrectos')
-    }
-  }
-
-  const handleLoginTest = async () => {
-    const loginSuccess = await logInUser('test@test.com', 'Test111@')
-    if (loginSuccess === true) {
-      fetchData('test@test.com')
-      navigation.navigate('TabGroup')
-    } else {
-      Alert.alert('Correo o contraseña incorrectos')
-    }
-  }
-
   return (
     <SafeAreaView className="grow bg-smoke-1 dark:bg-night-1">
       <KeyboardView>
         <View className="m-2 grow justify-center">
-          <View className="items-start">
-            <Image source={require('../../assets/logos/gain-logo.png')} className="m-2 h-14 w-14" />
-          </View>
+          <Image source={require('../../assets/logos/gain-logo.png')} className="m-2 h-14 w-14" />
           <View className="my-2">
             <Controller
               name="email"
@@ -86,13 +65,13 @@ export default function LogIn({ navigation }) {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  className={`my-2 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-red-500'}`}
+                  className={`my-1 rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.email && 'border-vermillion'}`}
                 />
               )}
             />
             {errors.email && <YupError error={errors.email} />}
             <View
-              className={`my-2 flex-row items-center justify-end rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-red-500'}`}
+              className={`my-1 flex-row items-center justify-end rounded-xl border border-smoke-3 bg-smoke-2 p-2 font-rubik-regular text-xl text-black dark:border-night-3 dark:bg-night-2 dark:text-white ${errors.password && 'border-vermillion'}`}
             >
               <Controller
                 name="password"
@@ -112,9 +91,9 @@ export default function LogIn({ navigation }) {
               <PressableView onPress={() => setShowPassword(!showPassword)}>
                 <View className="mx-2">
                   {showPassword ? (
-                    <CustomIcon name={'visibility'} color={'white'} />
+                    <CustomIcon name={'visibility'} opacity={1} />
                   ) : (
-                    <CustomIcon name={'visibilityOff'} color={'white'} />
+                    <CustomIcon name={'visibilityOff'} opacity={0.5} />
                   )}
                 </View>
               </PressableView>
@@ -126,14 +105,14 @@ export default function LogIn({ navigation }) {
           <PressableView onPress={handleSubmit(handleLogIn)}>
             <View className="my-4 items-center justify-center rounded-xl bg-primary-1 p-2">
               <Text className="font-rubik-medium text-xl text-smoke-1 dark:text-night-1">
-                Inicia sesión
+                Entrar
               </Text>
             </View>
           </PressableView>
 
           <PressableView onPress={() => navigation.navigate('Register')}>
             <View className="items-center">
-              <Text className="text-md font-rubik-regular text-primary-2">
+              <Text className="font-rubik-regular text-lg text-primary-2">
                 ¿Eres nuevo? Crea tu cuenta
               </Text>
             </View>

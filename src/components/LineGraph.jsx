@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Pressable, Text as RNText, useColorScheme } from 'react-native'
 import * as d3 from 'd3'
-import Svg, { Path, G, Text as Text, Line, Circle } from 'react-native-svg'
+import Svg, { Path, G, Text as SvgText, Line, Circle } from 'react-native-svg'
 import moment from 'moment'
 import PressableView from './PressableView'
 import CustomIcon from './CustomIcon'
@@ -9,7 +9,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import { runOnJS } from 'react-native-reanimated'
 
 export default function LineGraph({
-  data,
+  data = [],
   width = 350,
   height = 100,
   lineWidth = 2,
@@ -44,20 +44,15 @@ export default function LineGraph({
 
   const yMax =
     Math.max(
-      Math.ceil(d3.max(data, (d) => d.value)),
+      Math.ceil(d3.max(data, (d) => d.value) || 0),
       Math.ceil(filteredData.reduce((acc, curr) => Math.max(acc, curr.value), 0)),
     ) || 10
 
-  const yMin = data
+  const yMin = data.length
     ? Math.min(
-        Math.floor(d3.min(data, (d) => d.value)),
+        Math.floor(d3.min(data, (d) => d.value) || 0),
         Math.floor(filteredData.reduce((acc, curr) => Math.min(acc, curr.value), Infinity)),
-      ) === yMax
-      ? 0
-      : Math.min(
-          Math.floor(d3.min(data, (d) => d.value)),
-          Math.floor(filteredData.reduce((acc, curr) => Math.min(acc, curr.value), Infinity)),
-        )
+      )
     : 0
 
   const yValues = Array.from(
@@ -103,16 +98,16 @@ export default function LineGraph({
     <GestureDetector gesture={swipeMonthGesture}>
       <View>
         <View className="flex-row items-center justify-center">
-          <PressableView onPress={() => handlePrevMonth()}>
-            <CustomIcon name={'chevronBack'} size={40} color={'black'} />
+          <PressableView onPress={handlePrevMonth}>
+            <CustomIcon name={'chevronBack'} size={40} opacity={0.7} />
           </PressableView>
 
-          <RNText className="mx-10 font-rubik-regular text-xl dark:text-white">
+          <RNText className="mx-10 font-rubik-regular text-xl opacity-70 dark:text-white">
             {moment().month(month).format('MMM YYYY')}
           </RNText>
 
-          <PressableView onPress={() => handleNextMonth()}>
-            <CustomIcon name={'chevronForward'} size={40} color={'black'} />
+          <PressableView onPress={handleNextMonth}>
+            <CustomIcon name={'chevronForward'} size={40} opacity={0.7} />
           </PressableView>
         </View>
         <Svg width={width} height={height} className="mx-auto">
@@ -128,7 +123,7 @@ export default function LineGraph({
                   strokeWidth="1"
                   opacity={opacity}
                 />
-                <Text
+                <SvgText
                   x={margin.left - 25}
                   y={yScale(value) + 5}
                   textAnchor="end"
@@ -138,8 +133,8 @@ export default function LineGraph({
                   opacity={opacity}
                 >
                   {value.toFixed()}
-                </Text>
-                <Text
+                </SvgText>
+                <SvgText
                   x={margin.left - 5}
                   y={yScale(value) + 5}
                   textAnchor="end"
@@ -149,7 +144,7 @@ export default function LineGraph({
                   opacity={opacity}
                 >
                   Kg
-                </Text>
+                </SvgText>
               </G>
             ))}
             {xValues.map((date, index) => {
@@ -157,7 +152,7 @@ export default function LineGraph({
               const yPos = height - margin.bottom + 15
               return (
                 <G key={index}>
-                  <Text
+                  <SvgText
                     x={xPos}
                     y={yPos + 5}
                     textAnchor="middle"
@@ -167,7 +162,7 @@ export default function LineGraph({
                     opacity={opacity}
                   >
                     {moment(date).format('MM/DD')}
-                  </Text>
+                  </SvgText>
                 </G>
               )
             })}

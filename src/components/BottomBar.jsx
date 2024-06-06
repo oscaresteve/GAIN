@@ -11,7 +11,7 @@ export const useBottomBarHeight = () => {
 export default function BottomBar({ children }) {
   return (
     <BlurView
-      intensity={100}
+      intensity={70}
       style={{ height: height }}
       className="absolute bottom-0 w-full flex-row justify-around border-t border-t-smoke-3 p-4 dark:border-t-night-3 "
     >

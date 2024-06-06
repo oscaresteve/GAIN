@@ -10,13 +10,17 @@ export default function Configuration({ navigation }) {
   const dispatch = useDispatch()
 
   const noSaveAlert = () =>
-    Alert.alert('Are you sure?', 'This cant be reverted', [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      { text: 'Delete', onPress: () => handleLogOut(), style: 'destructive' },
-    ])
+    Alert.alert(
+      '¿Cerrar sesión?',
+      'Deberas iniciar sesión de nuevo cuando quieras volver a acceder',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        { text: 'Cerrar sesión', onPress: () => handleLogOut(), style: 'destructive' },
+      ],
+    )
 
   const handleLogOut = () => {
     dispatch(clearUserSession())

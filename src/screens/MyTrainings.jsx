@@ -37,7 +37,7 @@ export default function MyTrainings({ navigation }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -90,7 +90,7 @@ export default function MyTrainings({ navigation }) {
       />
       <ScrollToTop />
       <AddButton />
-      <AppBar label={'Entrenamientos'} />
+      <AppBar label={'Mis Entrenamientos'} />
     </View>
   )
 }

@@ -39,7 +39,7 @@ export default function ProgressView({ navigation, route }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full bg-smoke-2 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -50,7 +50,16 @@ export default function ProgressView({ navigation, route }) {
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
-      <ScrollView ref={scrollViewRef} onScroll={handleScroll}>
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollIndicatorInsets={{
+          top: useAppBarHeight(),
+          left: 0,
+          bottom: 0,
+          right: 0,
+        }}
+      >
         <View className="grow px-2 pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View>
             <LineGraph
@@ -63,51 +72,50 @@ export default function ProgressView({ navigation, route }) {
               onPrevMonth={(month) => setMonth(month)}
             />
           </View>
-          <View>
-            <View className="my-2">
-              <Text className="font-rubik-regular text-2xl dark:text-white">
-                Progreso en {moment().month(month).format('MMMM')}
-              </Text>
-            </View>
-            <Divider />
-            <View className="my-4 p-2">
-              {filteredData.reverse().map((item, itemIndex) => {
-                const previousItem = filteredData[itemIndex + 1]
+          <View className="my-2 items-center">
+            <Text className="font-rubik-regular text-2xl dark:text-white">
+              Progreso en {moment().month(month).format('MMMM')}
+            </Text>
+          </View>
+          <Divider />
+          <View className="my-2 p-2">
+            {filteredData.reverse().map((item, itemIndex) => {
+              const previousItem = filteredData[itemIndex + 1]
 
-                const difference = previousItem ? item.value - previousItem.value : null
+              const difference = previousItem ? item.value - previousItem.value : null
 
-                return (
-                  <View key={itemIndex} className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
-                    <View className="m-1">
-                      <Text className="font-rubik-regular text-xl dark:text-white">
-                        {moment(item.date).format('Do MMMM')}
-                      </Text>
-                    </View>
-                    <Divider />
-                    <View className="m-1 flex-row items-center">
-                      <Text className="font-rubik-regular text-xl dark:text-white">
-                        {item.value} Kg
-                      </Text>
-                      {difference !== null && difference !== 0 && (
-                        <View className="">
-                          <Text
-                            className={`ml-2 font-rubik-regular text-lg ${difference >= 0 ? 'text-green-500' : 'text-red-500'}`}
-                          >
-                            (
-                            {difference >= 0 ? (
-                              <CustomIcon name={'trendingUp'} size={15} color={'white'} />
-                            ) : (
-                              <CustomIcon name={'trendingDown'} size={15} color={'white'} />
-                            )}{' '}
-                            {Math.abs(difference)})
-                          </Text>
-                        </View>
-                      )}
-                    </View>
+              return (
+                <View key={itemIndex} className="m-1 rounded-xl bg-smoke-2 p-2 dark:bg-night-2">
+                  <View className="m-1 flex-row">
+                    <Text className="grow font-rubik-regular text-xl opacity-70 dark:text-white">
+                      {moment(item.date).format('Do MMMM')}
+                    </Text>
+                    {(difference > 0 && (
+                      <CustomIcon name={'trendingUp'} color="green" opacity={0.7} />
+                    )) ||
+                      (difference < 0 && (
+                        <CustomIcon name={'trendingDown'} color="red" opacity={0.7} />
+                      )) || <CustomIcon name={'equal'} opacity={0.7} />}
                   </View>
-                )
-              })}
-            </View>
+                  <Divider />
+                  <View className="m-1 flex-row items-center">
+                    <Text className="font-rubik-regular text-xl dark:text-white">
+                      {item.value} Kg
+                    </Text>
+                    {difference !== null && difference !== 0 && (
+                      <View className="">
+                        <Text
+                          className={`ml-2 font-rubik-regular text-lg ${difference >= 0 ? 'text-officeGreen' : 'text-vermillion'}`}
+                        >
+                          ({difference >= 0 ? '+' : '-'}
+                          {Math.abs(difference)})
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              )
+            })}
           </View>
         </View>
       </ScrollView>

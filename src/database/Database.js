@@ -53,8 +53,6 @@ export const registerUser = async (email, password) => {
         password: password,
         name: null,
         lastName: null,
-        dateBirth: null,
-        gender: null,
         profilePic: null,
         userXp: null,
         userStats: {

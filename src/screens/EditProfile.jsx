@@ -80,6 +80,10 @@ export default function EditProfile({ navigation }) {
     }
   }
 
+  const handleDeleteProfilePic = () => {
+    setProfilePic(null)
+  }
+
   const handleSave = async (formData) => {
     const newUserData = JSON.parse(JSON.stringify(userData))
     newUserData.name = formData.name
@@ -90,12 +94,21 @@ export default function EditProfile({ navigation }) {
   }
 
   const noSaveAlert = () =>
-    Alert.alert('Are you sure?', 'This cant be reverted', [
+    Alert.alert('¿Descartar los cambios?', 'Si los descartas no los podras recuperar', [
       {
-        text: 'Cancel',
+        text: 'Cancelar',
         style: 'cancel',
       },
-      { text: 'Delete', onPress: () => navigation.goBack(), style: 'destructive' },
+      { text: 'Descartar cambios', onPress: () => navigation.goBack(), style: 'destructive' },
+    ])
+
+  const deleteProfilePicAlert = () =>
+    Alert.alert('¿Eliminar foto de perfil?', 'No se eliminará de tu dispositivo', [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      { text: 'Eliminar', onPress: () => handleDeleteProfilePic(), style: 'destructive' },
     ])
 
   const checkIfModified = () => {
@@ -110,6 +123,9 @@ export default function EditProfile({ navigation }) {
       navigation.goBack()
     }
   }
+  const profilePicSource = profilePic
+    ? { uri: profilePic }
+    : require('../../assets/default-profile.png')
 
   return (
     <View className="grow bg-smoke-1 dark:bg-night-1">
@@ -125,14 +141,21 @@ export default function EditProfile({ navigation }) {
       >
         <View className="mx-2 my-2 grow pb-20" style={{ paddingTop: useAppBarHeight() }}>
           <View className="items-center">
-            <View className="m-2 aspect-square h-36 overflow-hidden rounded-full">
-              <Image source={{ uri: profilePic }} className="h-full w-full" />
+            <View className="m-2 aspect-square h-36 overflow-hidden rounded-full border-2 border-smoke-3 dark:border-night-3">
+              <Image source={profilePicSource} className="h-full w-full" />
             </View>
-            <PressableView onPress={handleSelectProfilePic}>
-              <Text className="font-rubik-regular text-lg text-primary-1">
-                Seleccionar foto de perfil
-              </Text>
-            </PressableView>
+            <View className="flex-row">
+              <PressableView onPress={handleSelectProfilePic}>
+                <Text className="m-2 font-rubik-regular text-lg text-primary-1">Seleccionar</Text>
+              </PressableView>
+              <PressableView onPress={deleteProfilePicAlert} disabled={profilePic === null}>
+                <Text
+                  className={`m-2 font-rubik-regular text-lg text-vermillion ${profilePic === null && 'opacity-30'}`}
+                >
+                  Eliminar
+                </Text>
+              </PressableView>
+            </View>
           </View>
 
           <Controller

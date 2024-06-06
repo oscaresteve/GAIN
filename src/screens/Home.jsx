@@ -59,7 +59,7 @@ export default function Home({ navigation }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -72,10 +72,8 @@ export default function Home({ navigation }) {
     return (
       <View>
         {userTrainingDayData?.groups?.map((group, groupIndex) => (
-          <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
-            <Text className="my-2 font-rubik-medium text-4xl dark:text-white">
-              {group.groupName}
-            </Text>
+          <View key={groupIndex} className="my-2 border-l-4 border-l-primary-1 pl-2">
+            <Text className="font-rubik-medium text-4xl dark:text-white">{group.groupName}</Text>
             {group.exercises?.map((exercise, exerciseIndex) => (
               <View key={exerciseIndex} className="mx-2">
                 <View className="my-2">
@@ -84,7 +82,9 @@ export default function Home({ navigation }) {
                       navigation.navigate('ExerciseInfo', { exercise: exercise })
                     }}
                   >
-                    <Text className="font-rubik-regular text-2xl dark:text-white">
+                    <Text
+                      className={`font-rubik-regular text-2xl opacity-80 dark:text-white ${exercise.done && 'text-officeGreen'}`}
+                    >
                       {exercise.exerciseName}
                     </Text>
                   </PressableView>
@@ -110,11 +110,11 @@ export default function Home({ navigation }) {
                           }}
                         >
                           <View
-                            className={`my-1 h-14 flex-row rounded-xl bg-smoke-2 py-2 shadow-sm dark:bg-night-2 
-                              ${set.details.done && 'border-2 border-green-500'} ${enabled && 'border-2 border-smoke-3 dark:border-night-3'}`}
+                            className={`my-1 h-14 flex-row rounded-xl bg-smoke-2 py-2 dark:bg-night-2 
+                              ${set.details.done && 'border border-officeGreen'} ${enabled && 'border-2 border-smoke-3 dark:border-night-3'}`}
                           >
                             <View className="w-12 items-center justify-center">
-                              <Text className="text-md font-rubik-regular dark:text-white">
+                              <Text className="text-md font-rubik-regular opacity-50 dark:text-white">
                                 {set.setNumber}
                               </Text>
                             </View>
@@ -136,6 +136,13 @@ export default function Home({ navigation }) {
                                 <DifficultyBar value={set.details.weight} maxValue={100} />
                               </View>
                             </View>
+                            <View className="mx-2 items-center justify-center">
+                              <CustomIcon
+                                name="dragIndicator"
+                                size={30}
+                                opacity={enabled ? 0.5 : 0}
+                              />
+                            </View>
                           </View>
                         </AnimatedSetCard>
                       </View>
@@ -152,25 +159,44 @@ export default function Home({ navigation }) {
   }
 
   const RestDay = () => {
-    return (
-      <View className="items-center justify-center">
-        <Text className="font-rubik-regular text-4xl dark:text-white">¡Nada por el momento!</Text>
-        <Text className="font-rubik-regular text-2xl dark:text-white">Recupera energias</Text>
-        <Text className="font-rubik-regular text-2xl dark:text-white">Mañana mas</Text>
-        <PressableView
-          onPress={() =>
-            navigation.navigate('TrainingView', {
-              userTrainingData: userTrainingPrimaryData,
-              watchDay: moment().add(1, 'days').format('d'),
-            })
-          }
-        >
-          <Text className="font-rubik-regular text-2xl text-primary-1">
-            Ver el entrenamiento de mañana
+    if (userTrainingPrimaryData) {
+      return (
+        <View className="mx-4 items-center justify-center">
+          <Text className="text-center font-rubik-regular text-3xl dark:text-white">
+            ¡Nada por el momento!
           </Text>
-        </PressableView>
-      </View>
-    )
+          <PressableView
+            onPress={() => {
+              navigation.navigate('TrainingView', {
+                userTrainingData: userTrainingPrimaryData,
+                watchDay: moment().add(1, 'days').format('d'),
+              })
+            }}
+          >
+            <Text className="m-2 text-center font-rubik-regular text-2xl text-primary-1">
+              Ver el entrenamiento de mañana
+            </Text>
+          </PressableView>
+        </View>
+      )
+    } else {
+      return (
+        <View className="items-center justify-center">
+          <Text className="text-center font-rubik-regular text-3xl dark:text-white">
+            Aquí se mostrará tu entrenamiento diario
+          </Text>
+          <PressableView
+            onPress={() => {
+              navigation.navigate('CreateTraining')
+            }}
+          >
+            <Text className="font-rubik-regular text-2xl text-primary-1">
+              ¡Crea uno para empezar!
+            </Text>
+          </PressableView>
+        </View>
+      )
+    }
   }
 
   const TrainingStats = () => {
@@ -189,58 +215,68 @@ export default function Home({ navigation }) {
     return (
       <View className="my-2">
         <View className="items-center">
-          <Text className="my-2 font-rubik-medium text-2xl dark:text-white">Estadísticas</Text>
+          <Text className="my-2 font-rubik-medium text-2xl opacity-80 dark:text-white">
+            ESTADÍSTICAS
+          </Text>
         </View>
 
         <Divider />
 
         <View className="m-4">
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Ejercicios</Text>
+            <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
+              Ejercicios
+            </Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-rubik-regular text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
               {userTrainingDayData.dayStats.totalExercisesNumber}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Series</Text>
+            <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">Series</Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-rubik-regular text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
               {userTrainingDayData.dayStats.totalSetsNumber}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Repeticiones</Text>
+            <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
+              Repeticiones
+            </Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-rubik-regular text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
               {userTrainingDayData.dayStats.totalRepsNumber}
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Peso levantado</Text>
+            <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
+              Peso levantado
+            </Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-rubik-regular text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
               {userTrainingDayData.dayStats.totalWeightNumber} kg
             </Text>
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Tiempo total</Text>
+            <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
+              Tiempo total
+            </Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-rubik-regular text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
               {userTrainingDayData.dayStats.totalTrainingTime
                 ? msToTime(userTrainingDayData.dayStats.totalTrainingTime)
                 : 'No finalizado'}
@@ -248,11 +284,13 @@ export default function Home({ navigation }) {
           </View>
 
           <View className="m-1 flex-row items-center justify-end">
-            <Text className="font-rubik-regular text-xl dark:text-white">Xp obtenida</Text>
+            <Text className="font-rubik-regular text-xl opacity-50 dark:text-white">
+              Xp obtenida
+            </Text>
             <View className="grow">
               <Divider height={1} width={'80%'} />
             </View>
-            <Text className="font-rubik-regular text-xl dark:text-white">
+            <Text className="font-rubik-regular text-xl opacity-70 dark:text-white">
               {userTrainingDayData.xpObtained} xp
             </Text>
           </View>

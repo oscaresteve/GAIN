@@ -14,8 +14,6 @@ export default function Training({ navigation, route }) {
   const dispatch = useDispatch()
   const userData = useSelector(selectUserData)
   const { userTrainingData, watchDay } = route.params
-
-  console.log(moment.weekdaysShort())
   const scrollViewRef = useRef()
   const [showScrollToTop, setShowScrollToTop] = useState(false)
 
@@ -47,13 +45,30 @@ export default function Training({ navigation, route }) {
   }
 
   const deleteAlert = () =>
-    Alert.alert('Are you sure?', 'This cant be reverted', [
+    Alert.alert('¿Eliminar este entrenamiento?', 'No podrás recuperarlo', [
       {
-        text: 'Cancel',
+        text: 'Cancelar',
         style: 'cancel',
       },
-      { text: 'Delete', onPress: () => handleDeleteTraining(), style: 'destructive' },
+      { text: 'Eliminar', onPress: () => handleDeleteTraining(), style: 'destructive' },
     ])
+
+  const primaryAlert = () =>
+    Alert.alert(
+      '¿Establecer este entrenamiento como primario?',
+      'Este será el que se mostrara en tus rutina diaria',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Establecer como primario',
+          onPress: () => handleMakeTrainingPrimary(userTrainingData.trainingName),
+          style: 'default',
+        },
+      ],
+    )
 
   const ScrollToTop = () => {
     if (showScrollToTop) {
@@ -62,7 +77,7 @@ export default function Training({ navigation, route }) {
           <PressableView
             onPress={() => scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })}
           >
-            <View className="m-4 rounded-full border border-smoke-3 bg-smoke-2 dark:border-night-3 dark:bg-night-2">
+            <View className="m-2">
               <CustomIcon name={'keyboardDoubleArrowUp'} size={40} color={'white'} />
             </View>
           </PressableView>
@@ -87,8 +102,8 @@ export default function Training({ navigation, route }) {
           className="grow justify-center px-2 pb-20"
           style={{ paddingTop: useAppBarHeight(), paddingBottom: useBottomBarHeight() }}
         >
-          <View className="my-2">
-            <Text className="ml-2 font-rubik-regular text-3xl dark:text-white">
+          <View className="my-4">
+            <Text className="ml-2 font-rubik-regular text-4xl dark:text-white">
               {userTrainingData.trainingName}
             </Text>
           </View>
@@ -103,7 +118,11 @@ export default function Training({ navigation, route }) {
                   <View
                     className={`mx-2 px-1 ${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'border-b-2 border-b-primary-1'}`}
                   >
-                    <Text className="font-rubik-regular text-2xl dark:text-white">{weekday}</Text>
+                    <Text
+                      className={`font-rubik-regular text-2xl opacity-70 dark:text-white ${selectedDayIndex === moment(weekday, 'ddd').format('d') && 'opacity-100'}`}
+                    >
+                      {weekday}
+                    </Text>
                   </View>
                 </PressableView>
               ))}
@@ -112,7 +131,7 @@ export default function Training({ navigation, route }) {
           <View className="my-2">
             {userTrainingData.days[selectedDayIndex].groups.length > 0 ? (
               userTrainingData.days[selectedDayIndex].groups?.map((group, groupIndex) => (
-                <View key={groupIndex} className="my-2 border-l-2 border-l-primary-1">
+                <View key={groupIndex} className="my-2 border-l-4 border-l-primary-1 pl-2">
                   <Text className="font-rubik-regular text-4xl font-bold dark:text-white">
                     {group.groupName}
                   </Text>
@@ -124,7 +143,7 @@ export default function Training({ navigation, route }) {
                             navigation.navigate('ExerciseInfo', { exercise: exercise })
                           }}
                         >
-                          <Text className="font-rubik-regular text-2xl dark:text-white">
+                          <Text className="font-rubik-regular text-2xl opacity-80 dark:text-white">
                             {exercise.exerciseName}
                           </Text>
                         </PressableView>
@@ -140,7 +159,7 @@ export default function Training({ navigation, route }) {
                           <View key={setIndex}>
                             <View className="my-1 flex-row rounded-xl border border-smoke-2 bg-smoke-2 py-2 shadow-sm dark:border-night-3 dark:bg-night-2">
                               <View className="w-12 items-center justify-center">
-                                <Text className="text-md font-rubik-regular dark:text-white">
+                                <Text className="text-md font-rubik-regular opacity-50 dark:text-white">
                                   {set.setNumber}
                                 </Text>
                               </View>
@@ -173,22 +192,27 @@ export default function Training({ navigation, route }) {
                 </View>
               ))
             ) : (
-              <Text className="ml-4 text-center font-rubik-italic text-2xl dark:text-white ">
-                Nothing at the moment...
+              <Text className="font-rubik-italic text-2xl opacity-50 dark:text-white">
+                Nada por el momento ...
               </Text>
             )}
           </View>
         </View>
       </ScrollView>
       <BottomBar>
-        <PressableView onPress={deleteAlert}>
-          <Text className="font-rubik-regular text-2xl dark:text-white">Eliminar</Text>
+        <PressableView onPress={deleteAlert} disabled={userTrainingData.primary}>
+          <Text
+            className={`font-rubik-medium text-xl text-vermillion ${userTrainingData.primary && 'opacity-30'}`}
+          >
+            Eliminar
+          </Text>
         </PressableView>
-        <PressableView
-          onPress={() => handleMakeTrainingPrimary(userTrainingData.trainingName)}
-          disabled={userTrainingData.primary ? true : false}
-        >
-          <Text className="font-rubik-regular text-2xl dark:text-white">Seleccionar</Text>
+        <PressableView onPress={primaryAlert} disabled={userTrainingData.primary ? true : false}>
+          <Text
+            className={`font-rubik-medium text-xl dark:text-white ${userTrainingData.primary && 'opacity-30'}`}
+          >
+            Seleccionar
+          </Text>
         </PressableView>
       </BottomBar>
       <AppBar
@@ -197,7 +221,7 @@ export default function Training({ navigation, route }) {
         onBack={() => navigation.goBack()}
         buttons={
           <PressableView onPress={handleEditTraining}>
-            <Text className="font-rubik-regular text-2xl text-primary-1">Editar</Text>
+            <Text className="font-rubik-medium text-2xl text-primary-1">Editar</Text>
           </PressableView>
         }
       />

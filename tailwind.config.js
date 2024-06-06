@@ -10,20 +10,21 @@ module.exports = {
         'rubik-italic': 'Rubik-Italic',
       },
       colors: {
-        vermillion: '#FF3333',
+        vermillion: '#FF0000',
+        officeGreen: '#008000',
         primary: {
           1: '#FF2400',
           2: '#FF5000',
         },
         night: {
-          1: '#0D0D0D',
-          2: '#1A1A1A',
-          3: '#262626',
+          1: '#000000',
+          2: '#0A0A0A',
+          3: '#141414',
         },
         smoke: {
-          1: '#F2F2F2',
-          2: '#E6E6E6',
-          3: '#D9D9D9',
+          1: '#FFFFFF',
+          2: '#FAFAFA',
+          3: '#F2F2F2',
         },
       },
     },

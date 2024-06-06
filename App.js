@@ -8,13 +8,10 @@ import { StatusBar } from 'expo-status-bar'
 import { useFonts } from 'expo-font'
 import moment from 'moment'
 import 'moment/locale/es'
-moment.updateLocale('es', {
-  week: {
-    dow: 1,
-  },
-  weekdaysShort: ['lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.', 'dom.'],
-  weekdays: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-})
+moment.locale('es')
+import * as SplashScreen from 'expo-splash-screen'
+
+SplashScreen.preventAutoHideAsync()
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,6 +22,13 @@ export default function App() {
   })
 
   const colorScheme = useColorScheme()
+
+  if (!fontsLoaded) {
+    return null
+  }
+
+  SplashScreen.hideAsync()
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
