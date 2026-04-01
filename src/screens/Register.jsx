@@ -11,6 +11,7 @@ import KeyboardView from '../components/KeyboardView'
 import CustomIcon from '../components/CustomIcon'
 import YupError from '../components/YupError'
 import * as Haptics from 'expo-haptics'
+import Divider from '../components/Divider'
 
 export default function Register({ navigation }) {
   const dispatch = useDispatch()

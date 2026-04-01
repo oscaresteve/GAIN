@@ -1,6 +1,7 @@
-import { View, Pressable, Button, ScrollView, Text } from 'react-native'
+import { View, Pressable, ScrollView, Text } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import AppBar from '../components/AppBar'
+import Divider from '../components/Divider'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   selectUserTrainingDayData,

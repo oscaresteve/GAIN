@@ -123,8 +123,8 @@ const TabGroup = () => {
                 style={{
                   aspectRatio: 1,
                   height: size,
-                  borderRadius: '100%',
-                  borderWidth: '2px',
+                  borderRadius: 999,
+                  borderWidth: 2,
                   borderColor: color,
                 }}
               />
@@ -134,8 +134,8 @@ const TabGroup = () => {
                 style={{
                   aspectRatio: 1,
                   height: size,
-                  borderRadius: '100%',
-                  borderWidth: '2px',
+                  borderRadius: 999,
+                  borderWidth: 2,
                   borderColor: color,
                 }}
               />
