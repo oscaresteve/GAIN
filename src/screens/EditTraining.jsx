@@ -11,6 +11,7 @@ import CustomIcon from '../components/CustomIcon'
 import DifficultyBar from '../components/DifficultyBar'
 import { ExerciseCard } from '../components/ExerciseCard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Divider from '../components/Divider'
 
 export default function EditTraining({ navigation, route }) {
   const dispatch = useDispatch()

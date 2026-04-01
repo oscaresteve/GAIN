@@ -1,4 +1,4 @@
-import { View, Button, ScrollView, Text, Pressable } from 'react-native'
+import { View, ScrollView, Text, Pressable } from 'react-native'
 import React, { useRef, useState } from 'react'
 import AppBar from '../components/AppBar'
 import moment from 'moment'
@@ -7,6 +7,7 @@ import PressableView from '../components/PressableView'
 import { useAppBarHeight } from '../components/AppBar'
 import CustomIcon from '../components/CustomIcon'
 import DifficultyBar from '../components/DifficultyBar'
+import Divider from '../components/Divider'
 
 export default function TrainingDayView({ navigation, route }) {
   const { userTrainingDayData } = route.params

@@ -12,7 +12,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import userSliceReducer from './userSlice'
 import gainSliceReducer from './gainSlice'
-import thunk from 'redux-thunk'
 
 const persistConfig = {
   key: 'root',
